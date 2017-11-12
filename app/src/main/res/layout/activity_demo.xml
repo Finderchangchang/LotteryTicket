@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/tab_pager"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp" />
+        <Button
+            android:id="@+id/btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/main_tv1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary" />
+
+            <TextView
+                android:id="@+id/main_tv2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true" />
+
+            <TextView
+                android:id="@+id/main_tv3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true" />
+
+            <TextView
+                android:id="@+id/main_tv4"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.yinglan.alphatabs.AlphaTabsIndicator
+                android:id="@+id/alphaIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:paddingBottom="3dp"
+                android:paddingTop="3dp">
+
+                <com.yinglan.alphatabs.AlphaTabView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    app:tabIconNormal="@mipmap/ic_launcher"
+                    app:tabIconSelected="@mipmap/ic_launcher_round"
+                    app:tabText="首页"
+                    app:tabTextSize="10sp"
+                    app:textColorNormal="@color/bottom_bg"
+                    app:textColorSelected="@color/colorPrimary" />
+
+                <com.yinglan.alphatabs.AlphaTabView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:padding="2dp"
+                    app:tabIconNormal="@mipmap/ic_launcher"
+                    app:tabIconSelected="@mipmap/ic_launcher_round"
+                    app:tabText="游戏"
+                    app:tabTextSize="10sp"
+                    app:textColorNormal="@color/bottom_bg"
+                    app:textColorSelected="@color/colorPrimary" />
+
+                <com.yinglan.alphatabs.AlphaTabView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:padding="2dp"
+                    app:tabIconNormal="@mipmap/ic_launcher"
+                    app:tabIconSelected="@mipmap/ic_launcher_round"
+                    app:tabText="资金"
+                    app:tabTextSize="10sp"
+                    app:textColorNormal="@color/bottom_bg"
+                    app:textColorSelected="@color/colorPrimary" />
+
+                <com.yinglan.alphatabs.AlphaTabView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:padding="2dp"
+                    app:tabIconNormal="@mipmap/ic_launcher"
+                    app:tabIconSelected="@mipmap/ic_launcher_round"
+                    app:tabText="我的"
+                    app:tabTextSize="10sp"
+                    app:textColorNormal="@color/bottom_bg"
+                    app:textColorSelected="@color/colorPrimary" />
+            </com.yinglan.alphatabs.AlphaTabsIndicator>
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</layout>
