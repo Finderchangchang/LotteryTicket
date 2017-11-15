@@ -12,7 +12,7 @@ import gy.lotteryticket.base.BaseActivity
 import gy.lotteryticket.control.LoginModule
 import gy.lotteryticket.databinding.ActivityLoginBinding
 import gy.lotteryticket.model.NormalRequest
-import gy.lotteryticket.ui.main.MainActivity
+import gy.lotteryticket.ui.main.HomeActivity
 import net.tsz.afinal.view.LoadingDialog
 
 
@@ -46,7 +46,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), AbsModule.OnCallback
                 success as NormalRequest<String>
                 when (success.code) {
                     1 -> {//跳转到主页
-                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                         finish()
                     }
                     2 -> {//跳转到绑定code页面

@@ -1,6 +1,7 @@
 package gy.lotteryticket.ui.main
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import butterknife.BindView
 import gy.lotteryticket.R
@@ -12,6 +13,10 @@ import gy.lotteryticket.databinding.FragGameBinding
  */
 
 class GameFragment : BaseFragment<FragGameBinding>() {
+    override fun initView(view: View?) {
+
+    }
+
     override fun init(savedInstanceState: Bundle?) {
 
     }

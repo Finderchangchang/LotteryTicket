@@ -74,10 +74,12 @@
             </LinearLayout>
 
             <android.support.design.widget.TabLayout
+                android:id="@+id/capital_tl"
                 android:layout_width="match_parent"
                 android:layout_height="40dp" />
 
             <android.support.v4.view.ViewPager
+                android:id="@+id/capital_vp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>

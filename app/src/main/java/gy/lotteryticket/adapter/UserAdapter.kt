@@ -12,7 +12,7 @@ import gy.lotteryticket.ui.main.UserFragment
  * Created by Administrator on 2017/11/11.
  */
 
-class MainAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class UserAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     internal var fragment = arrayOf<Fragment>(MainFragment(), GameFragment(), CapitalFragment(), UserFragment())
 
     override fun getItem(position: Int): Fragment {
@@ -24,6 +24,6 @@ class MainAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     }
 
     override fun getPageTitle(position: Int): CharSequence {
-        return ""
+        return "666"
     }
 }
