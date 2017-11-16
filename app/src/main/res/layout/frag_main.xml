@@ -36,11 +36,17 @@
                     android:layout_height="20dp"
                     android:src="@mipmap/ic_launcher" />
 
-                <TextView
+                <net.tsz.afinal.view.AlwaysMarqueeTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:marqueeRepeatLimit="marquee_forever"
                     android:paddingLeft="10dp"
-                    android:text="这里显示滚动公告" />
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:text="这里显示滚动公告sdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf" />
             </LinearLayout>
 
             <TextView
@@ -293,6 +299,7 @@
                             android:layout_height="wrap_content"
                             android:text="网页版本" />
                     </LinearLayout>
+
                     <TextView
                         android:layout_width="1dp"
                         android:layout_height="match_parent"

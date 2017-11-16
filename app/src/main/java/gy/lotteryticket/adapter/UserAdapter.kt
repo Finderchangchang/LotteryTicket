@@ -3,6 +3,10 @@ package gy.lotteryticket.adapter
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import gy.lotteryticket.ui.capital.DepositFragment
+import gy.lotteryticket.ui.capital.DepositListFragment
+import gy.lotteryticket.ui.capital.DrawFragment
+import gy.lotteryticket.ui.capital.DrawListFragment
 import gy.lotteryticket.ui.main.CapitalFragment
 import gy.lotteryticket.ui.main.GameFragment
 import gy.lotteryticket.ui.main.MainFragment
@@ -13,7 +17,8 @@ import gy.lotteryticket.ui.main.UserFragment
  */
 
 class UserAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
-    internal var fragment = arrayOf<Fragment>(MainFragment(), GameFragment(), CapitalFragment(), UserFragment())
+    internal var fragment = arrayOf<Fragment>(DepositFragment(),
+            DepositListFragment(), DrawFragment(), DrawListFragment())
 
     override fun getItem(position: Int): Fragment {
         return fragment[position]
@@ -24,6 +29,11 @@ class UserAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     }
 
     override fun getPageTitle(position: Int): CharSequence {
-        return "666"
+        return when (position) {
+            0 -> "存款"
+            1 -> "取款"
+            2 -> "存款记录"
+            else -> "取款记录"
+        }
     }
 }

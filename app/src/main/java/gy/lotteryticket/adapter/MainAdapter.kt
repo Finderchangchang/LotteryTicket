@@ -24,6 +24,11 @@ class MainAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     }
 
     override fun getPageTitle(position: Int): CharSequence {
-        return ""
+        return when (position) {
+            0 -> "存款"
+            1 -> "取款"
+            2 -> "存款记录"
+            else -> "取款记录"
+        }
     }
 }

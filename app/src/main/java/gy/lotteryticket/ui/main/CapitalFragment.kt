@@ -8,6 +8,7 @@ import android.widget.Button
 import butterknife.BindView
 import gy.lotteryticket.R
 import gy.lotteryticket.adapter.MainAdapter
+import gy.lotteryticket.adapter.UserAdapter
 import gy.lotteryticket.base.BaseFragment
 import gy.lotteryticket.databinding.FragCapitalBinding
 import gy.lotteryticket.databinding.FragGameBinding
@@ -27,7 +28,7 @@ class CapitalFragment : BaseFragment<FragCapitalBinding>() {
     }
 
     override fun init(savedInstanceState: Bundle?) {
-        var mAdapter = MainAdapter(HomeActivity.main!!.supportFragmentManager)
+        var mAdapter = UserAdapter(HomeActivity.main!!.supportFragmentManager)
         capital_vp!!.adapter = mAdapter
         capital_tl!!.setupWithViewPager(capital_vp)
     }
