@@ -10,6 +10,6 @@ class JSGBActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_bjcar)
+        setContentView(R.layout.activity_home)
     }
 }

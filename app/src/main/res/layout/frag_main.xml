@@ -143,87 +143,6 @@
                     android:background="@color/line_bg"
                     tools:ignore="Suspicious0dp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:id="@+id/ll4"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            style="@style/main_item_iv"
-                            android:src="@mipmap/ic_launcher" />
-
-                        <TextView
-                            style="@style/main_item_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="江苏快三" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/line_bg"
-                        tools:ignore="Suspicious0dp" />
-
-                    <LinearLayout
-                        android:id="@+id/ll5"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            style="@style/main_item_iv"
-                            android:src="@mipmap/ic_launcher" />
-
-                        <TextView
-                            style="@style/main_item_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="香港六合彩" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/line_bg"
-                        tools:ignore="Suspicious0dp" />
-
-                    <LinearLayout
-                        android:id="@+id/ll6"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            style="@style/main_item_iv"
-                            android:src="@mipmap/ic_launcher" />
-
-                        <TextView
-                            style="@style/main_item_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="更多彩票" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/line_bg"
-                    tools:ignore="Suspicious0dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -306,6 +225,12 @@
                         android:background="@color/line_bg"
                         tools:ignore="Suspicious0dp" />
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal" />
             </LinearLayout>
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
