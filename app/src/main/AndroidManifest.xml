@@ -20,6 +20,7 @@
         </activity>
         <activity android:name=".ui.user.ChangePwdActivity" />
         <activity android:name=".ui.xz.BJCarActivity"></activity>
+        <activity android:name=".ui.xz.CCsscActivity"></activity>
     </application>
 
 </manifest>
