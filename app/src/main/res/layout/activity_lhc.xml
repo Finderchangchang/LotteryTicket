@@ -110,7 +110,7 @@
 
             <include
                 android:id="@+id/ty1"
-                layout="@layout/ac_type1" />
+                layout="@layout/ac_lhc_type1" />
 
             <include
                 android:id="@+id/ty2"

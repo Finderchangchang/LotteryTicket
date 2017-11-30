@@ -12,6 +12,7 @@ import gy.lotteryticket.base.BaseFragment
 import gy.lotteryticket.databinding.FragMainBinding
 import gy.lotteryticket.ui.xz.BJCarActivity
 import gy.lotteryticket.ui.xz.CCsscActivity
+import gy.lotteryticket.ui.xz.LHCActivity
 
 /**
  * Created by Administrator on 2017/11/11.
@@ -40,7 +41,7 @@ class MainFragment : BaseFragment<FragMainBinding>() {
         ll3!!.setOnClickListener { startActivity(Intent(HomeActivity.main, CCsscActivity::class.java)) }
         ll4!!.setOnClickListener { startActivity(Intent(HomeActivity.main, BJCarActivity::class.java)) }
         ll5!!.setOnClickListener { startActivity(Intent(HomeActivity.main, BJCarActivity::class.java)) }
-        ll6!!.setOnClickListener { startActivity(Intent(HomeActivity.main, BJCarActivity::class.java)) }
+        ll6!!.setOnClickListener { startActivity(Intent(HomeActivity.main, LHCActivity::class.java)) }
 
     }
 

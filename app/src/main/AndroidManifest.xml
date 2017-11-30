@@ -21,6 +21,7 @@
         <activity android:name=".ui.user.ChangePwdActivity" />
         <activity android:name=".ui.xz.BJCarActivity"></activity>
         <activity android:name=".ui.xz.CCsscActivity"></activity>
+        <activity android:name=".ui.xz.LHCActivity"></activity>
     </application>
 
 </manifest>

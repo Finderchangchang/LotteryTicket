@@ -151,7 +151,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:id="@+id/ll7"
+                        android:id="@+id/ll4"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -176,7 +176,7 @@
                         tools:ignore="Suspicious0dp" />
 
                     <LinearLayout
-                        android:id="@+id/ll8"
+                        android:id="@+id/ll5"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -201,7 +201,7 @@
                         tools:ignore="Suspicious0dp" />
 
                     <LinearLayout
-                        android:id="@+id/ll9"
+                        android:id="@+id/ll6"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"

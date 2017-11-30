@@ -1,6 +1,7 @@
 package gy.lotteryticket.ui.xz
 
 import android.os.Bundle
+import android.support.design.widget.TabLayout
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import gy.lotteryticket.R
@@ -11,9 +12,10 @@ import gy.lotteryticket.method.CommonViewHolder
 import gy.lotteryticket.model.LeftClickModel
 import gy.lotteryticket.model.RightClick1Model
 import gy.lotteryticket.model.RightClick2Model
+import kotlinx.android.synthetic.main.ac_lhc_type1.*
 import kotlinx.android.synthetic.main.ac_type1.*
 import kotlinx.android.synthetic.main.ac_type2.*
-import kotlinx.android.synthetic.main.activity_bj_car.*
+import kotlinx.android.synthetic.main.activity_lhc.*
 import java.util.ArrayList
 
 /**
@@ -57,16 +59,16 @@ class LHCActivity : BaseActivity<ActivityLhcBinding>() {
                 type2_init(holder, num, position)
             }
         }
-        top_gv.adapter = type1_adapter
-        bottom_gv.adapter = type1_1adapter
+        ty1_top_gv.adapter = type1_adapter
+        ty1_bottom_gv.adapter = type1_1adapter
 
-        top_gv.setOnItemClickListener { parent, view, position, id ->
+        ty1_top_gv.setOnItemClickListener { parent, view, position, id ->
             if (can_xz && position % 6 != 0) {
                 type1_list[position].checked = !type1_list[position].checked
                 type1_adapter!!.refresh(type1_list)
             }
         }
-        bottom_gv.setOnItemClickListener { parent, view, position, id ->
+        ty1_bottom_gv.setOnItemClickListener { parent, view, position, id ->
             if (can_xz && position % 6 != 0) {
                 type1_1list[position].checked = !type1_1list[position].checked
                 type1_1adapter!!.refresh(type1_1list)
@@ -83,6 +85,7 @@ class LHCActivity : BaseActivity<ActivityLhcBinding>() {
                 }
             }
         }
+
         left_lv.adapter = left_adapter
         left_lv.setOnItemClickListener { parent, view, position, id ->
             if (can_xz) {
@@ -174,14 +177,54 @@ class LHCActivity : BaseActivity<ActivityLhcBinding>() {
      * 根据左侧点击，刷新右侧数据
      * */
     fun load_data() {
+        ty1.visibility = View.GONE
+        ty2.visibility = View.GONE
         when (left_click) {
-            0 -> {
-                ty1.visibility = View.VISIBLE
-                ty2.visibility = View.GONE
+            0, 2, 4, 5, 11, 13 -> {
+
+                if (left_click != 2) {
+                    ty1.visibility = View.VISIBLE
+                    ty1_tl.removeAllTabs()
+                    when (left_click) {
+                        0 -> {
+                            bottom_ll.visibility = View.VISIBLE
+                            setTitleTL(arrayOf("特码B", "特码A"))
+                        }
+                        4 -> {
+                            setTitleTL(arrayOf("正1特", "正2特", "正3特", "正4特"))
+                        }
+                        5 -> {
+                            setTitleTL(arrayOf("三全中", "三中二", "二全中", "二中特"))
+                        }
+                        11 -> {
+                            setTitleTL(arrayOf("二连肖", "三连肖", "四连肖", "五连肖"))
+                        }
+                        13 -> {
+                            setTitleTL(arrayOf("二连尾", "三连尾", "四连尾", "五连尾"))
+                        }
+                    }
+                    ty1_tl.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+
+                        override fun onTabSelected(tab: TabLayout.Tab) {
+                            ty1_title.text = tab.text
+                        }
+
+                        override fun onTabUnselected(tab: TabLayout.Tab) {
+
+                        }
+
+                        override fun onTabReselected(tab: TabLayout.Tab) {
+
+                        }
+                    })
+                } else {
+                    bottom_ll.visibility = View.VISIBLE
+                }
+                ty1_top_gv.numColumns = 3
             }
-            1, 2 -> {
+            1 -> {
                 load2()
-                ty1.visibility = View.GONE
+                ty1_top_gv.numColumns = 2
                 ty2.visibility = View.VISIBLE
                 ty2_top_gv.adapter = type2_adapter
                 ty2_top_gv.setOnItemClickListener { parent, view, position, id ->
@@ -189,6 +232,16 @@ class LHCActivity : BaseActivity<ActivityLhcBinding>() {
                     type2_adapter!!.refresh(type2_list)
                 }
             }
+            3 -> {//正码1-6
+
+            }
+        }
+    }
+
+    fun setTitleTL(arr: Array<String>) {
+        ty1_tl.removeAllTabs()
+        for (model in arr) {
+            ty1_tl.addTab(ty1_tl.newTab().setText(model))
         }
     }
 
