@@ -2,6 +2,7 @@ package gy.lotteryticket.ui.main
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.yinglan.alphatabs.OnTabChangedListner
 import gy.lotteryticket.R
 import gy.lotteryticket.adapter.MainAdapter
 import gy.lotteryticket.base.BaseActivity
@@ -25,6 +26,16 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         //预加载页面的个数
         tab_pager!!.offscreenPageLimit = 4
         alphaIndicator!!.setViewPager(tab_pager)
+        alphaIndicator!!.setOnTabChangedListner({ tabNum ->
+            when (tabNum) {
+                0 -> {
+
+                }
+                1 -> {
+
+                }
+            }
+        })
     }
 
 }

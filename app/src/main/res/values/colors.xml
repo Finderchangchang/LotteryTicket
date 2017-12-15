@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#167DAB</color>
+    <color name="colorPrimaryDark">#167DAB</color>
     <color name="colorAccent">#FF4081</color>
     <color name="bottom_bg">#A0A0A1</color>
     <color name="line_bg">#E8E8E9</color>
     <color name="lab_col">#3C3C3C</color>
     <color name="black">#000</color>
+    <color name="dihui">#EFF0F0</color>
 </resources>
