@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             app:center_tv="个人中心"
-            app:left_iv="@mipmap/ic_launcher"
+            app:left_iv="@mipmap/left_jian"
             app:right_tv="退出" />
 
         <LinearLayout
