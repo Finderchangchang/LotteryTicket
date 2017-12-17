@@ -3,235 +3,231 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.constraint.ConstraintLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <net.tsz.afinal.view.TitleBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            app:center_tv="首页"
+            app:left_iv="@mipmap/ic_launcher" />
+
+        <com.youth.banner.Banner
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp">
 
-            <net.tsz.afinal.view.TitleBar
-                android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@mipmap/ic_launcher" />
+
+            <net.tsz.afinal.view.AlwaysMarqueeTextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                app:center_tv="首页"
-                app:left_iv="@mipmap/ic_launcher" />
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:paddingLeft="10dp"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:text="这里显示滚动公告sdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf" />
+        </LinearLayout>
 
-            <com.youth.banner.Banner
-                android:id="@+id/banner"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/line_bg"
+            tools:ignore="Suspicious0dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2.5"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp">
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@mipmap/ic_launcher" />
+                <LinearLayout
+                    android:id="@+id/ll1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                <net.tsz.afinal.view.AlwaysMarqueeTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="marquee"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:paddingLeft="10dp"
-                    android:scrollHorizontally="true"
-                    android:singleLine="true"
-                    android:text="这里显示滚动公告sdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf" />
+                    <ImageView
+                        style="@style/main_item_iv"
+                        android:src="@mipmap/ic_launcher" />
+
+                    <TextView
+                        style="@style/main_item_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="北京赛车" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/line_bg"
+                    tools:ignore="Suspicious0dp" />
+
+                <LinearLayout
+                    android:id="@+id/ll2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        style="@style/main_item_iv"
+                        android:src="@mipmap/ic_launcher" />
+
+                    <TextView
+                        style="@style/main_item_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="幸运飞艇" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/line_bg"
+                    tools:ignore="Suspicious0dp" />
+
+                <LinearLayout
+                    android:id="@+id/ll3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        style="@style/main_item_iv"
+                        android:src="@mipmap/ic_launcher" />
+
+                    <TextView
+                        style="@style/main_item_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="重庆时时彩" />
+                </LinearLayout>
             </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="1dp"
                 android:background="@color/line_bg"
                 tools:ignore="Suspicious0dp" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="2.5"
-                android:orientation="vertical">
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:id="@+id/ll4"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:id="@+id/ll1"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            style="@style/main_item_iv"
-                            android:src="@mipmap/ic_launcher" />
-
-                        <TextView
-                            style="@style/main_item_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="北京赛车" />
-                    </LinearLayout>
+                    <ImageView
+                        style="@style/main_item_iv"
+                        android:src="@mipmap/ic_launcher" />
 
                     <TextView
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/line_bg"
-                        tools:ignore="Suspicious0dp" />
-
-                    <LinearLayout
-                        android:id="@+id/ll2"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            style="@style/main_item_iv"
-                            android:src="@mipmap/ic_launcher" />
-
-                        <TextView
-                            style="@style/main_item_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="幸运飞艇" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/line_bg"
-                        tools:ignore="Suspicious0dp" />
-
-                    <LinearLayout
-                        android:id="@+id/ll3"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            style="@style/main_item_iv"
-                            android:src="@mipmap/ic_launcher" />
-
-                        <TextView
-                            style="@style/main_item_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="重庆时时彩" />
-                    </LinearLayout>
+                        style="@style/main_item_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="在线客服" />
                 </LinearLayout>
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
                     android:background="@color/line_bg"
                     tools:ignore="Suspicious0dp" />
 
-
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:id="@+id/ll5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:id="@+id/ll4"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            style="@style/main_item_iv"
-                            android:src="@mipmap/ic_launcher" />
-
-                        <TextView
-                            style="@style/main_item_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="在线客服" />
-                    </LinearLayout>
+                    <ImageView
+                        style="@style/main_item_iv"
+                        android:src="@mipmap/ic_launcher" />
 
                     <TextView
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/line_bg"
-                        tools:ignore="Suspicious0dp" />
-
-                    <LinearLayout
-                        android:id="@+id/ll5"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            style="@style/main_item_iv"
-                            android:src="@mipmap/ic_launcher" />
-
-                        <TextView
-                            style="@style/main_item_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="聊天室" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/line_bg"
-                        tools:ignore="Suspicious0dp" />
-
-                    <LinearLayout
-                        android:id="@+id/ll6"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            style="@style/main_item_iv"
-                            android:src="@mipmap/ic_launcher" />
-
-                        <TextView
-                            style="@style/main_item_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="网页版本" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/line_bg"
-                        tools:ignore="Suspicious0dp" />
+                        style="@style/main_item_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="聊天室" />
                 </LinearLayout>
 
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/line_bg"
+                    tools:ignore="Suspicious0dp" />
+
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:id="@+id/ll6"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="horizontal" />
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        style="@style/main_item_iv"
+                        android:src="@mipmap/ic_launcher" />
+
+                    <TextView
+                        style="@style/main_item_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="网页版本" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/line_bg"
+                    tools:ignore="Suspicious0dp" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal" />
         </LinearLayout>
-    </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 </layout>

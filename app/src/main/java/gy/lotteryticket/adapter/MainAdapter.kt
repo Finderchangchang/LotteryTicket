@@ -3,9 +3,6 @@ package gy.lotteryticket.adapter
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import gy.lotteryticket.ui.main.CapitalFragment
-import gy.lotteryticket.ui.main.GameFragment
-import gy.lotteryticket.ui.main.MainFragment
 import gy.lotteryticket.ui.main.UserFragment
 
 /**
@@ -13,7 +10,7 @@ import gy.lotteryticket.ui.main.UserFragment
  */
 
 class MainAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
-    internal var fragment = arrayOf<Fragment>(MainFragment(), GameFragment(), CapitalFragment(), UserFragment())
+    internal var fragment = arrayOf<Fragment>(UserFragment(), UserFragment(), UserFragment(), UserFragment())
 
     override fun getItem(position: Int): Fragment {
         return fragment[position]

@@ -7,10 +7,6 @@ import gy.lotteryticket.ui.capital.DepositFragment
 import gy.lotteryticket.ui.capital.DepositListFragment
 import gy.lotteryticket.ui.capital.DrawFragment
 import gy.lotteryticket.ui.capital.DrawListFragment
-import gy.lotteryticket.ui.main.CapitalFragment
-import gy.lotteryticket.ui.main.GameFragment
-import gy.lotteryticket.ui.main.MainFragment
-import gy.lotteryticket.ui.main.UserFragment
 
 /**
  * Created by Administrator on 2017/11/11.

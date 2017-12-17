@@ -8,6 +8,7 @@ import gy.lotteryticket.R
 import gy.lotteryticket.base.BaseFragment
 import gy.lotteryticket.databinding.FragCapitalBinding
 import gy.lotteryticket.databinding.FragUserBinding
+import net.tsz.afinal.view.TitleBar
 
 /**
  * Created by Administrator on 2017/11/11.

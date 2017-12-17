@@ -1,5 +1,6 @@
 package gy.lotteryticket.ui.main
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.yinglan.alphatabs.OnTabChangedListner
@@ -29,10 +30,19 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         alphaIndicator!!.setOnTabChangedListner({ tabNum ->
             when (tabNum) {
                 0 -> {
-
+                    //首页
                 }
                 1 -> {
-
+                    //游戏大厅
+                    startActivity(Intent(this, GameActivity::class.java))
+                }
+                2 -> {
+                    //资金管理
+                    startActivity(Intent(this, CapitalActivity::class.java))
+                }
+                3 -> {
+                    //我的
+                    startActivity(Intent(this, UserActivity::class.java))
                 }
             }
         })
