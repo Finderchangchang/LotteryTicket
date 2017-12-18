@@ -21,7 +21,7 @@ class DepositFragment : BaseFragment<FragCapitalBinding>() {
     }
 
     override fun init(savedInstanceState: Bundle?) {
-        }
+    }
 
 
     /**

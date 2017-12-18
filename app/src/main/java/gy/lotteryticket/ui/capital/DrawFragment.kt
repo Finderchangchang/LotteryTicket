@@ -21,7 +21,7 @@ class DrawFragment : BaseFragment<FragCapitalBinding>() {
     }
 
     override fun init(savedInstanceState: Bundle?) {
-       }
+    }
 
 
     /**

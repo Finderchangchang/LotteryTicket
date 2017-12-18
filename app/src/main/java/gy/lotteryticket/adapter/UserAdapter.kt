@@ -13,8 +13,8 @@ import gy.lotteryticket.ui.capital.DrawListFragment
  */
 
 class UserAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
-    internal var fragment = arrayOf<Fragment>(DepositFragment(),
-            DepositListFragment(), DrawFragment(), DrawListFragment())
+    internal var fragment = arrayOf<Fragment>(DepositFragment(), DrawFragment()
+            , DepositListFragment(), DrawListFragment())
 
     override fun getItem(position: Int): Fragment {
         return fragment[position]

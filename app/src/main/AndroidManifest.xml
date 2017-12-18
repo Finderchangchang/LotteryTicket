@@ -11,13 +11,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.LoginActivity">
+
+        </activity>
+        <activity android:name=".ui.main.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.main.HomeActivity" />
         <activity android:name=".ui.user.ChangePwdActivity" />
         <activity android:name=".ui.xz.BJCarActivity" />
         <activity android:name=".ui.xz.CCsscActivity" />
