@@ -127,6 +127,7 @@
 
                 <ImageView
                     style="@style/main_item_iv"
+                    android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@mipmap/menu_profile" />
 
@@ -154,6 +155,7 @@
 
                 <ImageView
                     style="@style/main_item_iv"
+                    android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@mipmap/menu_modifypwd" />
 
@@ -181,6 +183,7 @@
 
                 <ImageView
                     style="@style/main_item_iv"
+                    android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@mipmap/menu_message" />
 
@@ -208,7 +211,9 @@
 
                 <ImageView
                     style="@style/main_item_iv"
+                    android:layout_width="20dp"
                     android:layout_height="20dp"
+
                     android:src="@mipmap/menu_funds" />
 
                 <TextView
@@ -235,6 +240,7 @@
 
                 <ImageView
                     style="@style/main_item_iv"
+                    android:layout_width="20dp"
                     android:layout_height="20dp"
 
                     android:src="@mipmap/menu_transfer" />
@@ -263,6 +269,7 @@
 
                 <ImageView
                     style="@style/main_item_iv"
+                    android:layout_width="20dp"
                     android:layout_height="20dp"
 
                     android:src="@mipmap/menu_bankaccount" />
@@ -291,7 +298,9 @@
 
                 <ImageView
                     style="@style/main_item_iv"
+                    android:layout_width="20dp"
                     android:layout_height="20dp"
+
                     android:src="@mipmap/menu_record" />
 
                 <TextView
@@ -318,7 +327,9 @@
 
                 <ImageView
                     style="@style/main_item_iv"
+                    android:layout_width="20dp"
                     android:layout_height="20dp"
+
                     android:src="@mipmap/menu_record" />
 
                 <TextView
