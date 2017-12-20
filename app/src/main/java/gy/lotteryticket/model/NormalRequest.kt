@@ -6,19 +6,27 @@ package gy.lotteryticket.model
  */
 
 class NormalRequest<T> {
-    constructor(code: Int, result: Boolean, obj: T) {
+    constructor(code: Int, result: Boolean, message: String, obj: T?) {
         this.code = code
         this.result = result
         this.obj = obj
+        this.message = message
     }
 
-    constructor(result: Boolean, obj: T) {
-        this.result = result
+    /**
+     * @param code 请求码
+     * @param message 需要显示的消息
+     * @param obj 需要解析的数据
+     * */
+    constructor(code: Int, message: String?, obj: T?) {
+        this.code = code
         this.obj = obj
+        this.message = message
     }
 
 
-    var code: Int = 0//请求码
-    var result: Boolean = false//请求的结果
+    var code: Int = 0//请求码0:请求成功。1：失败。2：报错
+    var result: Boolean = false//是否解析成功
+    var message: String? = ""//提示的消息
     var obj: T? = null
 }
