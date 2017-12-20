@@ -15,7 +15,7 @@
 
     <style name="main_item_tv">
         <item name="android:layout_marginTop">10dp</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="capial_item_tv">

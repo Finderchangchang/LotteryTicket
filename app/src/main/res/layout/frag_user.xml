@@ -19,8 +19,10 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
             android:background="@color/colorPrimary"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <ImageView
@@ -28,7 +30,6 @@
                 android:layout_height="80dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="40dp"
                 android:src="@mipmap/avatar" />
 
             <LinearLayout
@@ -42,6 +43,7 @@
                     style="@style/capial_item_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="12sp"
                     android:text="账号：123456" />
 
                 <TextView
@@ -50,6 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:layout_marginTop="5dp"
+                    android:textSize="12sp"
                     android:text="昵称：测试用户" />
 
 
@@ -67,6 +70,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
@@ -92,6 +96,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
@@ -127,6 +132,7 @@
 
                 <ImageView
                     style="@style/main_item_iv"
+                    android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@mipmap/menu_profile" />
 
@@ -154,6 +160,7 @@
 
                 <ImageView
                     style="@style/main_item_iv"
+                    android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@mipmap/menu_modifypwd" />
 
@@ -181,6 +188,7 @@
 
                 <ImageView
                     style="@style/main_item_iv"
+                    android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@mipmap/menu_message" />
 
@@ -208,6 +216,7 @@
 
                 <ImageView
                     style="@style/main_item_iv"
+                    android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@mipmap/menu_funds" />
 
@@ -235,8 +244,8 @@
 
                 <ImageView
                     style="@style/main_item_iv"
+                    android:layout_width="20dp"
                     android:layout_height="20dp"
-
                     android:src="@mipmap/menu_transfer" />
 
                 <TextView
@@ -263,8 +272,8 @@
 
                 <ImageView
                     style="@style/main_item_iv"
+                    android:layout_width="20dp"
                     android:layout_height="20dp"
-
                     android:src="@mipmap/menu_bankaccount" />
 
                 <TextView
@@ -291,6 +300,7 @@
 
                 <ImageView
                     style="@style/main_item_iv"
+                    android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@mipmap/menu_record" />
 
@@ -318,6 +328,7 @@
 
                 <ImageView
                     style="@style/main_item_iv"
+                    android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@mipmap/menu_record" />
 

@@ -65,6 +65,8 @@
 
                         <ImageView
                             style="@style/main_item_iv"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:src="@mipmap/ic_launcher" />
 
                         <TextView
@@ -90,6 +92,8 @@
 
                         <ImageView
                             style="@style/main_item_iv"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:src="@mipmap/ic_launcher" />
 
                         <TextView
@@ -122,6 +126,8 @@
 
                         <ImageView
                             style="@style/main_item_iv"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:src="@mipmap/ic_launcher" />
 
                         <TextView
@@ -147,6 +153,8 @@
 
                         <ImageView
                             style="@style/main_item_iv"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:src="@mipmap/ic_launcher" />
 
                         <TextView
@@ -181,6 +189,8 @@
 
                         <ImageView
                             style="@style/main_item_iv"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:src="@mipmap/ic_launcher" />
 
                         <TextView
@@ -207,6 +217,8 @@
 
                         <ImageView
                             style="@style/main_item_iv"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:src="@mipmap/ic_launcher" />
 
                         <TextView
