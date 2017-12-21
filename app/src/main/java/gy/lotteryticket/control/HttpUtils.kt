@@ -107,25 +107,17 @@ class HttpUtils<T> {
                 go.params(model.key, model.value)
             }
         }
-        if (back_id > login) {
-            var token = Utils.getCache(sp.token)
-            if (!TextUtils.isEmpty(token)) {
-                go!!.params("Token", token.toString())//令牌
-            }
-            val df = SimpleDateFormat("yyyyMMddHHmmss")//设置日期格式
-            var TimeStamp = df.format(Date())// new Date()为
-            var md5 = Utils.getCache(sp.pwd)// 获取当前系统时间
-            var md51 = string2MD5(Utils.getCache(sp.pwd))
-            go!!.params("AccountId", Utils.getCache(sp.user_id))//账号id 密码先md5加密
-                    .params("TimeStamp", TimeStamp)
-        }
+        var key = "7f8ddadbe4e91911a58ed525b3510748"
+        var ramdom = "7788"
+        go.params("signStr", ramdom)
+        go.params("sign", string2MD5("signStr=$ramdom&key=$key&timeStamp=${Utils.dateToStamp()}"))
         go.execute(object : StringCallback() {
             override fun onSuccess(str: String, call: okhttp3.Call?, response: okhttp3.Response?) {
                 var t = Gson().fromJson(str, LzyResponse::class.java)
-                if (t.Success) {
+                if (t.state==1) {
                     try {
                         //t.Data as LinkedTreeMap<String, String>
-                        var em = JsonParser().parse(str).asJsonObject.get("Data")
+                        var em = JsonParser().parse(str).asJsonObject.get("dataList")
                         control.callback(back_id, NormalRequest(0, t.Message, em))
                     } catch (e: Exception) {
                         control.callback(back_id, NormalRequest(1, t.Message, t.Data))

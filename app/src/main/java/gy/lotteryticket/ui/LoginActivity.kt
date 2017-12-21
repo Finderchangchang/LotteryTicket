@@ -6,21 +6,29 @@ import com.arialyy.frame.module.AbsModule
 import kotlinx.android.synthetic.main.activity_login.*
 import android.content.Intent
 import android.text.TextUtils
+import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.jaeger.library.StatusBarUtil
+import gd.mmanage.config.sp
 import gy.lotteryticket.R
 import gy.lotteryticket.base.BaseActivity
+import gy.lotteryticket.config.command
 import gy.lotteryticket.control.LoginModule
+import gy.lotteryticket.control.MainModule
 import gy.lotteryticket.databinding.ActivityLoginBinding
+import gy.lotteryticket.method.Utils
 import gy.lotteryticket.model.NormalRequest
+import gy.lotteryticket.model.TagModel
+import gy.lotteryticket.model.UserModel
 import gy.lotteryticket.ui.main.HomeActivity
 import net.tsz.afinal.view.LoadingDialog
 
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(), AbsModule.OnCallback {
-    private var control: LoginModule? = null
+    private var control: MainModule? = null
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
-        control = getModule(LoginModule::class.java, this)//初始化网络请求
+        control = getModule(MainModule::class.java, this)//初始化网络请求
         StatusBarUtil.setTransparent(this)//设置状态栏颜色
         //登录按钮
         login_btn.setOnClickListener {
@@ -30,11 +38,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), AbsModule.OnCallback
                 TextUtils.isEmpty(name) -> toast("请输入用户名")
                 TextUtils.isEmpty(pwd) -> toast("请输入密码")
                 else -> {
-                    control!!.user_login(name, pwd)//登录操作
+                    control!!.get_user_login(name, pwd, 1)//登录操作
                 }
             }
         }
-        control!!.check_version()//检查更新
     }
 
     /**
@@ -42,24 +49,18 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), AbsModule.OnCallback
      * */
     override fun onSuccess(result: Int, success: Any?) {
         when (result) {
-            1000 -> {//登录接口
-                success as NormalRequest<String>
-                when (success.code) {
-                    1 -> {//跳转到主页
-                        startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
-                        finish()
+            command.login + 1 -> {//登录接口
+                success as NormalRequest<JsonArray>
+                var user: UserModel = UserModel()
+                if (success.code == 0) {
+                    if (success.obj != null && success.obj!!.size() > 0) {
+                        user = Gson().fromJson(success.obj, UserModel::class.java)
+                        Utils.putCache(sp.user_id,user.uid)
                     }
-                    2 -> {//跳转到绑定code页面
-                        //startActivity(Intent(this@LoginActivity, DownHotelActivity::class.java))
-                    }
+                    finish()
                 }
-                toast(success.obj)
-            }
-            10001 -> {
-                success as NormalRequest<String>
-                if (success.result) {//提示更新
+                toast(success.message)
 
-                }
             }
         }
     }
@@ -68,7 +69,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), AbsModule.OnCallback
      * 网络访问失败处理
      * */
     override fun onError(result: Int, error: Any?) {
-
+        var s = ""
     }
 
     override fun setLayoutId(): Int {

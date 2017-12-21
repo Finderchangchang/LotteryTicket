@@ -13,7 +13,9 @@ class LzyResponse<T> : Serializable {
 
     var code: Int = 0
     var Success: Boolean = false
-
+    var state:Int=0
+    var msg=""
+    var dataList:List<T>?=null
     var Message: String? = null
     var Data: T? = null
     var PHPSESSID: String = ""

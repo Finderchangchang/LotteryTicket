@@ -53,7 +53,13 @@ import gy.lotteryticket.base.BaseApplication
  * Created by Administrator on 2016/5/19.
  */
 object Utils {
-
+    //获得时间戳
+    fun dateToStamp(): String {
+        val now = System.currentTimeMillis() / 1000L
+        val daySecond = (60 * 60 * 24).toLong()
+        val dayTime = now - (now + 8 * 3600) % daySecond
+        return dayTime.toString()
+    }
 
     /***
      * MD5加码 生成32位md5码

@@ -37,9 +37,10 @@ class LoginModule : BaseModule {
         var ramdom = "7788"
         var time = dateToStamp()
         var map = HashMap<String, String>()
-        map.put("signStr", key)
-        map.put("Sign", string2MD5("signStr=$ramdom&key=$key&timeStamp=$time"))
-        HttpUtils<String>().post(url.key + "ylMain.php", command.login, map, this)
+        map.put("signStr", ramdom)
+        map.put("type", "0")
+        map.put("sign", string2MD5("signStr=$ramdom&key=$key&timeStamp=$time"))
+        HttpUtils<String>().get(url.normal + "ylMain.php", command.login, map, this)
 
     }
 }

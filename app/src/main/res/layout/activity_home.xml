@@ -15,6 +15,7 @@
             android:orientation="vertical">
 
             <net.tsz.afinal.view.TitleBar
+                android:id="@+id/title_bars"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"

@@ -13,4 +13,9 @@ object sp {
     var blueToothName = "BlueToothName"
     var blueToothAddress = "BlueToothAddress"
     var cy_ry = "cy_ry"//从业人员选择的id
+    var con1="con1"//文字广告
+    var con2="con2"//客服地址
+    var con3="con3"//聊天室地址
+    var con4="con4"//电脑版地址
+
 }
