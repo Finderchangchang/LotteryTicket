@@ -17,9 +17,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:background="@drawable/fang_corner_up"
         android:orientation="horizontal"
-        android:padding="10dp"
-        android:background="@drawable/fang_corner_up">
+        android:padding="10dp">
 
         <TextView
             android:layout_width="0dp"
@@ -31,6 +31,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@mipmap/down_jian" />
+
     </LinearLayout>
 
     <EditText
@@ -56,15 +57,21 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-       android:textSize="18dp"
-        android:text="开户姓名：123456" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="开户姓名：123456"
+        android:textSize="18dp" />
 
-    <Button
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/btn_bg_selector"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_round_main"
+        android:gravity="center"
+        android:padding="13dp"
         android:text="确定"
         android:textColor="@color/white" />
+
 </LinearLayout>

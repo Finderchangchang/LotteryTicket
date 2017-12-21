@@ -19,22 +19,23 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            android:orientation="horizontal">
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp">
 
             <ImageView
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="40dp"
                 android:src="@mipmap/avatar" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingLeft="10dp">
 
@@ -58,15 +59,18 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="20dp">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
                 android:layout_weight="1"
+                android:gravity="right"
                 android:orientation="horizontal">
 
                 <TextView
@@ -84,14 +88,16 @@
             </LinearLayout>
 
             <View
-                android:layout_width="1dp"
+                android:layout_width="0.5dp"
                 android:layout_height="match_parent"
-                android:background="@color/dihui"></View>
+                android:background="@color/dihui" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
                 android:layout_weight="1"
+                android:gravity="left"
                 android:orientation="horizontal">
 
                 <TextView
@@ -115,8 +121,8 @@
             android:background="@color/dihui"
             android:orientation="vertical">
 
-
             <LinearLayout
+                android:id="@+id/llay_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -145,6 +151,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/llay_login_pwd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
@@ -173,6 +180,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/llay_msg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
@@ -198,9 +206,11 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@mipmap/y_jian" />
+
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/llay_money"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
@@ -213,7 +223,6 @@
                     style="@style/main_item_iv"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-
                     android:src="@mipmap/menu_funds" />
 
                 <TextView
@@ -227,9 +236,11 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@mipmap/y_jian" />
+
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/llay_qu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -256,9 +267,11 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@mipmap/y_jian" />
+
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/llay_bank"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
@@ -271,7 +284,6 @@
                     style="@style/main_item_iv"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-
                     android:src="@mipmap/menu_bankaccount" />
 
                 <TextView
@@ -285,9 +297,11 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@mipmap/y_jian" />
+
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/llay_today"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
@@ -300,7 +314,6 @@
                     style="@style/main_item_iv"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-
                     android:src="@mipmap/menu_record" />
 
                 <TextView
@@ -314,9 +327,11 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@mipmap/y_jian" />
+
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/llay_xiazhu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
@@ -329,7 +344,6 @@
                     style="@style/main_item_iv"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-
                     android:src="@mipmap/menu_record" />
 
                 <TextView
@@ -348,4 +362,5 @@
         </LinearLayout>
 
     </LinearLayout>
+
 </layout>
