@@ -121,7 +121,11 @@ public class CommonViewHolder {
 
     public CommonViewHolder setBGColor(int viewId, int text) {
         View view = getView(viewId);
-        view.setBackgroundColor(mContext.getResources().getColor(text));
+        if (text == 0) {
+            view.setBackgroundDrawable(null);
+        } else {
+            view.setBackgroundColor(mContext.getResources().getColor(text));
+        }
         return this;
     }
 
@@ -217,6 +221,7 @@ public class CommonViewHolder {
         GlideImgManager.glideLoader(mContext, url, R.mipmap.ic_launcher, R.mipmap.ic_launcher, img, 1);
         return this;
     }
+
     //方形圆角
     public CommonViewHolder setSmallRoundImage(int vid, String url) {
         ImageView img = getView(vid);

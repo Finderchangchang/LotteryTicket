@@ -54,8 +54,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), AbsModule.OnCallback
                 var user: UserModel = UserModel()
                 if (success.code == 0) {
                     if (success.obj != null && success.obj!!.size() > 0) {
-                        user = Gson().fromJson(success.obj, UserModel::class.java)
-                        Utils.putCache(sp.user_id,user.uid)
+                        user = Gson().fromJson(success.obj!![0], UserModel::class.java)
+                        Utils.putCache(sp.user_id, user.uid)
                     }
                     finish()
                 }
