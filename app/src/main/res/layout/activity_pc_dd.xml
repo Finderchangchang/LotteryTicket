@@ -111,7 +111,7 @@
             <include
                 android:id="@+id/ty1"
                 layout="@layout/ac_type1"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <include
                 android:id="@+id/ty2"
@@ -162,9 +162,12 @@
                     </LinearLayout>
 
                     <EditText
+                        android:id="@+id/tz_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="投注额" />
+                        android:background="@null"
+                        android:hint="投注额"
+                        android:inputType="number" />
                 </LinearLayout>
 
                 <LinearLayout

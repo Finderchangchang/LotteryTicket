@@ -1,8 +1,10 @@
 package gy.lotteryticket.ui.main
 
+import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import com.arialyy.frame.module.AbsModule
 import com.google.gson.Gson
 import com.google.gson.JsonArray
@@ -21,19 +23,18 @@ import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
     override fun onSuccess(result: Int, success: Any?) {
-        when(result){
-            10000->{
+        when (result) {
+            10000 -> {
                 success as NormalRequest<JsonArray>
-                if(success.code==0) {
-                    var list: ArrayList<TagModel> = ArrayList<TagModel>()
-                    if (success.obj != null && success.obj!!.size()>0) {
+                if (success.code == 0) {
+                    if (success.obj != null && success.obj!!.size() > 0) {
                         for (model in 0 until success.obj!!.size()) {
                             var m = Gson().fromJson(success.obj!![model], TagModel::class.java)
-                            when(model){
-                                0->Utils.putCache(sp.con1,m.con)
-                                1->Utils.putCache(sp.con2,m.con)
-                                2->Utils.putCache(sp.con3,m.con)
-                                else->Utils.putCache(sp.con4,m.con)
+                            when (model) {
+                                0 -> Utils.putCache(sp.con1, m.con)
+                                1 -> Utils.putCache(sp.con2, m.con)
+                                2 -> Utils.putCache(sp.con3, m.con)
+                                else -> Utils.putCache(sp.con4, m.con)
                             }
                         }
                     }
@@ -46,7 +47,8 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
 
     }
 
-    var control:MainModule?=null
+    var control: MainModule? = null
+
     companion object {
         var main: HomeActivity? = null
     }
@@ -55,11 +57,12 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
         return R.layout.activity_home
     }
 
+
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
         main = this
-        control=getModule(MainModule::class.java,this)
-        title_bars.setLeftClick { startActivity(Intent(this@HomeActivity,LoginActivity::class.java)) }
+        control = getModule(MainModule::class.java, this)
+        title_bars.setLeftClick { startActivity(Intent(this@HomeActivity, LoginActivity::class.java)) }
         var mAdapter = MainAdapter(supportFragmentManager)
         tab_pager.adapter = mAdapter
         //预加载页面的个数
@@ -72,7 +75,9 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
                 }
                 1 -> {
                     //游戏大厅
-                    startActivity(Intent(this, GameActivity::class.java))
+                    if (Utils.check_login(this)) {
+                        startActivity(Intent(this, GameActivity::class.java))
+                    }
                 }
                 2 -> {
                     //资金管理

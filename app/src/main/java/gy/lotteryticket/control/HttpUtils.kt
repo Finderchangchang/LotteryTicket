@@ -108,7 +108,7 @@ class HttpUtils<T> {
             }
         }
         var key = "7f8ddadbe4e91911a58ed525b3510748"
-        var ramdom = "7788"
+        var ramdom = "778811"
         go.params("signStr", ramdom)
         go.params("sign", string2MD5("signStr=$ramdom&key=$key&timeStamp=${Utils.dateToStamp()}"))
         go.execute(object : StringCallback() {

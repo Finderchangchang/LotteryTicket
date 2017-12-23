@@ -15,6 +15,7 @@ import gy.lotteryticket.model.NormalRequest
 import gy.lotteryticket.model.PCDDModel
 import kotlinx.android.synthetic.main.activity_pc_dd.*
 import com.google.gson.JsonArray
+import gy.lotteryticket.config.command
 import kotlinx.android.synthetic.main.ac_type2.*
 
 /**
@@ -27,52 +28,53 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     var right_adapter: CommonAdapter<PCDDModel.DataGroupBean.DataContentBean>? = null
     var right_list: ArrayList<PCDDModel.DataGroupBean.DataContentBean> = ArrayList<PCDDModel.DataGroupBean.DataContentBean>()
     var click_position = 0
+    var xz_num = 0
     var item_click_list: ArrayList<String> = ArrayList<String>()
-    var arr = Array(3) { IntArray(5) }
     override fun onSuccess(result: Int, success: Any?) {
-        success as NormalRequest<JsonArray>
-        if (success.obj != null && success.obj!!.size() > 0) {
-            var model = Gson().fromJson<PCDDModel>(success.obj!![0].toString(), PCDDModel::class.java)
-            var list = model.dataGroup
-            if (list.size > 0) {
-                for (key in list) {
-                    item_click_list.add("")
-                    left_list.add(key.name)
-                    right_all_list.add(key.dataContent as ArrayList<PCDDModel.DataGroupBean.DataContentBean>)
-                }
-                left_adapter!!.refresh(left_list)
-                //加载默认数据
-                if (right_all_list.size > 0) {
-                    ty2_title.text = "混合"
-                    right_adapter!!.refresh(right_all_list[0])
+        when (result) {
+            command.xz -> {//加载数据
+                success as NormalRequest<JsonArray>
+                if (success.obj != null && success.obj!!.size() > 0) {
+                    var model = Gson().fromJson<PCDDModel>(success.obj!![0].toString(), PCDDModel::class.java)
+                    var list = model.dataGroup
+                    if (list.size > 0) {
+                        for (key in list) {
+                            item_click_list.add("")
+                            left_list.add(key.name)
+                            right_all_list.add(key.dataContent as ArrayList<PCDDModel.DataGroupBean.DataContentBean>)
+                        }
+                        left_adapter!!.refresh(left_list)
+                        //加载默认数据
+                        if (right_all_list.size > 0) {
+                            ty2_title.text = "混合"
+                            right_adapter!!.refresh(right_all_list[0])
+                        }
+                    }
                 }
             }
+            command.xz + 1 -> {//下注
+
+            }
+            command.xz + 2 -> {//切换AB盘
+
+            }
         }
+        dialog!!.dismiss()
     }
 
     override fun onError(result: Int, error: Any?) {
-
+        dialog!!.dismiss()
     }
 
     var control: XZModule? = null
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
         control = getModule(XZModule::class.java, this)
+        dialog!!.setTitle(R.string.dialog_loading)
+        dialog!!.show()
         control!!.get_tz("66", "1")
-        ty2_top_gv.setOnItemClickListener { parent, view, position, id ->
-            var clicks = item_click_list[click_position]
-            var result = ""
-            for (i in clicks.split(",")) {
-
-                    if (i != position.toString()) {
-                        clicks += position.toString() + ","
-                    } else {
-                        var a = ""
-                    }
-
-            }
-            item_click_list[click_position] = clicks
-            var s = ""
+        ty2_top_gv.setOnItemClickListener { _, _, position, _ ->
+            get_now_clicks(position)
         }
         left_adapter = object : CommonAdapter<String>(this, left_list, R.layout.item_left) {
             override fun convert(holder: CommonViewHolder, model: String, position: Int) {
@@ -82,6 +84,11 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 } else {
                     holder.setTextColor(R.id.title, R.color.black)
                     holder.setBGColor(R.id.title, R.color.white)
+                }
+                if (item_click_list[position].length > 2) {
+                    holder.setVisible(R.id.iv, true)
+                } else {
+                    holder.setVisible(R.id.iv, false)
                 }
                 holder.setText(R.id.title, model)
             }
@@ -97,6 +104,12 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 }
                 holder.setText(R.id.left_tv, model.name)
                 holder.setText(R.id.right_tv, model.odds)
+                var clicks = item_click_list[click_position]
+                if (clicks.contains("," + position.toString() + ",")) {//被点击
+                    holder.setBGColor(R.id.total_ll, R.color.black)
+                } else {
+                    holder.setBGColor(R.id.total_ll, R.color.white)
+                }
             }
         }
         left_lv.adapter = left_adapter
@@ -114,6 +127,51 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             }
         }
         ty2_top_gv.adapter = right_adapter
+        //A盘
+        center_btn.setOnClickListener { control?.change_ab() }
+        //B盘
+        right_btn.setOnClickListener { control?.change_ab() }
+        left_btn.setOnClickListener {
+            if (TextUtils.isEmpty(tz_et.text.toString().trim())) {
+                toast(resources.getString(R.string.toast_tz))
+            } else if (xz_num == 0) {
+                toast(resources.getString(R.string.toast_wf))
+            } else {
+
+            }
+        }
+    }
+
+    /**
+     * 记录当前点击的item
+     * @param position 当前点击的位置
+     * */
+    fun get_now_clicks(position: Int) {
+        var clicks = item_click_list[click_position]
+        if (TextUtils.isEmpty(clicks)) clicks = "," + clicks//如果数据为空加一个逗号 好判断
+        if (clicks.isNotEmpty() && clicks.substring(0, 1) != ",") {
+            clicks = "," + clicks
+        }
+        var result = ""
+        if (clicks.contains("," + position.toString() + ",")) {
+            result = clicks.replace("," + position.toString() + ",", ",")
+        } else {
+            result = clicks + position.toString() + ","
+        }
+        if (result.isNotEmpty() && result.substring(0, 1) != ",") {
+            result = "," + result
+        }
+        item_click_list[click_position] = result
+        //计算当前下的注数
+        xz_num = item_click_list.sumBy {
+            if (it.length > 2) {
+                it.substring(1, it.length - 1).split(",").size
+            } else 0
+        }
+        zhu_tv.text = xz_num.toString()
+
+        right_adapter!!.refresh(right_all_list[click_position])
+        left_adapter!!.refresh(left_list)
     }
 
     override fun setLayoutId(): Int {

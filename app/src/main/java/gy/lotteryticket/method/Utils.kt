@@ -47,7 +47,10 @@ import java.util.regex.Pattern
 
 import android.content.Context.MODE_PRIVATE
 import android.support.v7.app.AlertDialog
+import android.text.TextUtils
+import gd.mmanage.config.sp
 import gy.lotteryticket.base.BaseApplication
+import gy.lotteryticket.ui.LoginActivity
 
 /**
  * Created by Administrator on 2016/5/19.
@@ -59,6 +62,19 @@ object Utils {
         val daySecond = (60 * 60 * 24).toLong()
         val dayTime = now - (now + 8 * 3600) % daySecond
         return dayTime.toString()
+    }
+    /**
+     * 检测当前是否登录
+     * @return true 已登录
+     *          false 未登录
+     * */
+    fun check_login(context: Context): Boolean {
+        if (TextUtils.isEmpty(Utils.getCache(sp.user_id))) {
+            context.startActivity(Intent(context, LoginActivity::class.java))
+        } else {
+            return true
+        }
+        return false
     }
 
     /***
