@@ -14,13 +14,12 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <net.tsz.afinal.view.TitleBar
-                android:id="@+id/title_bars"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                app:center_tv="首页"
-                app:left_iv="@mipmap/ic_launcher" />
+                android:layout_height="45dp"
+                android:background="@color/colorPrimary">
+
+            </RelativeLayout>
 
             <com.youth.banner.Banner
                 android:id="@+id/banner"
@@ -79,9 +78,9 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            style="@style/main_item_iv"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            style="@style/main_item_iv"
                             android:src="@mipmap/ic_launcher" />
 
                         <TextView

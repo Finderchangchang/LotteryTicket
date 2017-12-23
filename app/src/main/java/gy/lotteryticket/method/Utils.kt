@@ -69,6 +69,7 @@ object Utils {
      *          false 未登录
      * */
     fun check_login(context: Context): Boolean {
+        var user_id=Utils.getCache(sp.user_id)
         if (TextUtils.isEmpty(Utils.getCache(sp.user_id))) {
             context.startActivity(Intent(context, LoginActivity::class.java))
         } else {

@@ -29,6 +29,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), AbsModule.OnCallback
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
         control = getModule(MainModule::class.java, this)//初始化网络请求
+        getModule(LoginModule::class.java, this).check_version()
         StatusBarUtil.setTransparent(this)//设置状态栏颜色
         //登录按钮
         login_btn.setOnClickListener {
@@ -60,6 +61,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), AbsModule.OnCallback
                     finish()
                 }
                 toast(success.message)
+            }
+            command.xz -> {
 
             }
         }

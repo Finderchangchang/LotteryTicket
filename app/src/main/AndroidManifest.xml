@@ -32,9 +32,8 @@
         <activity android:name=".ui.user.UserDataActivity" />
         <activity android:name=".ui.user.MessageActivity" />
         <activity android:name=".ui.user.LoginPwdActivity" />
-        <activity android:name=".ui.xz.PCDDActivity">
-
-        </activity>
+        <activity android:name=".ui.xz.PCDDActivity" />
+        <activity android:name=".ui.xz.JSGBActivity" />
     </application>
 
 </manifest>

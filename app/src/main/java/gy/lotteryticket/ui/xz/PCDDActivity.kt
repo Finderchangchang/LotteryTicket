@@ -16,6 +16,8 @@ import gy.lotteryticket.model.PCDDModel
 import kotlinx.android.synthetic.main.activity_pc_dd.*
 import com.google.gson.JsonArray
 import gy.lotteryticket.config.command
+import gy.lotteryticket.model.CZModel
+import gy.lotteryticket.model.KJModel
 import kotlinx.android.synthetic.main.ac_type2.*
 
 /**
@@ -30,6 +32,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     var click_position = 0
     var xz_num = 0
     var item_click_list: ArrayList<String> = ArrayList<String>()
+    var cz_model: CZModel = CZModel()
     override fun onSuccess(result: Int, success: Any?) {
         when (result) {
             command.xz -> {//加载数据
@@ -58,6 +61,24 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             command.xz + 2 -> {//切换AB盘
 
             }
+            command.xz + 3 -> {//获得彩种列表
+                success as NormalRequest<JsonArray>
+                if (success.obj != null && success.obj!!.size() > 0) {
+                    for (key in success.obj!!.iterator()) {
+                        var model = Gson().fromJson<CZModel>(key.toString(), CZModel::class.java)
+                        if (model.title == "PC蛋蛋") {
+
+                        }
+                    }
+                }
+            }
+            command.xz + 4 -> {//获得彩种列表
+                success as NormalRequest<JsonArray>
+                if (success.obj != null && success.obj!!.size() > 0) {
+                    var model = Gson().fromJson<KJModel>(success.obj!![0].toString(), KJModel::class.java)
+                    top_qi_tv.text = model.number + "期"
+                }
+            }
         }
         dialog!!.dismiss()
     }
@@ -73,6 +94,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         dialog!!.setTitle(R.string.dialog_loading)
         dialog!!.show()
         control!!.get_tz("66", "1")
+        control!!.get_zj_last("66")
         ty2_top_gv.setOnItemClickListener { _, _, position, _ ->
             get_now_clicks(position)
         }

@@ -62,7 +62,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
         super.init(savedInstanceState)
         main = this
         control = getModule(MainModule::class.java, this)
-        title_bars.setLeftClick { startActivity(Intent(this@HomeActivity, LoginActivity::class.java)) }
+        //title_bars.setLeftClick { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, LoginActivity::class.java)) }
         var mAdapter = MainAdapter(supportFragmentManager)
         tab_pager.adapter = mAdapter
         //预加载页面的个数
@@ -75,17 +75,15 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
                 }
                 1 -> {
                     //游戏大厅
-                    if (Utils.check_login(this)) {
-                        startActivity(Intent(this, GameActivity::class.java))
-                    }
+                    if (Utils.check_login(this)) startActivity(Intent(this, GameActivity::class.java))
                 }
                 2 -> {
                     //资金管理
-                    startActivity(Intent(this, CapitalActivity::class.java))
+                    if (Utils.check_login(this)) startActivity(Intent(this, CapitalActivity::class.java))
                 }
                 3 -> {
                     //我的
-                    startActivity(Intent(this, UserActivity::class.java))
+                    if (Utils.check_login(this)) startActivity(Intent(this, UserActivity::class.java))
                 }
             }
         })

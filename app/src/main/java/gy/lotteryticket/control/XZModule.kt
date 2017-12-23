@@ -62,7 +62,7 @@ class XZModule : BaseModule {
         map.put("totalMoney", "1")//是	投注总金额	投注金额 * 注数
         map.put("betList", "1")//玩法列表	格式与“投注页面数据加载”得借口返回得数据一样
         map.put("uid", "915")
-        HttpUtils<String>().get(url.normal + "ylBetsAdd.php", command.xz, map, this)
+        HttpUtils<String>().get(url.normal + "ylBetsAdd.php", command.xz + 1, map, this)
     }
 
     /**
@@ -78,6 +78,37 @@ class XZModule : BaseModule {
             else -> Utils.putCache(sp.pan_id, "1")
         }
         map.put("panid", Utils.getCache(sp.pan_id))//盘ID
-        HttpUtils<String>().get(url.normal + "ylUserPan.php", command.xz, map, this)
+        HttpUtils<String>().get(url.normal + "ylUserPan.php", command.xz + 2, map, this)
+    }
+
+    /**
+     * 获得彩种列表
+     *
+     * type 1，彩种列表
+     *      2，开奖结果
+     * czid type=1不传。
+     *      type=2传彩种列表返回的id，默认1（北京赛车）
+     * */
+    fun get_cz_list() {
+        var map = HashMap<String, String>()
+        map.put("type", "1")
+        map.put("uid", "915")
+        HttpUtils<String>().get(url.normal + "ylUserType.php", command.xz + 3, map, this)
+    }
+
+    /**
+     * 获得开奖结果
+     *
+     * type 1，彩种列表
+     *      2，开奖结果
+     * czid type=1不传。
+     *      type=2传彩种列表返回的id，默认1（北京赛车）
+     * */
+    fun get_zj_last(cz_id: String) {
+        var map = HashMap<String, String>()
+        map.put("type", "2")//开奖结果
+        map.put("uid", "915")
+        map.put("czid", cz_id)//彩种ID
+        HttpUtils<String>().get(url.normal + "ylUserType.php", command.xz + 4, map, this)
     }
 }
