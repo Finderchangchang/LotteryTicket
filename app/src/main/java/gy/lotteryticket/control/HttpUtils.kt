@@ -74,12 +74,12 @@ class HttpUtils<T> {
                 if (t.Success) {
                     try {
                         var em = JsonParser().parse(str).asJsonObject.get("Data")
-                        control.callback(back_id, NormalRequest(0, t.Message, em))
+                        control.callback(back_id, NormalRequest(0, t.msg, em))
                     } catch (e: Exception) {
-                        control.callback(back_id, NormalRequest(1, t.Message, t.Data))
+                        control.callback(back_id, NormalRequest(1, t.msg, t.Data))
                     }
                 } else {
-                    control.callback(back_id, NormalRequest(1, t.Message, t.Data))
+                    control.callback(back_id, NormalRequest(1, t.msg, t.Data))
                 }
 
             }
@@ -118,12 +118,12 @@ class HttpUtils<T> {
                     try {
                         //t.Data as LinkedTreeMap<String, String>
                         var em = JsonParser().parse(str).asJsonObject.get("dataList")
-                        control.callback(back_id, NormalRequest(0, t.Message, em))
+                        control.callback(back_id, NormalRequest(0, t.msg, em))
                     } catch (e: Exception) {
-                        control.callback(back_id, NormalRequest(1, t.Message, t.Data))
+                        control.callback(back_id, NormalRequest(1, t.msg, t.Data))
                     }
                 } else {
-                    control.callback(back_id, NormalRequest(1, t.Message, t.Data))
+                    control.callback(back_id, NormalRequest(1, t.msg, t.Data))
                 }
 
             }

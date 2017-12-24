@@ -22,6 +22,7 @@ public class KJModel {
     private String number;
     private String data;
 
+
     public String getId() {
         return id;
     }

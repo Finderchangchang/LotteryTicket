@@ -13,12 +13,13 @@ import gy.lotteryticket.control.XZModule
 import gy.lotteryticket.databinding.ActivityPcDdBinding
 import gy.lotteryticket.method.CommonAdapter
 import gy.lotteryticket.method.CommonViewHolder
-import gy.lotteryticket.model.CZModel
-import gy.lotteryticket.model.KJModel
-import gy.lotteryticket.model.NormalRequest
-import gy.lotteryticket.model.PCDDModel
+import gy.lotteryticket.method.Utils
+import gy.lotteryticket.model.*
 import kotlinx.android.synthetic.main.ac_type2.*
 import kotlinx.android.synthetic.main.activity_pc_dd.*
+import android.databinding.adapters.TextViewBindingAdapter.setText
+import android.os.Handler
+
 
 /**
  * 江苏骰宝
@@ -26,14 +27,16 @@ import kotlinx.android.synthetic.main.activity_pc_dd.*
 class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
 
     var left_list: ArrayList<String> = ArrayList<String>()
-    var right_all_list: ArrayList<ArrayList<PCDDModel.DataGroupBean.DataContentBean>> = ArrayList<ArrayList<PCDDModel.DataGroupBean.DataContentBean>>()
+    var right_all_list: ArrayList<ArrayList<XZModel>> = ArrayList<ArrayList<XZModel>>()
     var left_adapter: CommonAdapter<String>? = null
-    var right_adapter: CommonAdapter<PCDDModel.DataGroupBean.DataContentBean>? = null
-    var right_list: ArrayList<PCDDModel.DataGroupBean.DataContentBean> = ArrayList<PCDDModel.DataGroupBean.DataContentBean>()
+    var right_adapter: CommonAdapter<XZModel>? = null
+    var right_list: ArrayList<XZModel> = ArrayList<XZModel>()
     var click_position = 0
     var xz_num = 0
     var item_click_list: ArrayList<String> = ArrayList<String>()
-    var cz_model: CZModel = CZModel()
+    var xz_list: ArrayList<XZModel> = ArrayList<XZModel>()//下注列表
+    var cz_id = "10"
+    var old_qh = ""//老的期号
     override fun onSuccess(result: Int, success: Any?) {
         when (result) {
             command.xz -> {//加载数据
@@ -45,7 +48,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         for (key in list) {
                             item_click_list.add("")
                             left_list.add(key.name)
-                            right_all_list.add(key.dataContent as ArrayList<PCDDModel.DataGroupBean.DataContentBean>)
+                            right_all_list.add(key.dataContent as ArrayList<XZModel>)
                         }
                         left_adapter!!.refresh(left_list)
                         //加载默认数据
@@ -57,7 +60,14 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 }
             }
             command.xz + 1 -> {//下注
+                success as NormalRequest<JsonArray>
+                if (success.code == 0) {
 
+                } else {
+
+                }
+                toast(success.message)
+                var s = ""
             }
             command.xz + 2 -> {//切换AB盘
 
@@ -73,15 +83,32 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     }
                 }
             }
-            command.xz + 4 -> {//获得彩种列表
+            command.xz + 4 -> {//获得彩种顶部信息
                 success as NormalRequest<JsonArray>
                 if (success.obj != null && success.obj!!.size() > 0) {
-                    var model = Gson().fromJson<KJModel>(success.obj!![0].toString(), KJModel::class.java)
-                    top_qi_tv.text = model.number + "期"
+                    var model = Gson().fromJson<KJResultModel>(success.obj!![0].toString(), KJResultModel::class.java)
+                    top_qi_tv.text = Utils.now_id + model.kjNum + "期"
+                    old_qh = Utils.now_id + model.kjNum
+                    next_qi_tv.text = ((Utils.now_id + model.kjNum).toInt() + 1).toString() + "期"
+                    title_bar.center_str = model.title
+                    kjtime = model.kjtime
                 }
             }
         }
         dialog!!.dismiss()
+    }
+
+    var can_run = true//执行循环操作
+    var kjtime = ""
+    var handler = Handler()
+    var runnable: Runnable = object : Runnable {
+        override fun run() {
+            if (can_run) {
+                var time = Utils.getDatePoor(Utils.change_data(kjtime))
+                next4_qi_tv.text = time
+                handler.postDelayed(this, 1000)
+            }
+        }
     }
 
     override fun onError(result: Int, error: Any?) {
@@ -94,8 +121,9 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         control = getModule(XZModule::class.java, this)
         dialog!!.setTitle(R.string.dialog_loading)
         dialog!!.show()
-        control!!.get_tz("50", "1")
-        control!!.get_zj_last("50")
+        handler.postDelayed(runnable, 1000)
+        control!!.get_tz(cz_id, "1")
+        control!!.get_zj_last(cz_id)
         ty2_top_gv.setOnItemClickListener { _, _, position, _ ->
             get_now_clicks(position)
         }
@@ -116,8 +144,8 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 holder.setText(R.id.title, model)
             }
         }
-        right_adapter = object : CommonAdapter<PCDDModel.DataGroupBean.DataContentBean>(this, right_list, R.layout.item_type2) {
-            override fun convert(holder: CommonViewHolder, model: PCDDModel.DataGroupBean.DataContentBean, position: Int) {
+        right_adapter = object : CommonAdapter<XZModel>(this, right_list, R.layout.item_type2) {
+            override fun convert(holder: CommonViewHolder, model: XZModel, position: Int) {
                 if (click_position == 1) {//特码的情况
                     holder.setBGColor(R.id.left_tv, R.color.white)
                     holder.setTextColor(R.id.left_tv, R.color.black)
@@ -155,12 +183,25 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         //B盘
         right_btn.setOnClickListener { control?.change_ab() }
         left_btn.setOnClickListener {
-            if (TextUtils.isEmpty(tz_et.text.toString().trim())) {
+            var tz = tz_et.text.toString().trim()
+            if (TextUtils.isEmpty(tz)) {
                 toast(resources.getString(R.string.toast_tz))
+            } else if (tz.toInt() == 0) {
+                toast(resources.getString(R.string.toast_zero))
             } else if (xz_num == 0) {
                 toast(resources.getString(R.string.toast_wf))
             } else {
-
+                for (type1_index in 0 until item_click_list.size) {
+                    var now_lists = item_click_list[type1_index]//当前选中的集合内容
+                    if (now_lists.length > 2) {//确定有数值
+                        now_lists = now_lists.substring(1, now_lists.length - 1)
+                        for (type2 in now_lists.split(",")) {//根据逗号隔开获得当前选择的数据
+                            var num = type2.toInt()
+                            xz_list.add(right_all_list[type1_index][num])
+                        }
+                    }
+                }
+                control!!.get_xz(cz_id, "777", tz, (tz.toInt() * xz_num).toString(), xz_list)
             }
         }
     }

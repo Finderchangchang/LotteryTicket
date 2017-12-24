@@ -1,11 +1,13 @@
 package gy.lotteryticket.control
 
 import android.content.Context
+import com.google.gson.Gson
 import gd.mmanage.config.sp
 import gd.mmanage.config.url
 import gy.lotteryticket.base.BaseModule
 import gy.lotteryticket.config.command
 import gy.lotteryticket.method.Utils
+import gy.lotteryticket.model.XZModel
 import java.util.HashMap
 
 /**
@@ -51,17 +53,17 @@ class XZModule : BaseModule {
      *betList	是	玩法列表	格式与“投注页面数据加载”得借口返回得数据一样
 
      * */
-    fun get_xz(cz_id: String, pan_id: String) {
+    fun get_xz(cz_id: String, qiHao: String, money: String, totalMoney: String, xzs: ArrayList<XZModel>) {
         var map = HashMap<String, String>()
         map.put("type", "1")
-        map.put("panid", "1")//盘ID
-        map.put("czid", "1")//彩种ID
-        map.put("turnNum", "1")//投注期号
-        map.put("utype", "1")//用户类型	登录接口返回的type
-        map.put("money", "1")//投注得金额
-        map.put("totalMoney", "1")//是	投注总金额	投注金额 * 注数
-        map.put("betList", "1")//玩法列表	格式与“投注页面数据加载”得借口返回得数据一样
-        map.put("uid", "915")
+        map.put("panid", "1")//盘ID-从缓存抓取
+        map.put("czid", cz_id)//彩种ID
+        map.put("turnNum", qiHao)//投注期号
+        map.put("utype", "1")//用户类型 从缓存抓取 登录接口返回的type
+        map.put("money", money)//投注得金额
+        map.put("totalMoney", totalMoney)//是	投注总金额	投注金额 * 注数
+        map.put("betList", Gson().toJson(xzs))//玩法列表	格式与“投注页面数据加载”得借口返回得数据一样
+        map.put("uid", "915")//从缓存抓取
         HttpUtils<String>().get(url.normal + "ylBetsAdd.php", command.xz + 1, map, this)
     }
 
@@ -97,18 +99,12 @@ class XZModule : BaseModule {
     }
 
     /**
-     * 获得开奖结果
-     *
-     * type 1，彩种列表
-     *      2，开奖结果
-     * czid type=1不传。
-     *      type=2传彩种列表返回的id，默认1（北京赛车）
+     * 根据彩种ID 刷新开奖号码，期号
      * */
     fun get_zj_last(cz_id: String) {
         var map = HashMap<String, String>()
-        map.put("type", "2")//开奖结果
         map.put("uid", "915")
         map.put("czid", cz_id)//彩种ID
-        HttpUtils<String>().get(url.normal + "ylUserType.php", command.xz + 4, map, this)
+        HttpUtils<String>().get(url.normal + "ylBetsGetNum.php", command.xz + 4, map, this)
     }
 }

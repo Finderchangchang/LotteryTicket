@@ -62,6 +62,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
         super.init(savedInstanceState)
         main = this
         control = getModule(MainModule::class.java, this)
+        control!!.get_jb_main()
         //title_bars.setLeftClick { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, LoginActivity::class.java)) }
         var mAdapter = MainAdapter(supportFragmentManager)
         tab_pager.adapter = mAdapter

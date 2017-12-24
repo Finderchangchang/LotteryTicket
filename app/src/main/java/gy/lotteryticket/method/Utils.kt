@@ -63,13 +63,14 @@ object Utils {
         val dayTime = now - (now + 8 * 3600) % daySecond
         return dayTime.toString()
     }
+
     /**
      * 检测当前是否登录
      * @return true 已登录
      *          false 未登录
      * */
     fun check_login(context: Context): Boolean {
-        var user_id=Utils.getCache(sp.user_id)
+        var user_id = Utils.getCache(sp.user_id)
         if (TextUtils.isEmpty(Utils.getCache(sp.user_id))) {
             context.startActivity(Intent(context, LoginActivity::class.java))
         } else {
@@ -388,6 +389,45 @@ object Utils {
             val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
             return df.format(Date())
         }
+
+    fun getDatePoor(endDate: Date): String {
+
+        val nd = (1000 * 24 * 60 * 60).toLong()
+        val nh = (1000 * 60 * 60).toLong()
+        val nm = (1000 * 60).toLong()
+        val ns = 1000;
+        // 获得两个时间的毫秒时间差异
+        val diff = endDate.time - Date().time
+        // 计算差多少天
+        val day = diff / nd
+        // 计算差多少小时
+        val hour = diff % nd / nh
+        // 计算差多少分钟
+        var min = (diff % nd % nh / nm).toString()
+        if (min.length == 1) {
+            min = "0" + min
+        }
+        // 计算差多少秒//输出结果
+        var sec = (diff % nd % nh % nm / ns).toString()
+        if (sec.length == 1) {
+            sec = "0" + sec
+        }
+        return min.toString() + ":" + sec
+    }
+
+    //获得当前期数
+    val now_id: String
+        get() {
+            val df = SimpleDateFormat("yyyyMMdd")
+            var data = df.format(Date())
+            return data.substring(2, data.length)
+        }
+
+    //将String转为Date
+    fun change_data(date: String): Date {
+        val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        return df.parse(date)
+    }
 
     //将20160302210101转换为yyyy-MM-dd HH:mm:ss
     fun DataTimeTO(time: String): String {

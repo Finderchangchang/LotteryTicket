@@ -3,5 +3,6 @@
     <string name="toast_tz">请输入投注金额</string>
     <string name="toast_wf">请选择玩法</string>
     <string name="dialog_loading">加载中,请稍后...</string>
+    <string name="toast_zero">投注金额应大于0</string>
 
 </resources>
