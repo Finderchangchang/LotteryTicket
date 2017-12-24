@@ -102,7 +102,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         control!!.get_tz("66", "1")
         control!!.get_zj_last("50")
         ty2_top_gv.setOnItemClickListener { _, _, position, _ ->
-            get_now_clicks(position)
+            //get_now_clicks(position)
         }
         left_adapter = object : CommonAdapter<String>(this, left_list, R.layout.item_left) {
             override fun convert(holder: CommonViewHolder, model: String, position: Int) {
@@ -144,75 +144,73 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         left_lv.setOnItemClickListener { parent, view, position, id ->
             if (click_position != position) {//两个位置不相同 执行点击操作
                 click_position = position
-                when (click_position) {
-                    0 -> ty2_title.text = "混合"
-                    else -> ty2_title.text = "特码"
-                }
+                ty2_title.text = left_list[click_position]
                 left_adapter!!.refresh(left_list)
                 if (right_all_list.size > position) {
                     right_adapter!!.refresh(right_all_list[position])
                 }
             }
-        }
-        ty2_top_gv.adapter = right_adapter
-        //A盘
-        center_btn.setOnClickListener { control?.change_ab() }
-        //B盘
-        right_btn.setOnClickListener { control?.change_ab() }
-        left_btn.setOnClickListener {
-            var tz = tz_et.text.toString().trim()
-            if (TextUtils.isEmpty(tz)) {
-                toast(resources.getString(R.string.toast_tz))
-            } else if (tz.toInt() == 0) {
-                toast(resources.getString(R.string.toast_zero))
-            } else if (xz_num == 0) {
-                toast(resources.getString(R.string.toast_wf))
-            } else {
-                for (type1_index in 0 until item_click_list.size) {
-                    var now_lists = item_click_list[type1_index]//当前选中的集合内容
-                    if (now_lists.length > 2) {//确定有数值
-                        now_lists = now_lists.substring(1, now_lists.length - 1)
-                        for (type2 in now_lists.split(",")) {//根据逗号隔开获得当前选择的数据
-                            var num = type2.toInt()
-                            xz_list.add(right_all_list[type1_index][num])
+
+            ty2_top_gv.adapter = right_adapter
+            //A盘
+            center_btn.setOnClickListener { control?.change_ab() }
+            //B盘
+            right_btn.setOnClickListener { control?.change_ab() }
+            left_btn.setOnClickListener {
+                var tz = tz_et.text.toString().trim()
+                if (TextUtils.isEmpty(tz)) {
+                    toast(resources.getString(R.string.toast_tz))
+                } else if (tz.toInt() == 0) {
+                    toast(resources.getString(R.string.toast_zero))
+                } else if (xz_num == 0) {
+                    toast(resources.getString(R.string.toast_wf))
+                } else {
+                    for (type1_index in 0 until item_click_list.size) {
+                        var now_lists = item_click_list[type1_index]//当前选中的集合内容
+                        if (now_lists.length > 2) {//确定有数值
+                            now_lists = now_lists.substring(1, now_lists.length - 1)
+                            for (type2 in now_lists.split(",")) {//根据逗号隔开获得当前选择的数据
+                                var num = type2.toInt()
+                                xz_list.add(right_all_list[type1_index][num])
+                            }
                         }
                     }
+                    control!!.get_xz("66", "777", tz, (tz.toInt() * xz_num).toString(), xz_list)
                 }
-                control!!.get_xz("66", "777", tz, (tz.toInt() * xz_num).toString(), xz_list)
             }
         }
-    }
 
-    /**
-     * 记录当前点击的item
-     * @param position 当前点击的位置
-     * */
-    fun get_now_clicks(position: Int) {
-        var clicks = item_click_list[click_position]
-        if (TextUtils.isEmpty(clicks)) clicks = "," + clicks//如果数据为空加一个逗号 好判断
-        if (clicks.isNotEmpty() && clicks.substring(0, 1) != ",") {
-            clicks = "," + clicks
-        }
-        var result = ""
-        if (clicks.contains("," + position.toString() + ",")) {
-            result = clicks.replace("," + position.toString() + ",", ",")
-        } else {
-            result = clicks + position.toString() + ","
-        }
-        if (result.isNotEmpty() && result.substring(0, 1) != ",") {
-            result = "," + result
-        }
-        item_click_list[click_position] = result
-        //计算当前下的注数
-        xz_num = item_click_list.sumBy {
-            if (it.length > 2) {
-                it.substring(1, it.length - 1).split(",").size
-            } else 0
-        }
-        zhu_tv.text = xz_num.toString()
+        /**
+         * 记录当前点击的item
+         * @param position 当前点击的位置
+         * */
+        fun get_now_clicks(position: Int) {
+            var clicks = item_click_list[click_position]
+            if (TextUtils.isEmpty(clicks)) clicks = "," + clicks//如果数据为空加一个逗号 好判断
+            if (clicks.isNotEmpty() && clicks.substring(0, 1) != ",") {
+                clicks = "," + clicks
+            }
+            var result = ""
+            if (clicks.contains("," + position.toString() + ",")) {
+                result = clicks.replace("," + position.toString() + ",", ",")
+            } else {
+                result = clicks + position.toString() + ","
+            }
+            if (result.isNotEmpty() && result.substring(0, 1) != ",") {
+                result = "," + result
+            }
+            item_click_list[click_position] = result
+            //计算当前下的注数
+            xz_num = item_click_list.sumBy {
+                if (it.length > 2) {
+                    it.substring(1, it.length - 1).split(",").size
+                } else 0
+            }
+            zhu_tv.text = xz_num.toString()
 
-        right_adapter!!.refresh(right_all_list[click_position])
-        left_adapter!!.refresh(left_list)
+            right_adapter!!.refresh(right_all_list[click_position])
+            left_adapter!!.refresh(left_list)
+        }
     }
 
     override fun setLayoutId(): Int {

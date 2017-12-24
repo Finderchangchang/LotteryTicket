@@ -17,8 +17,52 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:background="@color/colorPrimary">
+                android:background="@color/colorPrimary"
+                android:gravity="center_vertical">
 
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:src="@mipmap/logo_zc" />
+
+                <TextView
+                    android:id="@+id/main_tv_sy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="首页"
+                    android:textColor="@color/white"
+                    android:textSize="14dp" />
+
+                <ImageView
+                    android:id="@+id/iv_1"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/main_tv_sy"
+                    android:src="@mipmap/userinfo" />
+
+                <TextView
+                    android:id="@+id/main_tv_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/iv_1"
+                    android:layout_centerVertical="true"
+                    android:text="幸运女神"
+                    android:textColor="@color/white"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/btn_bg_bian"
+                    android:text="登录"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/white"
+                    android:textSize="14dp" />
             </RelativeLayout>
 
             <com.youth.banner.Banner
@@ -36,7 +80,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@mipmap/ic_launcher" />
+                    android:src="@mipmap/icon_notice" />
 
                 <net.tsz.afinal.view.AlwaysMarqueeTextView
                     android:layout_width="wrap_content"
@@ -59,6 +103,23 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/icon_game" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="热门游戏" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="2.5"
                 android:orientation="vertical">
@@ -67,13 +128,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="10dp">
 
                     <LinearLayout
                         android:id="@+id/ll1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:background="@drawable/main_bg"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -81,7 +144,7 @@
                             style="@style/main_item_iv"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@mipmap/ic_launcher" />
+                            android:src="@mipmap/g_bjpk10" />
 
                         <TextView
                             style="@style/main_item_tv"
@@ -90,17 +153,15 @@
                             android:text="北京赛车" />
                     </LinearLayout>
 
-                    <TextView
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/line_bg"
-                        tools:ignore="Suspicious0dp" />
+
 
                     <LinearLayout
                         android:id="@+id/ll2"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
                         android:layout_weight="1"
+                        android:background="@drawable/main_bg"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -108,7 +169,7 @@
                             style="@style/main_item_iv"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@mipmap/ic_launcher" />
+                            android:src="@mipmap/g_xyft" />
 
                         <TextView
                             style="@style/main_item_tv"
@@ -127,7 +188,9 @@
                         android:id="@+id/ll3"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
                         android:layout_weight="1"
+                        android:background="@drawable/main_bg"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -135,7 +198,7 @@
                             style="@style/main_item_iv"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@mipmap/ic_launcher" />
+                            android:src="@mipmap/g_ssc" />
 
                         <TextView
                             style="@style/main_item_tv"
@@ -156,13 +219,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="10dp">
 
                     <LinearLayout
                         android:id="@+id/ll4"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:background="@drawable/main_bg"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -170,7 +235,7 @@
                             style="@style/main_item_iv"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@mipmap/ic_launcher" />
+                            android:src="@mipmap/menu_service" />
 
                         <TextView
                             style="@style/main_item_tv"
@@ -189,7 +254,9 @@
                         android:id="@+id/ll5"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
                         android:layout_weight="1"
+                        android:background="@drawable/main_bg"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -197,7 +264,7 @@
                             style="@style/main_item_iv"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@mipmap/ic_launcher" />
+                            android:src="@mipmap/g_chat" />
 
                         <TextView
                             style="@style/main_item_tv"
@@ -216,7 +283,9 @@
                         android:id="@+id/ll6"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
                         android:layout_weight="1"
+                        android:background="@drawable/main_bg"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -224,7 +293,7 @@
                             style="@style/main_item_iv"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@mipmap/ic_launcher" />
+                            android:src="@mipmap/g_computer" />
 
                         <TextView
                             style="@style/main_item_tv"

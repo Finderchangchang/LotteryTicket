@@ -14,8 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:center_tv="北京赛车"
-            app:left_iv="@mipmap/ic_launcher"
-            app:right_iv="@mipmap/ic_launcher" />
+            app:left_iv="@mipmap/left_jian"
+            app:right_iv="@mipmap/caidan_san" />
 
         <View
             android:layout_width="match_parent"
@@ -146,49 +146,64 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="已选" />
+                            android:text="已选"
+                            android:textSize="10dp"/>
 
                         <TextView
                             android:id="@+id/zhu_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/yellow"
                             android:text="0" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="注" />
+                            android:text="注"
+                            android:textSize="10dp"/>
                     </LinearLayout>
 
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="投注额" />
+                        android:hint="投注额"
+                        android:padding="5dp"
+                        android:textSize="12dp"
+                        android:background="@drawable/main_bg"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="10dp">
 
                     <Button
                         android:id="@+id/left_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="下注" />
+                        android:text="下注"
+                        android:textColor="@color/white"
+                        android:background="@color/huired"/>
 
                     <Button
                         android:id="@+id/center_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="A盘" />
+                        android:text="A盘"
+                        android:textColor="@color/white"
+                        android:layout_marginLeft="5dp"
+                        android:background="@color/colorPrimary"/>
 
                     <Button
                         android:id="@+id/right_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="B盘" />
+                        android:text="B盘√"
+                        android:textColor="@color/white"
+                        android:layout_marginLeft="5dp"
+                        android:background="@color/huired"/>
                 </LinearLayout>
             </LinearLayout>
 

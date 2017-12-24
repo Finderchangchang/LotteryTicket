@@ -6,27 +6,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@mipmap/bg2"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <net.tsz.afinal.view.TitleBar
             android:id="@+id/title_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
             app:center_tv="游戏大厅"
             app:left_iv="@mipmap/left_jian"
-            app:right_iv="@mipmap/left_jian" />
+            app:right_iv="@mipmap/caidan_san" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:background="@color/colorPrimary"
             android:gravity="center_vertical"
             android:paddingLeft="15dp">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@mipmap/main" />
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@mipmap/userinfo" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -44,9 +46,9 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@mipmap/main" />
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/money" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -58,23 +60,25 @@
 
             </LinearLayout>
 
-            <Button
+            <TextView
                 android:id="@+id/cz_btn"
                 android:layout_width="40dp"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:text="充值" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_bg_bian"
+                android:padding="5dp"
+                android:text="充值"
+                android:textColor="@color/white" />
 
-            <Button
+            <TextView
                 android:id="@+id/tx_btn"
                 android:layout_width="40dp"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="5dp"
-                android:text="提现" />
+                android:background="@drawable/btn_bg_bian"
+                android:padding="5dp"
+                android:text="提现"
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <View
@@ -104,15 +108,12 @@
             android:layout_weight="2.5"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line_bg"
-                tools:ignore="Suspicious0dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
@@ -120,7 +121,9 @@
                     android:id="@+id/ll1"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
                     android:layout_weight="1"
+                    android:background="@drawable/main_bg_white"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -131,27 +134,24 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:text="北京赛车(PK10)"
-                        android:textColor="@color/white"
                         android:textSize="18sp" />
 
-                    <Button
+                    <TextView
                         android:layout_width="70dp"
                         android:layout_height="32dp"
-                        android:background="@color/white"
+                        android:background="@drawable/main_bg"
+                        android:gravity="center"
                         android:text="01:21" />
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/line_bg"
-                    tools:ignore="Suspicious0dp" />
 
                 <LinearLayout
                     android:id="@+id/ll2"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
                     android:layout_weight="1"
+                    android:background="@drawable/main_bg_white"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -161,26 +161,24 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:text="重庆时时彩"
-                        android:textColor="@color/white"
                         android:textSize="18sp" />
 
-                    <Button
+                    <TextView
                         android:layout_width="70dp"
                         android:layout_height="32dp"
-                        android:background="@color/white"
+                        android:background="@drawable/main_bg"
+                        android:gravity="center"
                         android:text="01:21" />
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line_bg"
-                tools:ignore="Suspicious0dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
@@ -188,7 +186,9 @@
                     android:id="@+id/ll3"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
                     android:layout_weight="1"
+                    android:background="@drawable/main_bg_white"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -198,27 +198,24 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:text="PC蛋蛋"
-                        android:textColor="@color/white"
                         android:textSize="18sp" />
 
-                    <Button
+                    <TextView
                         android:layout_width="70dp"
                         android:layout_height="32dp"
-                        android:background="@color/white"
+                        android:background="@drawable/main_bg"
+                        android:gravity="center"
                         android:text="01:21" />
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/line_bg"
-                    tools:ignore="Suspicious0dp" />
 
                 <LinearLayout
                     android:id="@+id/ll4"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
                     android:layout_weight="1"
+                    android:background="@drawable/main_bg_white"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -228,28 +225,26 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:text="江苏骰宝(快三)"
-                        android:textColor="@color/white"
                         android:textSize="18sp" />
 
-                    <Button
+                    <TextView
                         android:layout_width="70dp"
                         android:layout_height="32dp"
-                        android:background="@color/white"
+                        android:background="@drawable/main_bg"
+                        android:gravity="center"
                         android:text="01:21" />
                 </LinearLayout>
 
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line_bg"
-                tools:ignore="Suspicious0dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
@@ -257,7 +252,9 @@
                     android:id="@+id/ll5"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
                     android:layout_weight="1"
+                    android:background="@drawable/main_bg_white"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -267,27 +264,24 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:text="幸运飞艇"
-                        android:textColor="@color/white"
                         android:textSize="18sp" />
 
-                    <Button
+                    <TextView
                         android:layout_width="70dp"
                         android:layout_height="32dp"
-                        android:background="@color/white"
+                        android:background="@drawable/main_bg"
+                        android:gravity="center"
                         android:text="01:21" />
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/line_bg"
-                    tools:ignore="Suspicious0dp" />
 
                 <LinearLayout
                     android:id="@+id/ll6"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
                     android:layout_weight="1"
+                    android:background="@drawable/main_bg_white"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -297,24 +291,19 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:text="香港六合彩"
-                        android:textColor="@color/white"
                         android:textSize="18sp" />
 
-                    <Button
+                    <TextView
                         android:layout_width="70dp"
                         android:layout_height="32dp"
-                        android:background="@color/white"
+                        android:background="@drawable/main_bg"
+                        android:gravity="center"
                         android:text="01:21" />
                 </LinearLayout>
 
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line_bg"
-                tools:ignore="Suspicious0dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"

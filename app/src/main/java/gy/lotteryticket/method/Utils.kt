@@ -412,7 +412,7 @@ object Utils {
         if (sec.length == 1) {
             sec = "0" + sec
         }
-        return min.toString() + ":" + sec
+        return min + ":" + sec
     }
 
     //获得当前期数

@@ -13,9 +13,10 @@
             android:id="@+id/title_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:center_tv="北京赛车"
-            app:left_iv="@mipmap/ic_launcher"
-            app:right_iv="@mipmap/ic_launcher" />
+            android:background="@color/colorPrimary"
+            app:center_tv="PC蛋蛋"
+            app:left_iv="@mipmap/left_jian"
+            app:right_iv="@mipmap/caidan_san" />
 
         <View
             android:layout_width="match_parent"
@@ -74,7 +75,6 @@
                 android:id="@+id/next2_qi_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00:15"
                 android:textColor="@color/white" />
 
             <TextView
@@ -88,7 +88,6 @@
                 android:id="@+id/next4_qi_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00:45"
                 android:textColor="@color/white" />
         </LinearLayout>
 
@@ -147,56 +146,70 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="已选" />
+                            android:text="已选"
+                            android:textSize="12dp" />
 
                         <TextView
                             android:id="@+id/zhu_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0" />
+                            android:text="0"
+                            android:textColor="@color/yellow" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="注" />
+                            android:text="注"
+                            android:textSize="12dp" />
                     </LinearLayout>
 
                     <EditText
                         android:id="@+id/tz_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@null"
+                        android:background="@drawable/main_bg"
                         android:hint="投注额"
-                        android:inputType="number" />
+                        android:inputType="number"
+                        android:padding="5dp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="5dp">
 
                     <Button
                         android:id="@+id/left_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="下注" />
+                        android:background="@color/huired"
+                        android:text="下注"
+                        android:textColor="@color/white" />
 
                     <Button
                         android:id="@+id/center_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="A盘" />
+                        android:layout_marginLeft="5dp"
+                        android:background="@color/colorPrimary"
+                        android:text="A盘√"
+                        android:textColor="@color/white" />
 
                     <Button
                         android:id="@+id/right_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="B盘" />
+                        android:layout_marginLeft="5dp"
+                        android:background="@color/huired"
+                        android:text="B盘"
+                        android:textColor="@color/white" />
                 </LinearLayout>
             </LinearLayout>
 
             <TextView
+                android:id="@+id/fp_tv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/colorPrimary"

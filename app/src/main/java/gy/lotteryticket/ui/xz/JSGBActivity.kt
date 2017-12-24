@@ -1,7 +1,6 @@
 package gy.lotteryticket.ui.xz
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import com.arialyy.frame.module.AbsModule
 import com.google.gson.Gson
@@ -17,8 +16,8 @@ import gy.lotteryticket.method.Utils
 import gy.lotteryticket.model.*
 import kotlinx.android.synthetic.main.ac_type2.*
 import kotlinx.android.synthetic.main.activity_pc_dd.*
-import android.databinding.adapters.TextViewBindingAdapter.setText
 import android.os.Handler
+import android.view.View
 
 
 /**
@@ -37,6 +36,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     var xz_list: ArrayList<XZModel> = ArrayList<XZModel>()//下注列表
     var cz_id = "10"
     var old_qh = ""//老的期号
+    var data_ftime = ""//封盘秒数
     override fun onSuccess(result: Int, success: Any?) {
         when (result) {
             command.xz -> {//加载数据
@@ -53,7 +53,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         left_adapter!!.refresh(left_list)
                         //加载默认数据
                         if (right_all_list.size > 0) {
-                            ty2_title.text = "混合"
+                            ty2_title.text = "三军、大小"
                             right_adapter!!.refresh(right_all_list[0])
                         }
                     }
@@ -91,7 +91,9 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     old_qh = Utils.now_id + model.kjNum
                     next_qi_tv.text = ((Utils.now_id + model.kjNum).toInt() + 1).toString() + "期"
                     title_bar.center_str = model.title
+                    data_ftime = model.data_ftime
                     kjtime = model.kjtime
+                    handler.postDelayed(runnable, 1000)
                 }
             }
         }
@@ -105,7 +107,25 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         override fun run() {
             if (can_run) {
                 var time = Utils.getDatePoor(Utils.change_data(kjtime))
+                if (time == "00:00") {
+                    can_run = false
+                }
+                var x_time = time.split(":")[0].toInt() * 60 + time.split(":")[1].toInt()
+                var fp_time = x_time - data_ftime.toInt()//封盘秒数
                 next4_qi_tv.text = time
+                var left_time = (fp_time / 60).toString()
+                if (left_time.length == 1) {
+                    left_time = "0" + left_time
+                }
+                var right_time = (fp_time % 60).toString()
+                if (right_time.length == 1) {
+                    right_time = "0" + right_time
+                }
+                //封盘时间
+                if (left_time + ":" + right_time == "00:00") {
+                    fp_tv.visibility = View.VISIBLE
+                }
+                next2_qi_tv.text = left_time + ":" + right_time
                 handler.postDelayed(this, 1000)
             }
         }
@@ -121,7 +141,6 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         control = getModule(XZModule::class.java, this)
         dialog!!.setTitle(R.string.dialog_loading)
         dialog!!.show()
-        handler.postDelayed(runnable, 1000)
         control!!.get_tz(cz_id, "1")
         control!!.get_zj_last(cz_id)
         ty2_top_gv.setOnItemClickListener { _, _, position, _ ->
@@ -167,10 +186,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         left_lv.setOnItemClickListener { parent, view, position, id ->
             if (click_position != position) {//两个位置不相同 执行点击操作
                 click_position = position
-                when (click_position) {
-                    0 -> ty2_title.text = "混合"
-                    else -> ty2_title.text = "特码"
-                }
+                ty2_title.text = left_list[click_position]
                 left_adapter!!.refresh(left_list)
                 if (right_all_list.size > position) {
                     right_adapter!!.refresh(right_all_list[position])
