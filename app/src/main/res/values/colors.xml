@@ -8,6 +8,8 @@
     <color name="line_bg">#E8E8E9</color>
     <color name="lab_col">#3C3C3C</color>
     <color name="black">#000</color>
+    <color name="tm_white_color">#FFFFFFFF</color>
+    <color name="tm_pressed_color">#FF136B93</color>
     <color name="dihui">#EFF0F0</color>
     <color name="mihuang">#FFC680</color>
     <color name="common_bg_color">#F2F2FD</color>

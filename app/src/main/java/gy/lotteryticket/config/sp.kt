@@ -5,6 +5,7 @@ package gd.mmanage.config
  */
 object sp {
     var user_id = "user_id"
+    var user_name = "user_name"
     var pwd = "pwd"
     var token = "token"
     var down_all = "down_all"
@@ -18,5 +19,7 @@ object sp {
     var con2 = "con2"//客服地址
     var con3 = "con3"//聊天室地址
     var con4 = "con4"//电脑版地址
+    var con5 = "con5"//支付宝充值地址
+    var con6 = "con6"//微信充值地址
 
 }

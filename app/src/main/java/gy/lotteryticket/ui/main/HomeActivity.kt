@@ -5,6 +5,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.View
 import com.arialyy.frame.module.AbsModule
 import com.google.gson.Gson
 import com.google.gson.JsonArray
@@ -15,10 +16,12 @@ import gy.lotteryticket.adapter.MainAdapter
 import gy.lotteryticket.base.BaseActivity
 import gy.lotteryticket.control.MainModule
 import gy.lotteryticket.databinding.ActivityHomeBinding
+import gy.lotteryticket.method.GlideImageLoader
 import gy.lotteryticket.method.Utils
 import gy.lotteryticket.model.NormalRequest
 import gy.lotteryticket.model.TagModel
 import gy.lotteryticket.ui.LoginActivity
+import gy.lotteryticket.ui.WebActivity
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
@@ -31,10 +34,15 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
                         for (model in 0 until success.obj!!.size()) {
                             var m = Gson().fromJson(success.obj!![model], TagModel::class.java)
                             when (model) {
-                                0 -> Utils.putCache(sp.con1, m.con)
+                                0 -> {
+                                    Utils.putCache(sp.con1, m.con)
+                                    message_tv.text = m.con
+                                }
                                 1 -> Utils.putCache(sp.con2, m.con)
                                 2 -> Utils.putCache(sp.con3, m.con)
-                                else -> Utils.putCache(sp.con4, m.con)
+                                3 -> Utils.putCache(sp.con4, m.con)
+                                4 -> Utils.putCache(sp.con5, m.con)
+                                else -> Utils.putCache(sp.con6, m.con)
                             }
                         }
                     }
@@ -64,10 +72,27 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
         control = getModule(MainModule::class.java, this)
         control!!.get_jb_main()
         //title_bars.setLeftClick { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, LoginActivity::class.java)) }
+        var list: ArrayList<Int> = ArrayList()
+        list.add(R.mipmap.title_main)
+        banner!!.setImages(list)
+        banner!!.setImageLoader(GlideImageLoader())
+        banner!!.start()
         var mAdapter = MainAdapter(supportFragmentManager)
         tab_pager.adapter = mAdapter
         //预加载页面的个数
         tab_pager!!.offscreenPageLimit = 4
+        if (TextUtils.isEmpty(Utils.getCache(sp.user_id))) {
+            login_tv.visibility = View.VISIBLE
+            user_ll.visibility = View.GONE
+        } else {
+            login_tv.visibility = View.GONE
+            user_ll.visibility = View.VISIBLE
+            main_tv_username.text = Utils.getCache(sp.user_name)
+        }
+        //跳转到个人中心
+        user_ll.setOnClickListener { startActivity(Intent(this, UserActivity::class.java)) }
+        //跳转到登录页面
+        login_tv.setOnClickListener { Utils.check_login(this) }
         alphaIndicator!!.setViewPager(tab_pager)
         alphaIndicator!!.setOnTabChangedListner({ tabNum ->
             when (tabNum) {
@@ -88,6 +113,10 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
                 }
             }
         })
+        ll4.setOnClickListener { startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 0)) }//在线客服
+        ll5.setOnClickListener { startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 1)) }//聊天室
+        ll6.setOnClickListener { startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 2)) }//电脑版本
+
     }
 
 }

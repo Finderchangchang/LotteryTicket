@@ -15,9 +15,9 @@ import gy.lotteryticket.method.CommonViewHolder
 import gy.lotteryticket.method.Utils
 import gy.lotteryticket.model.*
 import kotlinx.android.synthetic.main.ac_type2.*
-import kotlinx.android.synthetic.main.activity_pc_dd.*
 import android.os.Handler
 import android.view.View
+import kotlinx.android.synthetic.main.activity_js_gb.*
 
 
 /**
@@ -35,8 +35,9 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     var item_click_list: ArrayList<String> = ArrayList<String>()
     var xz_list: ArrayList<XZModel> = ArrayList<XZModel>()//下注列表
     var cz_id = "10"
-    var old_qh = ""//老的期号
+    var now_qh = ""//当前期号
     var data_ftime = ""//封盘秒数
+    var now_position = ""//当前彩种
     override fun onSuccess(result: Int, success: Any?) {
         when (result) {
             command.xz -> {//加载数据
@@ -87,13 +88,20 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 success as NormalRequest<JsonArray>
                 if (success.obj != null && success.obj!!.size() > 0) {
                     var model = Gson().fromJson<KJResultModel>(success.obj!![0].toString(), KJResultModel::class.java)
-                    top_qi_tv.text = Utils.now_id + model.kjNum + "期"
-                    old_qh = Utils.now_id + model.kjNum
-                    next_qi_tv.text = ((Utils.now_id + model.kjNum).toInt() + 1).toString() + "期"
+                    can_run = true
+                    fp_tv.visibility = View.GONE
+                    top_qi_tv.text = model.lastNum + "期   " + model.lastKj
+                    now_qh = Utils.now_id + model.kjNum//记录当前期号
+                    next_qi_tv.text = now_qh + "期"
                     title_bar.center_str = model.title
                     data_ftime = model.data_ftime
                     kjtime = model.kjtime
                     handler.postDelayed(runnable, 1000)
+                    //控制历史期数 显示
+                    if (model.lastKj == null)
+                        old_qi_ll.visibility = View.GONE
+                    else
+                        old_qi_ll.visibility = View.VISIBLE
                 }
             }
         }
@@ -109,10 +117,13 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 var time = Utils.getDatePoor(Utils.change_data(kjtime))
                 if (time == "00:00") {
                     can_run = false
+                    next4_qi_tv.text = "开奖中"
+                    control!!.get_zj_last(cz_id)//获得最新一期开奖信息
                 }
                 var x_time = time.split(":")[0].toInt() * 60 + time.split(":")[1].toInt()
                 var fp_time = x_time - data_ftime.toInt()//封盘秒数
                 next4_qi_tv.text = time
+                //封盘时间
                 var left_time = (fp_time / 60).toString()
                 if (left_time.length == 1) {
                     left_time = "0" + left_time
@@ -122,10 +133,12 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     right_time = "0" + right_time
                 }
                 //封盘时间
-                if (left_time + ":" + right_time == "00:00") {
+                if (left_time + ":" + right_time == "00:00" || (left_time + ":" + right_time).contains("-")) {
                     fp_tv.visibility = View.VISIBLE
+                    next2_qi_tv.text = "封盘中"
+                } else {
+                    next2_qi_tv.text = left_time + ":" + right_time
                 }
-                next2_qi_tv.text = left_time + ":" + right_time
                 handler.postDelayed(this, 1000)
             }
         }
@@ -141,6 +154,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         control = getModule(XZModule::class.java, this)
         dialog!!.setTitle(R.string.dialog_loading)
         dialog!!.show()
+        cz_id = intent.getStringExtra("index")
         control!!.get_tz(cz_id, "1")
         control!!.get_zj_last(cz_id)
         ty2_top_gv.setOnItemClickListener { _, _, position, _ ->
@@ -217,7 +231,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         }
                     }
                 }
-                control!!.get_xz(cz_id, "777", tz, (tz.toInt() * xz_num).toString(), xz_list)
+                control!!.get_xz(cz_id, now_qh, tz, (tz.toInt() * xz_num).toString(), xz_list)
             }
         }
     }

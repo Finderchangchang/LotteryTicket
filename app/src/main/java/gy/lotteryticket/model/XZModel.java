@@ -7,6 +7,10 @@ package gy.lotteryticket.model;
  */
 
 public class XZModel {
+    public XZModel(String name) {
+        this.name = name;
+    }
+
     /**
      * id : 6611201
      * name : 大

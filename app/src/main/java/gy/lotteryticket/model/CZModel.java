@@ -15,6 +15,8 @@ public class CZModel {
      * onGetNoed : noHdCQSSC
      * data_ftime : 60
      * num : 120
+     * kjtime : 2017-12-25 20:21:00
+     * sytime : 214
      */
 
     private String id;
@@ -23,6 +25,8 @@ public class CZModel {
     private String onGetNoed;
     private String data_ftime;
     private String num;
+    private String kjtime;
+    private int sytime;
 
     public String getId() {
         return id;
@@ -70,5 +74,21 @@ public class CZModel {
 
     public void setNum(String num) {
         this.num = num;
+    }
+
+    public String getKjtime() {
+        return kjtime;
+    }
+
+    public void setKjtime(String kjtime) {
+        this.kjtime = kjtime;
+    }
+
+    public int getSytime() {
+        return sytime;
+    }
+
+    public void setSytime(int sytime) {
+        this.sytime = sytime;
     }
 }

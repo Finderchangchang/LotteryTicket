@@ -3,6 +3,57 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="title1_ll"
+            type="String" />
+
+        <variable
+            name="title2_ll"
+            type="String" />
+
+        <variable
+            name="title3_ll"
+            type="String" />
+
+        <variable
+            name="title4_ll"
+            type="String" />
+
+        <variable
+            name="title5_ll"
+            type="String" />
+
+        <variable
+            name="title6_ll"
+            type="String" />
+
+        <variable
+            name="time1_ll"
+            type="String" />
+
+        <variable
+            name="time2_ll"
+            type="String" />
+
+        <variable
+            name="time3_ll"
+            type="String" />
+
+        <variable
+            name="time4_ll"
+            type="String" />
+
+        <variable
+            name="time5_ll"
+            type="String" />
+
+        <variable
+            name="time6_ll"
+            type="String" />
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -88,7 +139,7 @@
 
         <net.tsz.afinal.view.AlwaysMarqueeTextView
             android:id="@+id/message_tv"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
@@ -99,7 +150,7 @@
             android:paddingLeft="10dp"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:text="这里显示滚动公告sdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf" />
+            android:text="这里显示滚动公告sdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdf阿斯达所大所多" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -133,7 +184,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:text="北京赛车(PK10)"
+                        android:text="@{title1_ll}"
                         android:textSize="18sp" />
 
                     <TextView
@@ -141,7 +192,7 @@
                         android:layout_height="32dp"
                         android:background="@drawable/main_bg"
                         android:gravity="center"
-                        android:text="01:21" />
+                        android:text="@{time1_ll}" />
                 </LinearLayout>
 
 
@@ -160,7 +211,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:text="重庆时时彩"
+                        android:text="@{title2_ll}"
+
                         android:textSize="18sp" />
 
                     <TextView
@@ -168,7 +220,7 @@
                         android:layout_height="32dp"
                         android:background="@drawable/main_bg"
                         android:gravity="center"
-                        android:text="01:21" />
+                        android:text="@{time2_ll}" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -197,7 +249,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:text="PC蛋蛋"
+                        android:text="@{title3_ll}"
+
                         android:textSize="18sp" />
 
                     <TextView
@@ -205,7 +258,7 @@
                         android:layout_height="32dp"
                         android:background="@drawable/main_bg"
                         android:gravity="center"
-                        android:text="01:21" />
+                        android:text="@{time3_ll}" />
                 </LinearLayout>
 
 
@@ -224,7 +277,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:text="江苏骰宝(快三)"
+                        android:text="@{title4_ll}"
+
                         android:textSize="18sp" />
 
                     <TextView
@@ -232,7 +286,7 @@
                         android:layout_height="32dp"
                         android:background="@drawable/main_bg"
                         android:gravity="center"
-                        android:text="01:21" />
+                        android:text="@{time4_ll}" />
                 </LinearLayout>
 
 
@@ -263,7 +317,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:text="幸运飞艇"
+                        android:text="@{title5_ll}"
+
                         android:textSize="18sp" />
 
                     <TextView
@@ -271,7 +326,7 @@
                         android:layout_height="32dp"
                         android:background="@drawable/main_bg"
                         android:gravity="center"
-                        android:text="01:21" />
+                        android:text="@{time5_ll}" />
                 </LinearLayout>
 
 
@@ -290,7 +345,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:text="香港六合彩"
+                        android:text="@{title6_ll}"
+
                         android:textSize="18sp" />
 
                     <TextView
@@ -298,7 +354,7 @@
                         android:layout_height="32dp"
                         android:background="@drawable/main_bg"
                         android:gravity="center"
-                        android:text="01:21" />
+                        android:text="@{time6_ll}" />
                 </LinearLayout>
 
 

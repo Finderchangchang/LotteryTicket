@@ -10,9 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.LoginActivity">
-
-        </activity>
+        <activity android:name=".ui.LoginActivity"></activity>
         <activity android:name=".ui.main.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +24,7 @@
         <activity android:name=".ui.xz.LHCActivity" />
         <activity android:name=".ui.main.UserActivity" />
         <activity android:name=".ui.main.CapitalActivity" />
-        <activity android:name=".ui.main.GameActivity"></activity>
+        <activity android:name=".ui.main.GameActivity" />
         <activity android:name=".ui.user.AddBankActivity" />
         <activity android:name=".ui.user.QuPwdActivity" />
         <activity android:name=".ui.user.UserDataActivity" />
@@ -34,6 +32,7 @@
         <activity android:name=".ui.user.LoginPwdActivity" />
         <activity android:name=".ui.xz.PCDDActivity" />
         <activity android:name=".ui.xz.JSGBActivity" />
+        <activity android:name=".ui.WebActivity"></activity>
     </application>
 
 </manifest>

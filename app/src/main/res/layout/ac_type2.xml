@@ -17,5 +17,8 @@
         android:id="@+id/ty2_top_gv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:numColumns="2" />
+        android:horizontalSpacing="1dp"
+        android:listSelector="#00000000"
+        android:numColumns="2"
+        android:verticalSpacing="1dp" />
 </LinearLayout>

@@ -94,7 +94,7 @@ class XZModule : BaseModule {
     fun get_cz_list() {
         var map = HashMap<String, String>()
         map.put("type", "1")
-        map.put("uid", "915")
+        map.put("uid", Utils.getCache(sp.user_id))
         HttpUtils<String>().get(url.normal + "ylUserType.php", command.xz + 3, map, this)
     }
 
