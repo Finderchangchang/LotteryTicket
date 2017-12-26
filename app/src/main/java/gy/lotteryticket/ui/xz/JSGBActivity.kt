@@ -91,7 +91,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     can_run = true
                     fp_tv.visibility = View.GONE
                     top_qi_tv.text = model.lastNum + "期   " + model.lastKj
-                    now_qh = Utils.now_id + model.kjNum//记录当前期号
+                    now_qh = model.kjNum//记录当前期号
                     next_qi_tv.text = now_qh + "期"
                     title_bar.center_str = model.title
                     data_ftime = model.data_ftime
@@ -114,32 +114,36 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     var runnable: Runnable = object : Runnable {
         override fun run() {
             if (can_run) {
-                var time = Utils.getDatePoor(Utils.change_data(kjtime))
-                if (time == "00:00") {
-                    can_run = false
-                    next4_qi_tv.text = "开奖中"
-                    control!!.get_zj_last(cz_id)//获得最新一期开奖信息
-                }
-                var x_time = time.split(":")[0].toInt() * 60 + time.split(":")[1].toInt()
-                var fp_time = x_time - data_ftime.toInt()//封盘秒数
-                next4_qi_tv.text = time
-                //封盘时间
-                var left_time = (fp_time / 60).toString()
-                if (left_time.length == 1) {
-                    left_time = "0" + left_time
-                }
-                var right_time = (fp_time % 60).toString()
-                if (right_time.length == 1) {
-                    right_time = "0" + right_time
-                }
-                //封盘时间
-                if (left_time + ":" + right_time == "00:00" || (left_time + ":" + right_time).contains("-")) {
-                    fp_tv.visibility = View.VISIBLE
-                    next2_qi_tv.text = "封盘中"
+                if (kjtime != "") {
+                    var time = Utils.getDatePoor(Utils.change_data(kjtime))
+                    if (time == "00:00") {
+                        can_run = false
+                        next4_qi_tv.text = "开奖中"
+                        control!!.get_zj_last(cz_id)//获得最新一期开奖信息
+                    }
+                    var x_time = time.split(":")[0].toInt() * 60 + time.split(":")[1].toInt()
+                    var fp_time = x_time - data_ftime.toInt()//封盘秒数
+                    next4_qi_tv.text = time
+                    //封盘时间
+                    var left_time = (fp_time / 60).toString()
+                    if (left_time.length == 1) {
+                        left_time = "0" + left_time
+                    }
+                    var right_time = (fp_time % 60).toString()
+                    if (right_time.length == 1) {
+                        right_time = "0" + right_time
+                    }
+                    //封盘时间
+                    if (left_time + ":" + right_time == "00:00" || (left_time + ":" + right_time).contains("-")) {
+                        fp_tv.visibility = View.VISIBLE
+                        next2_qi_tv.text = "封盘中"
+                    } else {
+                        next2_qi_tv.text = left_time + ":" + right_time
+                    }
+                    handler.postDelayed(this, 1000)
                 } else {
-                    next2_qi_tv.text = left_time + ":" + right_time
+                    next2_qi_tv.text = "封盘中"
                 }
-                handler.postDelayed(this, 1000)
             }
         }
     }

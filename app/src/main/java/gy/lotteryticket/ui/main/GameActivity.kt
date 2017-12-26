@@ -83,16 +83,33 @@ class GameActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
 
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
-        ll1.setOnClickListener { startActivity(Intent(this@GameActivity, PCDDActivity::class.java).putExtra("index", "50")) }
-        ll2.setOnClickListener { startActivity(Intent(this@GameActivity, CCsscActivity::class.java)) }
+        ll1.setOnClickListener { skip_position(array_list[0].id) }
+        ll2.setOnClickListener { skip_position(array_list[1].id) }
         //pc蛋蛋点击事件
-        ll3.setOnClickListener { startActivity(Intent(this@GameActivity, JSGBActivity::class.java).putExtra("index", "66")) }
-        ll4.setOnClickListener { startActivity(Intent(this@GameActivity, JSGBActivity::class.java).putExtra("index", "10")) }
-        ll5.setOnClickListener { startActivity(Intent(this@GameActivity, XYFTActivity::class.java)) }
-        ll6.setOnClickListener { startActivity(Intent(this@GameActivity, LHCActivity::class.java)) }
+        ll3.setOnClickListener { skip_position(array_list[2].id) }
+        ll4.setOnClickListener { skip_position(array_list[3].id) }
+        ll5.setOnClickListener { skip_position(array_list[4].id) }
+        ll6.setOnClickListener { skip_position(array_list[5].id) }
         control = getModule(XZModule::class.java, this)
         control?.get_cz_list()
         message_tv.text = Utils.getCache(sp.con1)
+    }
+
+    fun skip_position(index: String) {
+        when (index) {
+        //重庆
+            "1" -> startActivity(Intent(this@GameActivity, JSGBActivity::class.java).putExtra("index", "1"))
+        //北京赛车
+            "50" -> startActivity(Intent(this@GameActivity, PCDDActivity::class.java).putExtra("index", "50"))
+        //PC蛋蛋
+            "66" -> startActivity(Intent(this@GameActivity, JSGBActivity::class.java).putExtra("index", "66"))
+        //快三
+            "10" -> startActivity(Intent(this@GameActivity, JSGBActivity::class.java).putExtra("index", "10"))
+        //幸运飞艇
+            "55" -> startActivity(Intent(this@GameActivity, PCDDActivity::class.java).putExtra("index", "55"))
+        //六合彩
+            "70" -> startActivity(Intent(this@GameActivity, JSGBActivity::class.java).putExtra("index", "70"))
+        }
     }
 
     override fun setLayoutId(): Int {

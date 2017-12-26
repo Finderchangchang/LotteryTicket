@@ -446,6 +446,17 @@ object Utils {
     }
 
     /**
+     * 截取掉一串数字后面所有的0
+     * */
+    fun cut_all_0_num(str: String): String {
+        var strIndex = str.length - 1
+        while (48 == str[strIndex].toInt()) {
+            strIndex--
+        }
+        return str.substring(0, strIndex + 1)
+    }
+
+    /**
      * 读取xml文件
 
      * @param FileName 文件名

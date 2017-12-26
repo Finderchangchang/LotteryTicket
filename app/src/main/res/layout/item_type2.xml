@@ -3,7 +3,6 @@
     android:id="@+id/total_ll"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:background="#ff666666"
     android:gravity="center"
     android:orientation="horizontal">
 

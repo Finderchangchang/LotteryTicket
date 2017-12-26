@@ -13,7 +13,7 @@ class WebActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web)
         title_bar.setLeftClick { finish() }
-        index = intent.getStringExtra("index")
+        //index = intent.getStringExtra("index")
         when (index) {
             "0" -> web.loadUrl(Utils.getCache(sp.con2))
             "1" -> web.loadUrl(Utils.getCache(sp.con3))

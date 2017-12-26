@@ -2,12 +2,14 @@
 <resources>
     <color name="colorPrimary">#136B93</color>
     <color name="colorPrimaryDark">#167DAB</color>
+    <color name="tm_colorPrimaryDark">#66167DAB</color>
     <color name="blue">#5FADCA</color>
     <color name="colorAccent">#FF4081</color>
     <color name="bottom_bg">#A0A0A1</color>
     <color name="line_bg">#E8E8E9</color>
     <color name="lab_col">#3C3C3C</color>
     <color name="black">#000</color>
+    <color name="tm_black">#44000000</color>
     <color name="tm_white_color">#FFFFFFFF</color>
     <color name="tm_pressed_color">#FF136B93</color>
     <color name="dihui">#EFF0F0</color>

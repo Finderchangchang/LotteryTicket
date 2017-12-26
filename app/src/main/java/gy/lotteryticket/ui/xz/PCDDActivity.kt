@@ -183,10 +183,10 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             override fun convert(holder: CommonViewHolder, model: String, position: Int) {
                 if (position == click_position) {
                     holder.setTextColor(R.id.title, R.color.white)
-                    holder.setBGColor(R.id.title, R.color.black)
+                    holder.setBGColor(R.id.total_rl, R.color.black)
                 } else {
                     holder.setTextColor(R.id.title, R.color.black)
-                    holder.setBGColor(R.id.title, R.color.white)
+                    holder.setBGColor(R.id.total_rl, R.color.tm_white)
                 }
                 if (item_click_list[position].length > 2) {
                     holder.setVisible(R.id.iv, true)
@@ -199,10 +199,10 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         right_adapter = object : CommonAdapter<XZModel>(this, right_list, R.layout.item_type2) {
             override fun convert(holder: CommonViewHolder, model: XZModel, position: Int) {
                 if (click_position == 1) {//特码的情况
-                    holder.setBGColor(R.id.left_tv, R.color.white)
-                    holder.setTextColor(R.id.left_tv, R.color.black)
+                    holder.setBGColor(R.id.total_ll, R.color.colorPrimaryDark)
+//                    holder.setTextColor(R.id.left_tv, R.color.tm_colorPrimaryDark)
                 } else {
-                    holder.setBGColor(R.id.left_tv, 0)
+                    holder.setBGColor(R.id.total_ll, R.color.tm_white)
                     holder.setTextColor(R.id.left_tv, R.color.black)
                 }
 
@@ -210,8 +210,9 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     0 -> {
                         if (position % 6 == 0 || position in 60..65) {
                             holder.setText(R.id.left_tv, model.name)
+                            holder.setVisible(R.id.right_tv, false)
                         } else {
-                            holder.setText(R.id.left_tv, model.odds)
+                            holder.setText(R.id.left_tv, Utils.cut_all_0_num(model.odds))
                         }
                     }
                     else -> {
@@ -222,7 +223,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                             } else {
                                 holder.setVisible(R.id.right_tv, true)
                             }
-                            holder.setText(R.id.right_tv, model.odds)
+                            holder.setText(R.id.right_tv, Utils.cut_all_0_num(model.odds))
                         } else {
                             holder.setVisible(R.id.right_tv, false)
                         }
@@ -232,7 +233,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 if (clicks.contains("," + position.toString() + ",")) {//被点击
                     holder.setBGColor(R.id.total_ll, R.color.tm_pressed_color)
                 } else {
-                    holder.setBGColor(R.id.total_ll, R.color.tm_white_color)
+                    holder.setBGColor(R.id.total_ll, R.color.tm_white)
                 }
             }
         }
@@ -255,7 +256,6 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         left_lv.cacheColorHint = 0
 
         ty2_top_gv.adapter = right_adapter
-        ty2_top_gv.cacheColorHint = 0
         //A盘
         center_btn.setOnClickListener { control?.change_ab() }
         //B盘
