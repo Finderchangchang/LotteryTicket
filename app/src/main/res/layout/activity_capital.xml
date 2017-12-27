@@ -19,12 +19,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
-                app:left_iv="@mipmap/left_jian"
-                app:center_tv="资金管理" />
+                app:center_tv="资金管理"
+                app:left_iv="@mipmap/left_jian" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="90dp"
+                android:layout_height="120dp"
                 android:background="@color/blue"
                 android:orientation="horizontal">
 
@@ -65,8 +65,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/white"
-                            android:text="0000" />
+                            android:text="0000"
+                            android:textColor="@color/white" />
                     </LinearLayout>
 
                     <TextView
@@ -86,7 +86,8 @@
             <android.support.design.widget.TabLayout
                 android:id="@+id/capital_tl"
                 android:layout_width="match_parent"
-                android:layout_height="40dp" />
+                android:layout_height="40dp"
+                android:background="@color/tm_white" />
 
             <View
                 android:layout_width="match_parent"

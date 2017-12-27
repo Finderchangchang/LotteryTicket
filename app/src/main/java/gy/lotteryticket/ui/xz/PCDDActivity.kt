@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
 import android.view.View
+import android.widget.ListView
 import com.arialyy.frame.module.AbsModule
+import com.arialyy.frame.util.AndroidUtils.dp2px
 import com.google.gson.Gson
 import gy.lotteryticket.R
 import gy.lotteryticket.base.BaseActivity
@@ -14,6 +16,9 @@ import gy.lotteryticket.method.CommonAdapter
 import gy.lotteryticket.method.CommonViewHolder
 import kotlinx.android.synthetic.main.activity_pc_dd.*
 import com.google.gson.JsonArray
+import com.zyyoona7.lib.EasyPopup
+import com.zyyoona7.lib.HorizontalGravity
+import com.zyyoona7.lib.VerticalGravity
 import gd.mmanage.config.sp
 import gy.lotteryticket.config.command
 import gy.lotteryticket.method.Utils
@@ -83,7 +88,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             command.xz + 1 -> {//下注
                 success as NormalRequest<JsonArray>
                 if (success.code == 0) {
-
+                    refreshUI()
                 } else {
 
                 }
@@ -130,7 +135,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     can_run = true
                     fp_tv.visibility = View.GONE
                     item_can_click = true
-                    top_qi_tv.text = model.lastNum + "期    " + model.lastKj
+                    top_qi_tv.text = model.lastNum + "期"
                     title_list.clear()
                     for (key in model.lastKj.split(",")) {
                         if (!TextUtils.isEmpty(key)) {
@@ -202,10 +207,70 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         dialog!!.dismiss()
     }
 
+    /**
+     * 刷新UI
+     * */
+    fun refreshUI() {
+        for (i in 0 until item_click_list.size) {
+            item_click_list[i] = ""
+        }
+        //计算当前下的注数
+        xz_num = 0
+        zhu_tv.text = xz_num.toString()
+        right_adapter!!.refresh(right_all_list[click_position])
+        left_adapter!!.refresh(left_list)
+    }
+
+    var adapter: CommonAdapter<PopModel>? = null
+    var pop_list: ArrayList<PopModel> = ArrayList()
     var control: XZModule? = null
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
         control = getModule(XZModule::class.java, this)
+        adapter = object : CommonAdapter<PopModel>(this, pop_list, R.layout.item_pop) {
+            override fun convert(holder: CommonViewHolder, model: PopModel, position: Int) {
+                holder.setText(R.id.title_tv, model.title)
+                if (TextUtils.isEmpty(model.bottom)) {
+                    holder.setVisible(R.id.bottom_tv, false)
+                } else {
+                    holder.setVisible(R.id.bottom_tv, true)
+                    holder.setText(R.id.bottom_tv, model.bottom)
+                }
+            }
+        }
+        title_bar.setRightClick { v ->
+            var mQQPop: EasyPopup = EasyPopup(this).setContentView<EasyPopup>(R.layout.layout_right_pop)
+
+            mQQPop.setAnimationStyle<EasyPopup>(R.style.QQPopAnim)
+                    .setFocusAndOutsideEnable<EasyPopup>(true)
+                    .setBackgroundDimEnable<EasyPopup>(true)
+                    .setWidth<EasyPopup>(dp2px(150))
+                    .createPopup<EasyPopup>()
+
+            mQQPop.showAtAnchorView(v, VerticalGravity.BELOW, HorizontalGravity.LEFT, dp2px(30), 0)
+            var lv = mQQPop.getView<ListView>(R.id.pop_lv)
+            pop_list = ArrayList()
+            pop_list.add(PopModel("即时注单", "(0.00)"))
+            pop_list.add(PopModel("今日已结", ""))
+            pop_list.add(PopModel("下注记录", ""))
+            pop_list.add(PopModel("开奖结果", ""))
+            pop_list.add(PopModel("游戏规则", ""))
+            pop_list.add(PopModel("充值", ""))
+            pop_list.add(PopModel("提现", ""))
+            pop_list.add(PopModel("今天输赢", "(0.00)"))
+            lv.adapter = adapter
+            adapter!!.refresh(pop_list)
+        }
+        when (Utils.getCache(sp.pan_id)) {
+            "2" -> {
+                center_btn.text = "A盘"
+                right_btn.text = "B盘√"
+            }
+            "1" -> {
+                center_btn.text = "A盘√"
+                right_btn.text = "B盘"
+            }
+        }
         dialog!!.setTitle(R.string.dialog_loading)
         dialog!!.show()
         cz_id = intent.getStringExtra("index")
@@ -298,15 +363,19 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         ty2_top_gv.adapter = right_adapter
         //A盘
         center_btn.setOnClickListener {
-            center_btn.isClickable = false
-            right_btn.isClickable = false
-            control?.change_ab()
+            if (Utils.getCache(sp.pan_id) != "1") {
+                center_btn.isClickable = false
+                right_btn.isClickable = false
+                control?.change_ab()
+            }
         }
         //B盘
         right_btn.setOnClickListener {
-            center_btn.isClickable = false
-            right_btn.isClickable = false
-            control?.change_ab()
+            if (Utils.getCache(sp.pan_id) != "2") {
+                center_btn.isClickable = false
+                right_btn.isClickable = false
+                control?.change_ab()
+            }
         }
         left_btn.setOnClickListener {
             var tz = tz_et.text.toString().trim()
@@ -317,6 +386,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             } else if (xz_num == 0) {
                 toast(resources.getString(R.string.toast_wf))
             } else {
+                xz_list.clear()
                 for (type1_index in 0 until item_click_list.size) {
                     var now_lists = item_click_list[type1_index]//当前选中的集合内容
                     if (now_lists.length > 2) {//确定有数值
@@ -334,7 +404,11 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
 
     fun getResource(imageName: String): Int {
         val ctx = baseContext
-        return resources.getIdentifier(imageName, "mipmap", ctx.packageName)
+        var url = imageName
+        if (!TextUtils.isEmpty(url) && url.substring(0, 1) == "0") {
+            url = url.substring(1)
+        }
+        return resources.getIdentifier("num_" + url, "mipmap", ctx.packageName)
     }
 
     /**

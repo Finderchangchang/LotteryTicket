@@ -3,6 +3,7 @@
     <color name="background_color">#E5E5E5</color>
     <color name="white">#fff</color>
     <color name="tm_white">#44ffffff</color>
+    <color name="quan_tm_white">#00ffffff</color>
     <color name="text_gray_color">#A5A5A5</color>
     <color name="yellow">#FFD200</color>
     <color name="huired">#D3563E</color>

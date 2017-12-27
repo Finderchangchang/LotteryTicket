@@ -138,6 +138,12 @@ class GameActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
             lv.adapter = adapter
             adapter!!.refresh(pop_list)
         }
+        cz_btn.setOnClickListener {
+            startActivity(Intent(this@GameActivity, CapitalActivity::class.java).putExtra("position", "1"))
+        }
+        tx_btn.setOnClickListener {
+            startActivity(Intent(this@GameActivity, CapitalActivity::class.java).putExtra("position", "2"))
+        }
     }
 
     fun dp2px(var0: Float): Int {

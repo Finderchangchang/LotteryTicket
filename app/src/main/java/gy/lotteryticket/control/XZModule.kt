@@ -32,8 +32,7 @@ class XZModule : BaseModule {
     fun get_tz(cz_id: String, pan_id: String) {
         var map = HashMap<String, String>()
         map.put("type", "1")
-//        map.put("uid", Utils.getCache(sp.user_id))
-        map.put("uid", "915")
+        map.put("uid", Utils.getCache(sp.user_id))
         map.put("czid", cz_id)//彩种ID
         map.put("panid", pan_id)//盘ID
         HttpUtils<String>().get(url.normal + "ylBets.php", command.xz, map, this)
@@ -59,11 +58,11 @@ class XZModule : BaseModule {
         map.put("panid", "1")//盘ID-从缓存抓取
         map.put("czid", cz_id)//彩种ID
         map.put("turnNum", qiHao)//投注期号
-        map.put("utype", "1")//用户类型 从缓存抓取 登录接口返回的type
+        map.put("utype", "0")//用户类型 从缓存抓取 登录接口返回的type
         map.put("money", money)//投注得金额
         map.put("totalMoney", totalMoney)//是	投注总金额	投注金额 * 注数
         map.put("betList", Gson().toJson(xzs))//玩法列表	格式与“投注页面数据加载”得借口返回得数据一样
-        map.put("uid", "915")//从缓存抓取
+        map.put("uid", Utils.getCache(sp.user_id))//从缓存抓取
         HttpUtils<String>().get(url.normal + "ylBetsAdd.php", command.xz + 1, map, this)
     }
 
@@ -75,10 +74,9 @@ class XZModule : BaseModule {
         map.put("type", "1")
         map.put("uid", Utils.getCache(sp.user_id))
         when (Utils.getCache(sp.pan_id)) {
-            "1" -> Utils.putCache(sp.pan_id, "2")
-            else -> Utils.putCache(sp.pan_id, "1")
+            "1" -> map.put("panid", "2")//盘ID
+            else -> map.put("panid", "1")//盘ID
         }
-        map.put("panid", Utils.getCache(sp.pan_id))//盘ID
         HttpUtils<String>().get(url.normal + "ylUserPan.php", command.xz + 2, map, this)
     }
 

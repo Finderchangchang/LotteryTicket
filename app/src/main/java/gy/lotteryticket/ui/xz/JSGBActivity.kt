@@ -17,6 +17,11 @@ import gy.lotteryticket.model.*
 import kotlinx.android.synthetic.main.ac_type2.*
 import android.os.Handler
 import android.view.View
+import android.widget.ListView
+import com.arialyy.frame.util.DensityUtils.dp2px
+import com.zyyoona7.lib.EasyPopup
+import com.zyyoona7.lib.HorizontalGravity
+import com.zyyoona7.lib.VerticalGravity
 import gd.mmanage.config.sp
 import kotlinx.android.synthetic.main.activity_js_gb.*
 import org.json.JSONArray
@@ -40,6 +45,8 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     var now_qh = ""//当前期号
     var data_ftime = ""//封盘秒数
     var now_position = ""//当前彩种
+    var title_adapter: CommonAdapter<String>? = null
+    var title_list: ArrayList<String> = ArrayList()
     override fun onSuccess(result: Int, success: Any?) {
         when (result) {
             command.xz -> {//加载数据
@@ -112,12 +119,23 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     var model = Gson().fromJson<KJResultModel>(success.obj!![0].toString(), KJResultModel::class.java)
                     can_run = true
                     fp_tv.visibility = View.GONE
-                    top_qi_tv.text = model.lastNum + "期   " + model.lastKj
+                    top_qi_tv.text = model.lastNum + "期"
                     now_qh = model.kjNum//记录当前期号
                     next_qi_tv.text = now_qh + "期"
                     title_bar.center_str = model.title
                     data_ftime = model.data_ftime
                     kjtime = model.kjtime
+                    title_list.clear()
+                    for (key in model.lastKj.split(",")) {
+                        if (!TextUtils.isEmpty(key)) {
+                            if (key.substring(0) == "0" && key.length > 1) {
+                                title_list.add(key.substring(1, key.length - 1))
+                            } else {
+                                title_list.add(key)
+                            }
+                        }
+                    }
+                    title_adapter!!.refresh(title_list)
                     handler.postDelayed(runnable, 1000)
                     //控制历史期数 显示
                     if (model.lastKj == null)
@@ -175,9 +193,75 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     }
 
     var control: XZModule? = null
+    fun getResource(imageName: String): Int {
+        val ctx = baseContext
+        var url = imageName
+        if (!TextUtils.isEmpty(url) && url.substring(0, 1) == "0") {
+            url = url.substring(1)
+        }
+        return resources.getIdentifier("s_" + url, "mipmap", ctx.packageName)
+    }
+
+    var adapter: CommonAdapter<PopModel>? = null
+    var pop_list: ArrayList<PopModel> = ArrayList()
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
         control = getModule(XZModule::class.java, this)
+        adapter = object : CommonAdapter<PopModel>(this, pop_list, R.layout.item_pop) {
+            override fun convert(holder: CommonViewHolder, model: PopModel, position: Int) {
+                holder.setText(R.id.title_tv, model.title)
+                if (TextUtils.isEmpty(model.bottom)) {
+                    holder.setVisible(R.id.bottom_tv, false)
+                } else {
+                    holder.setVisible(R.id.bottom_tv, true)
+                    holder.setText(R.id.bottom_tv, model.bottom)
+                }
+            }
+        }
+        title_bar.setRightClick { v ->
+            var mQQPop: EasyPopup = EasyPopup(this).setContentView<EasyPopup>(R.layout.layout_right_pop)
+
+            mQQPop.setAnimationStyle<EasyPopup>(R.style.QQPopAnim)
+                    .setFocusAndOutsideEnable<EasyPopup>(true)
+                    .setBackgroundDimEnable<EasyPopup>(true)
+                    .setWidth<EasyPopup>(dp2px(150))
+                    .createPopup<EasyPopup>()
+
+            mQQPop.showAtAnchorView(v, VerticalGravity.BELOW, HorizontalGravity.LEFT, dp2px(30), 0)
+            var lv = mQQPop.getView<ListView>(R.id.pop_lv)
+            pop_list = ArrayList()
+            pop_list.add(PopModel("即时注单", "(0.00)"))
+            pop_list.add(PopModel("今日已结", ""))
+            pop_list.add(PopModel("下注记录", ""))
+            pop_list.add(PopModel("开奖结果", ""))
+            pop_list.add(PopModel("游戏规则", ""))
+            pop_list.add(PopModel("充值", ""))
+            pop_list.add(PopModel("提现", ""))
+            pop_list.add(PopModel("今天输赢", "(0.00)"))
+            lv.adapter = adapter
+            adapter!!.refresh(pop_list)
+        }
+        title_adapter = object : CommonAdapter<String>(this, title_list, R.layout.item_title) {
+            override fun convert(holder: CommonViewHolder, model: String, position: Int) {
+                when (cz_id) {
+                    "1" -> {//重庆时时彩
+                        holder.setBG(R.id.tv, R.drawable.cycle)
+                        holder.setText(R.id.tv, model)
+                        holder.setVisible(R.id.iv, false)
+                    }
+                    "10" -> {//江苏快3
+                        holder.setGImage(R.id.iv, getResource(model))
+                        holder.setVisible(R.id.tv, false)
+                    }
+                    "66" -> {//PC蛋蛋
+                        holder.setBG(R.id.tv, R.drawable.cycle)
+                        holder.setText(R.id.tv, model)
+                        holder.setVisible(R.id.iv, false)
+                    }
+                }
+            }
+        }
+        top_jiang_gv.adapter = title_adapter
         dialog!!.setTitle(R.string.dialog_loading)
         dialog!!.show()
         cz_id = intent.getStringExtra("index")
@@ -190,10 +274,10 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             override fun convert(holder: CommonViewHolder, model: String, position: Int) {
                 if (position == click_position) {
                     holder.setTextColor(R.id.title, R.color.white)
-                    holder.setBGColor(R.id.title, R.color.black)
+                    holder.setBGColor(R.id.total_rl, R.color.black)
                 } else {
                     holder.setTextColor(R.id.title, R.color.black)
-                    holder.setBGColor(R.id.title, R.color.white)
+                    holder.setBGColor(R.id.total_rl, R.color.tm_white)
                 }
                 if (item_click_list[position].length > 2) {
                     holder.setVisible(R.id.iv, true)
@@ -206,19 +290,74 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         right_adapter = object : CommonAdapter<XZModel>(this, right_list, R.layout.item_type2) {
             override fun convert(holder: CommonViewHolder, model: XZModel, position: Int) {
                 if (click_position == 1) {//特码的情况
-                    holder.setBGColor(R.id.left_tv, R.color.white)
-                    holder.setTextColor(R.id.left_tv, R.color.black)
+                    holder.setBGColor(R.id.total_ll, R.color.colorPrimaryDark)
+//                    holder.setTextColor(R.id.left_tv, R.color.tm_colorPrimaryDark)
                 } else {
-                    holder.setBGColor(R.id.left_tv, 0)
+                    holder.setBGColor(R.id.total_ll, R.color.tm_white)
                     holder.setTextColor(R.id.left_tv, R.color.black)
                 }
-                holder.setText(R.id.left_tv, model.name)
-                holder.setText(R.id.right_tv, model.odds)
+                when (cz_id) {
+                    "1" -> {//重庆时时彩
+                        holder.setText(R.id.left_tv, model.name)
+                        try {
+                            model.name.toInt()
+                            holder.setBG(R.id.left_tv, R.drawable.cycle)
+                        } catch (e: Exception) {
+                            holder.setBG(R.id.left_tv, R.color.quan_tm_white)
+                        }
+                        holder.setText(R.id.right_tv, Utils.cut_all_0_num(model.odds))
+                    }
+                    "10" -> {//江苏快3
+                        holder.setVisible(R.id.left1_tv, false)
+                        holder.setVisible(R.id.left2_tv, false)
+                        holder.setVisible(R.id.left3_tv, false)
+                        if (model.name.contains("_")) {
+                            holder.setVisible(R.id.left_tv, false)
+                            for (key in 0 until model.name.split("_").size) {
+                                when (key) {
+                                    0 -> {
+                                        holder.setVisible(R.id.left1_tv, true)
+                                        holder.setBG(R.id.left1_tv, getResource(model.name.split("_")[0]))
+                                    }
+                                    1 -> {
+                                        holder.setVisible(R.id.left2_tv, true)
+                                        holder.setBG(R.id.left2_tv, getResource(model.name.split("_")[1]))
+                                    }
+                                    2 -> {
+                                        holder.setVisible(R.id.left3_tv, true)
+                                        holder.setBG(R.id.left3_tv, getResource(model.name.split("_")[2]))
+                                    }
+                                }
+                            }
+                        } else {
+                            try {
+                                model.name.toInt()
+                                holder.setVisible(R.id.left_tv, false)
+                                holder.setVisible(R.id.left1_tv, true)
+                                holder.setBG(R.id.left1_tv, getResource(model.name))
+                            } catch (e: Exception) {
+                                holder.setText(R.id.left_tv, model.name)
+                                holder.setBG(R.id.left_tv, R.color.quan_tm_white)
+                            }
+                        }
+                        holder.setText(R.id.right_tv, Utils.cut_all_0_num(model.odds))
+                    }
+                    "66" -> {//PC蛋蛋
+                        holder.setText(R.id.left_tv, model.name)
+                        try {
+                            model.name.toInt()
+                            holder.setBG(R.id.left_tv, R.drawable.cycle)
+                        } catch (e: Exception) {
+                            holder.setBG(R.id.left_tv, R.color.quan_tm_white)
+                        }
+                        holder.setText(R.id.right_tv, Utils.cut_all_0_num(model.odds))
+                    }
+                }
                 var clicks = item_click_list[click_position]
                 if (clicks.contains("," + position.toString() + ",")) {//被点击
-                    holder.setBGColor(R.id.total_ll, R.color.black)
+                    holder.setBGColor(R.id.total_ll, R.color.tm_pressed_color)
                 } else {
-                    holder.setBGColor(R.id.total_ll, R.color.white)
+                    holder.setBGColor(R.id.total_ll, R.color.tm_white)
                 }
             }
         }

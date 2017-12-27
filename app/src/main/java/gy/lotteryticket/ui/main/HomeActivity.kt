@@ -22,6 +22,8 @@ import gy.lotteryticket.model.NormalRequest
 import gy.lotteryticket.model.TagModel
 import gy.lotteryticket.ui.LoginActivity
 import gy.lotteryticket.ui.WebActivity
+import gy.lotteryticket.ui.xz.JSGBActivity
+import gy.lotteryticket.ui.xz.PCDDActivity
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
@@ -105,6 +107,12 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
                 }
             }
         })
+        //重庆
+        ll1.setOnClickListener { startActivity(Intent(this@HomeActivity, JSGBActivity::class.java).putExtra("index", "1")) }
+        //北京赛车
+        ll2.setOnClickListener { startActivity(Intent(this@HomeActivity, PCDDActivity::class.java).putExtra("index", "50")) }
+        //幸运飞艇
+        ll3.setOnClickListener { startActivity(Intent(this@HomeActivity, PCDDActivity::class.java).putExtra("index", "55")) }
         ll4.setOnClickListener { startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 0)) }//在线客服
         ll5.setOnClickListener { startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 1)) }//聊天室
         ll6.setOnClickListener { startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 2)) }//电脑版本

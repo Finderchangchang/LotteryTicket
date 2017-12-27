@@ -42,7 +42,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1234567期"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                />
 
             <GridView
                 android:id="@+id/top_jiang_gv"

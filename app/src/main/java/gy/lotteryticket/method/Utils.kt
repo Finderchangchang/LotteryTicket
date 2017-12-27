@@ -453,7 +453,13 @@ object Utils {
         while (48 == str[strIndex].toInt()) {
             strIndex--
         }
-        return str.substring(0, strIndex + 1)
+        var result = str.substring(0, strIndex + 1)
+        if (!TextUtils.isEmpty(result)) {
+            if (result.substring(result.length - 1, result.length) == ".") {
+                result = result.replace(".", "")
+            }
+        }
+        return result
     }
 
     /**

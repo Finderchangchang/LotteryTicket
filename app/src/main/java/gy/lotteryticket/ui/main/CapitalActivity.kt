@@ -13,10 +13,16 @@ class CapitalActivity : BaseActivity<ActivityBjCarBinding>() {
         return R.layout.activity_capital
     }
 
+    var position = ""
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
+        position = intent.getStringExtra("position")
         var mAdapter = UserAdapter(supportFragmentManager)
         capital_vp!!.adapter = mAdapter
         capital_tl!!.setupWithViewPager(capital_vp)
+        when (position) {
+            "1" -> capital_vp!!.setCurrentItem(0, false)
+            "2" -> capital_vp!!.setCurrentItem(1, false)
+        }
     }
 }
