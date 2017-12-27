@@ -2,7 +2,6 @@ package gy.lotteryticket.ui.xz
 
 import android.os.Bundle
 import android.os.Handler
-import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.View
 import com.arialyy.frame.module.AbsModule
@@ -15,10 +14,12 @@ import gy.lotteryticket.method.CommonAdapter
 import gy.lotteryticket.method.CommonViewHolder
 import kotlinx.android.synthetic.main.activity_pc_dd.*
 import com.google.gson.JsonArray
+import gd.mmanage.config.sp
 import gy.lotteryticket.config.command
 import gy.lotteryticket.method.Utils
 import gy.lotteryticket.model.*
 import kotlinx.android.synthetic.main.ac_type2.*
+import org.json.JSONArray
 
 /**
  *PC蛋蛋(解决赛车的布局)
@@ -28,6 +29,8 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     var right_all_list: ArrayList<ArrayList<XZModel>> = ArrayList<ArrayList<XZModel>>()
     var left_adapter: CommonAdapter<String>? = null
     var right_adapter: CommonAdapter<XZModel>? = null
+    var title_adapter: CommonAdapter<String>? = null
+    var title_list: ArrayList<String> = ArrayList()
     var right_list: ArrayList<XZModel> = ArrayList<XZModel>()
     var click_position = 0
     var xz_num = 0
@@ -85,10 +88,29 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
 
                 }
                 toast(success.message)
-                var s = ""
             }
             command.xz + 2 -> {//切换AB盘
+                success as NormalRequest<JSONArray>
+                if (success.code == 0) {
+                    toast("切换成功")
+                    when (Utils.getCache(sp.pan_id)) {
+                        "1" -> {
+                            Utils.putCache(sp.pan_id, "2")
+                            center_btn.text = "A盘"
+                            right_btn.text = "B盘√"
+                        }
+                        "2" -> {
+                            Utils.putCache(sp.pan_id, "1")
+                            center_btn.text = "A盘√"
+                            right_btn.text = "B盘"
+                        }
+                    }
 
+                    center_btn.isClickable = true
+                    right_btn.isClickable = true
+                } else {
+                    toast("切换失败")
+                }
             }
             command.xz + 3 -> {//获得彩种列表
                 success as NormalRequest<JsonArray>
@@ -109,6 +131,18 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     fp_tv.visibility = View.GONE
                     item_can_click = true
                     top_qi_tv.text = model.lastNum + "期    " + model.lastKj
+                    title_list.clear()
+                    for (key in model.lastKj.split(",")) {
+                        if (!TextUtils.isEmpty(key)) {
+                            if (key.substring(0) == "0" && key.length > 1) {
+                                title_list.add(key.substring(1, key.length - 1))
+                            } else {
+                                title_list.add(key)
+                            }
+                        }
+                    }
+                    title_adapter!!.refresh(title_list)
+
                     now_qh = model.kjNum//记录当前期号
                     next_qi_tv.text = now_qh + "期"
                     title_bar.center_str = model.title
@@ -179,6 +213,12 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         control!!.get_zj_last(cz_id)
         ty2_top_gv.setOnItemClickListener { _, _, position, _ -> if (item_can_click) get_now_clicks(position) }
         ty2_top_gv.numColumns = 6
+        title_adapter = object : CommonAdapter<String>(this, title_list, R.layout.item_title) {
+            override fun convert(holder: CommonViewHolder, model: String, position: Int) {
+                holder.setGImage(R.id.iv, getResource(model))
+            }
+        }
+        top_jiang_gv.adapter = title_adapter
         left_adapter = object : CommonAdapter<String>(this, left_list, R.layout.item_left) {
             override fun convert(holder: CommonViewHolder, model: String, position: Int) {
                 if (position == click_position) {
@@ -257,9 +297,17 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
 
         ty2_top_gv.adapter = right_adapter
         //A盘
-        center_btn.setOnClickListener { control?.change_ab() }
+        center_btn.setOnClickListener {
+            center_btn.isClickable = false
+            right_btn.isClickable = false
+            control?.change_ab()
+        }
         //B盘
-        right_btn.setOnClickListener { control?.change_ab() }
+        right_btn.setOnClickListener {
+            center_btn.isClickable = false
+            right_btn.isClickable = false
+            control?.change_ab()
+        }
         left_btn.setOnClickListener {
             var tz = tz_et.text.toString().trim()
             if (TextUtils.isEmpty(tz)) {
@@ -282,6 +330,11 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 control!!.get_xz(cz_id, now_qh, tz, (tz.toInt() * xz_num).toString(), xz_list)
             }
         }
+    }
+
+    fun getResource(imageName: String): Int {
+        val ctx = baseContext
+        return resources.getIdentifier(imageName, "mipmap", ctx.packageName)
     }
 
     /**

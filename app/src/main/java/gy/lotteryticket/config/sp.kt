@@ -21,5 +21,6 @@ object sp {
     var con4 = "con4"//电脑版地址
     var con5 = "con5"//支付宝充值地址
     var con6 = "con6"//微信充值地址
+    var coin = "coin"//账户余额
 
 }

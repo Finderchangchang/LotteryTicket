@@ -197,6 +197,15 @@ public class CommonViewHolder {
         }
         return this;
     }
+    //正常加载图片
+    public CommonViewHolder setGImage(int vid, int url) {
+        ImageView img = getView(vid);
+        img.setVisibility(View.VISIBLE);
+        if (mContext != null) {
+            Glide.with(mContext).load(url).error(R.mipmap.ic_launcher).into(img);
+        }
+        return this;
+    }
 
     //圆形图片
     public CommonViewHolder setGlideImage(int vid, String url) {

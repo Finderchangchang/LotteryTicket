@@ -81,14 +81,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
         tab_pager.adapter = mAdapter
         //预加载页面的个数
         tab_pager!!.offscreenPageLimit = 4
-        if (TextUtils.isEmpty(Utils.getCache(sp.user_id))) {
-            login_tv.visibility = View.VISIBLE
-            user_ll.visibility = View.GONE
-        } else {
-            login_tv.visibility = View.GONE
-            user_ll.visibility = View.VISIBLE
-            main_tv_username.text = Utils.getCache(sp.user_name)
-        }
         //跳转到个人中心
         user_ll.setOnClickListener { startActivity(Intent(this, UserActivity::class.java)) }
         //跳转到登录页面
@@ -116,7 +108,17 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
         ll4.setOnClickListener { startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 0)) }//在线客服
         ll5.setOnClickListener { startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 1)) }//聊天室
         ll6.setOnClickListener { startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 2)) }//电脑版本
-
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (TextUtils.isEmpty(Utils.getCache(sp.user_id))) {
+            login_tv.visibility = View.VISIBLE
+            user_ll.visibility = View.GONE
+        } else {
+            login_tv.visibility = View.GONE
+            user_ll.visibility = View.VISIBLE
+            main_tv_username.text = Utils.getCache(sp.user_name)
+        }
+    }
 }

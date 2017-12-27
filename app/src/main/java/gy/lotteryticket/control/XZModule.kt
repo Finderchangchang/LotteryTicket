@@ -73,8 +73,7 @@ class XZModule : BaseModule {
     fun change_ab() {
         var map = HashMap<String, String>()
         map.put("type", "1")
-//        map.put("uid", Utils.getCache(sp.user_id))
-        map.put("uid", "915")
+        map.put("uid", Utils.getCache(sp.user_id))
         when (Utils.getCache(sp.pan_id)) {
             "1" -> Utils.putCache(sp.pan_id, "2")
             else -> Utils.putCache(sp.pan_id, "1")
@@ -103,7 +102,7 @@ class XZModule : BaseModule {
      * */
     fun get_zj_last(cz_id: String) {
         var map = HashMap<String, String>()
-        map.put("uid", "915")
+        map.put("uid", Utils.getCache(sp.user_id))
         map.put("czid", cz_id)//彩种ID
         HttpUtils<String>().get(url.normal + "ylBetsGetNum.php", command.xz + 4, map, this)
     }

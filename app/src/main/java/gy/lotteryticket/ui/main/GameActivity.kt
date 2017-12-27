@@ -4,18 +4,26 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.text.TextUtils
+import android.widget.ListView
 import com.arialyy.frame.module.AbsModule
 import com.google.gson.Gson
 import com.google.gson.JsonArray
+import com.zyyoona7.lib.EasyPopup
+import com.zyyoona7.lib.HorizontalGravity
+import com.zyyoona7.lib.VerticalGravity
 import gd.mmanage.config.sp
 import gy.lotteryticket.R
 import gy.lotteryticket.base.BaseActivity
 import gy.lotteryticket.config.command
 import gy.lotteryticket.control.XZModule
 import gy.lotteryticket.databinding.ActivityGameBinding
+import gy.lotteryticket.method.CommonAdapter
+import gy.lotteryticket.method.CommonViewHolder
 import gy.lotteryticket.method.Utils
 import gy.lotteryticket.model.CZModel
 import gy.lotteryticket.model.NormalRequest
+import gy.lotteryticket.model.PopModel
 import gy.lotteryticket.ui.xz.*
 import kotlinx.android.synthetic.main.activity_game.*
 import org.json.JSONArray
@@ -79,10 +87,21 @@ class GameActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
             handler.postDelayed(this, 1000)
         }
     }
-
-
+    var adapter: CommonAdapter<PopModel>? = null
+    var pop_list: ArrayList<PopModel> = ArrayList()
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
+        adapter = object : CommonAdapter<PopModel>(this, pop_list, R.layout.item_pop) {
+            override fun convert(holder: CommonViewHolder, model: PopModel, position: Int) {
+                holder.setText(R.id.title_tv, model.title)
+                if (TextUtils.isEmpty(model.bottom)) {
+                    holder.setVisible(R.id.bottom_tv, false)
+                } else {
+                    holder.setVisible(R.id.bottom_tv, true)
+                    holder.setText(R.id.bottom_tv, model.bottom)
+                }
+            }
+        }
         ll1.setOnClickListener { skip_position(array_list[0].id) }
         ll2.setOnClickListener { skip_position(array_list[1].id) }
         //pc蛋蛋点击事件
@@ -91,8 +110,44 @@ class GameActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
         ll5.setOnClickListener { skip_position(array_list[4].id) }
         ll6.setOnClickListener { skip_position(array_list[5].id) }
         control = getModule(XZModule::class.java, this)
-        control?.get_cz_list()
+        control?.get_cz_list()//获得彩种列表
         message_tv.text = Utils.getCache(sp.con1)
+        //跳转到充值
+        cz_btn.setOnClickListener {
+
+        }
+        //跳转到提现页面
+        tx_btn.setOnClickListener { }
+        title_bar.setRightClick { v ->
+            var mQQPop: EasyPopup = EasyPopup(this).setContentView<EasyPopup>(R.layout.layout_right_pop)
+
+            mQQPop.setAnimationStyle<EasyPopup>(R.style.QQPopAnim)
+                    .setFocusAndOutsideEnable<EasyPopup>(true)
+                    .setBackgroundDimEnable<EasyPopup>(true)
+                    .setWidth<EasyPopup>(dp2px(150F))
+                    .createPopup<EasyPopup>()
+
+            mQQPop.showAtAnchorView(v, VerticalGravity.BELOW, HorizontalGravity.LEFT, dp2px(30F), 0)
+            var lv = mQQPop.getView<ListView>(R.id.pop_lv)
+            pop_list = ArrayList()
+            pop_list.add(PopModel("即时注单", "(0.00)"))
+            pop_list.add(PopModel("今日已结", ""))
+            pop_list.add(PopModel("下注记录", ""))
+            pop_list.add(PopModel("开奖结果", ""))
+            pop_list.add(PopModel("提现", ""))
+            lv.adapter = adapter
+            adapter!!.refresh(pop_list)
+        }
+    }
+
+    fun dp2px(var0: Float): Int {
+        val var1 = resources.displayMetrics.density
+        return (var0 * var1 + 0.5f).toInt()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        yue_tv.text = Utils.getCache(sp.coin)
     }
 
     fun skip_position(index: String) {

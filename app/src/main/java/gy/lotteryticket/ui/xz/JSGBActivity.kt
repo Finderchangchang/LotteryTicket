@@ -17,7 +17,9 @@ import gy.lotteryticket.model.*
 import kotlinx.android.synthetic.main.ac_type2.*
 import android.os.Handler
 import android.view.View
+import gd.mmanage.config.sp
 import kotlinx.android.synthetic.main.activity_js_gb.*
+import org.json.JSONArray
 
 
 /**
@@ -71,7 +73,27 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 var s = ""
             }
             command.xz + 2 -> {//切换AB盘
+                success as NormalRequest<JSONArray>
+                if (success.code == 0) {
+                    toast("切换成功")
+                    when (Utils.getCache(sp.pan_id)) {
+                        "1" -> {
+                            Utils.putCache(sp.pan_id, "2")
+                            center_btn.text = "A盘"
+                            right_btn.text = "B盘√"
+                        }
+                        "2" -> {
+                            Utils.putCache(sp.pan_id, "1")
+                            center_btn.text = "A盘√"
+                            right_btn.text = "B盘"
+                        }
+                    }
 
+                    center_btn.isClickable = true
+                    right_btn.isClickable = true
+                } else {
+                    toast("切换失败")
+                }
             }
             command.xz + 3 -> {//获得彩种列表
                 success as NormalRequest<JsonArray>
@@ -213,9 +235,17 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         }
         ty2_top_gv.adapter = right_adapter
         //A盘
-        center_btn.setOnClickListener { control?.change_ab() }
+        center_btn.setOnClickListener {
+            center_btn.isClickable = false
+            right_btn.isClickable = false
+            control?.change_ab()
+        }
         //B盘
-        right_btn.setOnClickListener { control?.change_ab() }
+        right_btn.setOnClickListener {
+            center_btn.isClickable = false
+            right_btn.isClickable = false
+            control?.change_ab()
+        }
         left_btn.setOnClickListener {
             var tz = tz_et.text.toString().trim()
             if (TextUtils.isEmpty(tz)) {

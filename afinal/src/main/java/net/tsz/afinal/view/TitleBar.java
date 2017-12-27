@@ -73,7 +73,7 @@ public class TitleBar extends LinearLayout {
             public void onClick(View view) {
                 if (rightClick != null) {
                     if (can_click) {
-                        rightClick.onClick();
+                        rightClick.onClick(right_tv);
                     }
                 }
             }
@@ -119,7 +119,7 @@ public class TitleBar extends LinearLayout {
                 public void onClick(View v) {
                     if (rightClick != null) {
                         if (can_click) {
-                            rightClick.onClick();
+                            rightClick.onClick(right_tv);
                         }
                     }
                 }
@@ -158,7 +158,7 @@ public class TitleBar extends LinearLayout {
     }
 
     public interface RightClick {
-        void onClick();
+        void onClick(View view);
     }
 
     public TitleBar(Context context, AttributeSet attrs) {
