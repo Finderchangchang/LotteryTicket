@@ -34,6 +34,8 @@
         <activity android:name=".ui.xz.JSGBActivity" />
         <activity android:name=".ui.WebActivity"></activity>
         <activity android:name=".ui.user.BankActivity" />
+        <activity android:name=".ui.user.RecordActivity" />
+        <activity android:name=".ui.user.TodayActivity" />
     </application>
 
 </manifest>

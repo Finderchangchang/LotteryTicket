@@ -14,6 +14,7 @@
         app:left_iv="@mipmap/left_jian" />
 
     <LinearLayout
+        android:id="@+id/llay_select"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"

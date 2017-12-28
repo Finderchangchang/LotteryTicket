@@ -11,6 +11,8 @@ import gy.lotteryticket.ui.user.BankActivity;
 import gy.lotteryticket.ui.user.LoginPwdActivity;
 import gy.lotteryticket.ui.user.MessageActivity;
 import gy.lotteryticket.ui.user.QuPwdActivity;
+import gy.lotteryticket.ui.user.RecordActivity;
+import gy.lotteryticket.ui.user.TodayActivity;
 import gy.lotteryticket.ui.user.UserDataActivity;
 
 public class UserActivity extends BaseActivity implements View.OnClickListener {
@@ -74,6 +76,12 @@ public class UserActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.llay_bank:
                 startActivity(new Intent(this, BankActivity.class));
+                break;
+            case R.id.llay_today:
+                startActivity(new Intent(this, TodayActivity.class));
+                break;
+            case R.id.llay_xiazhu:
+                startActivity(new Intent(this, RecordActivity.class));
                 break;
         }
     }

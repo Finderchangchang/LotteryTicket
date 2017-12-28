@@ -14,65 +14,74 @@
         app:left_iv="@mipmap/left_jian" />
 
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:background="@color/blue">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue"
+        android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:padding="5dp"
-        android:text="期号"
-        android:textColor="@color/white" />
-    <View
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:background="@color/white"/>
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="下注明细"
-        android:padding="5dp"
-        android:textColor="@color/white" />
-    <View
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:background="@color/white"/>
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="下注金额"
-        android:padding="5dp"
-        android:textColor="@color/white" />
-    <View
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:background="@color/white"/>
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="输赢金额"
-        android:padding="5dp"
-        android:textColor="@color/white" />
-</LinearLayout>
-    <ListView
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="期号"
+            android:textColor="@color/white" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/white" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="下注明细"
+            android:textColor="@color/white" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/white" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="下注金额"
+            android:textColor="@color/white" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/white" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="输赢金额"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recy_today"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"></ListView>
+        android:layout_weight="1" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:background="@color/mihuang"
+        android:orientation="horizontal"
         android:padding="10dp">
 
         <TextView
@@ -82,6 +91,7 @@
             android:gravity="center"
             android:text="下注金额：0"
             android:textColor="@color/white" />
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"

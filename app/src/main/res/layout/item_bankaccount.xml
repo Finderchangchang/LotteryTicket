@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <TextView
+        android:id="@+id/tv_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="开户姓名：123456" />
 
     <TextView
+        android:id="@+id/tv_accout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:text="开户账号：123456" />
 
     <TextView
+        android:id="@+id/tv_point"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:text="开户网点：123456" />
+
 </LinearLayout>
