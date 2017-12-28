@@ -33,6 +33,7 @@
         <activity android:name=".ui.xz.PCDDActivity" />
         <activity android:name=".ui.xz.JSGBActivity" />
         <activity android:name=".ui.WebActivity"></activity>
+        <activity android:name=".ui.user.BankActivity" />
     </application>
 
 </manifest>

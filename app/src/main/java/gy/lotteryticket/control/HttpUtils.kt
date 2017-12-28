@@ -9,8 +9,6 @@ import com.lzy.okgo.callback.StringCallback
 import gd.mmanage.callback.LzyResponse
 import gd.mmanage.config.sp
 import gy.lotteryticket.base.BaseModule
-import gy.lotteryticket.callback.BaseDao
-import gy.lotteryticket.callback.HibernateBaseDao
 import gy.lotteryticket.config.command.login
 import gy.lotteryticket.method.Utils
 import gy.lotteryticket.method.Utils.string2MD5

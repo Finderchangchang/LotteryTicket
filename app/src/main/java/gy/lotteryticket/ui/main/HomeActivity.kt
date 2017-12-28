@@ -62,7 +62,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
         login_tv.setOnClickListener { Utils.check_login(this) }
         alphaIndicator!!.setViewPager(tab_pager)
         alphaIndicator!!.setOnTabChangedListner({ tabNum ->
-            alphaIndicator!!.setTabCurrenItem(0)
             when (tabNum) {
                 0 -> {
                     //首页

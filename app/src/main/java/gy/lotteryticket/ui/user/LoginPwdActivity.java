@@ -1,5 +1,7 @@
 package gy.lotteryticket.ui.user;
 
+import android.os.Bundle;
+
 import gy.lotteryticket.R;
 import gy.lotteryticket.base.BaseActivity;
 
@@ -12,5 +14,12 @@ public class LoginPwdActivity extends BaseActivity {
     @Override
     protected int setLayoutId() {
         return R.layout.activity_login_pwd;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
     }
 }

@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 
 import gy.lotteryticket.R;
 import gy.lotteryticket.base.BaseActivity;
+import gy.lotteryticket.ui.user.BankActivity;
 import gy.lotteryticket.ui.user.LoginPwdActivity;
 import gy.lotteryticket.ui.user.MessageActivity;
 import gy.lotteryticket.ui.user.QuPwdActivity;
@@ -70,6 +71,9 @@ public class UserActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.llay_login_pwd:
                 startActivity(new Intent(this, LoginPwdActivity.class));
+                break;
+            case R.id.llay_bank:
+                startActivity(new Intent(this, BankActivity.class));
                 break;
         }
     }
