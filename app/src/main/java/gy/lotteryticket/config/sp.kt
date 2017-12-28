@@ -6,6 +6,7 @@ package gd.mmanage.config
 object sp {
     var user_id = "user_id"
     var user_name = "user_name"
+    var login_name="login_name"
     var pwd = "pwd"
     var token = "token"
     var down_all = "down_all"

@@ -2,12 +2,17 @@ package gy.lotteryticket.control
 
 import android.content.Context
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import gd.mmanage.callback.LzyResponse
 import gd.mmanage.config.sp
 import gd.mmanage.config.url
 import gy.lotteryticket.base.BaseModule
 import gy.lotteryticket.config.command
 import gy.lotteryticket.method.Utils
+import gy.lotteryticket.model.ObjectRequest
+import gy.lotteryticket.model.TagModel
 import gy.lotteryticket.model.XZModel
+import gy.lotteryticket.model.ZDModel
 import java.util.HashMap
 
 /**
@@ -103,5 +108,16 @@ class XZModule : BaseModule {
         map.put("uid", Utils.getCache(sp.user_id))
         map.put("czid", cz_id)//彩种ID
         HttpUtils<String>().get(url.normal + "ylBetsGetNum.php", command.xz + 4, map, this)
+    }
+
+    /**
+     * 今日已结=今日输赢，即时驻单
+     * @param type 1，今日已结，今日输赢 2，即时驻单
+     * */
+    fun get_dz_last(type: String) {
+        var map = HashMap<String, String>()
+        map.put("uid", Utils.getCache(sp.user_id))
+        map.put("type", type)
+        HttpUtils<ObjectRequest<ZDModel>>().new_get(url.normal + "ylUserBets.php", command.xz + 5, map, this, object : TypeToken<ObjectRequest<ZDModel>>() {})
     }
 }

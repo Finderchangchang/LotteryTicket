@@ -5,8 +5,10 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
+import android.view.View
 import android.widget.ListView
 import com.arialyy.frame.module.AbsModule
+import com.arialyy.frame.util.AndroidUtils
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.zyyoona7.lib.EasyPopup
@@ -24,6 +26,9 @@ import gy.lotteryticket.method.Utils
 import gy.lotteryticket.model.CZModel
 import gy.lotteryticket.model.NormalRequest
 import gy.lotteryticket.model.PopModel
+import gy.lotteryticket.model.ZDModel
+import gy.lotteryticket.ui.user.RecordActivity
+import gy.lotteryticket.ui.user.TodayActivity
 import gy.lotteryticket.ui.xz.*
 import kotlinx.android.synthetic.main.activity_game.*
 import org.json.JSONArray
@@ -49,8 +54,53 @@ class GameActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
                     handler.postDelayed(runnable, 1000)
                 }
             }
+            command.xz + 5 -> {//即时注单
+                success as NormalRequest<ZDModel>
+                if (success.code == 0 && success.obj != null) {
+                    var s = ""
+                    var mQQPop: EasyPopup = EasyPopup(this).setContentView<EasyPopup>(R.layout.layout_right_pop)
+
+                    mQQPop.setAnimationStyle<EasyPopup>(R.style.QQPopAnim)
+                            .setFocusAndOutsideEnable<EasyPopup>(true)
+                            .setBackgroundDimEnable<EasyPopup>(true)
+                            .setWidth<EasyPopup>(AndroidUtils.dp2px(150))
+                            .createPopup<EasyPopup>()
+
+                    mQQPop.showAtAnchorView(title_right!!, VerticalGravity.BELOW, HorizontalGravity.LEFT, AndroidUtils.dp2px(30), 0)
+                    var lv = mQQPop.getView<ListView>(R.id.pop_lv)
+                    pop_list = ArrayList()
+                    pop_list.add(PopModel("即时注单", "(${success.obj!!.totalMoney})"))
+                    pop_list.add(PopModel("今日已结", ""))
+                    pop_list.add(PopModel("下注记录", ""))
+                    pop_list.add(PopModel("开奖结果", ""))
+                    pop_list.add(PopModel("提现", ""))
+                    lv.adapter = adapter
+                    lv.setOnItemClickListener { parent, view, position, id ->
+                        when (position) {
+                            0 -> {//即时注单
+
+                            }//startActivity(Intent(this@GameActivity))
+                            1 -> {
+                                startActivity(Intent(this, TodayActivity::class.java))
+                            }
+                            2 -> {
+                                startActivity(Intent(this, RecordActivity::class.java))
+                            }
+                            3 -> {
+                                //startActivity(Intent(this, TodayActivity::class.java))
+                            }
+                            4 -> {
+                                startActivity(Intent(this@GameActivity, CapitalActivity::class.java).putExtra("position", "2"))
+                            }
+                        }
+                    }
+                    adapter!!.refresh(pop_list)
+                }
+            }
         }
     }
+
+    var title_right: View? = null
 
     var control: XZModule? = null
     var array_list: ArrayList<CZModel> = ArrayList()
@@ -119,24 +169,8 @@ class GameActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
         //跳转到提现页面
         tx_btn.setOnClickListener { }
         title_bar.setRightClick { v ->
-            var mQQPop: EasyPopup = EasyPopup(this).setContentView<EasyPopup>(R.layout.layout_right_pop)
-
-            mQQPop.setAnimationStyle<EasyPopup>(R.style.QQPopAnim)
-                    .setFocusAndOutsideEnable<EasyPopup>(true)
-                    .setBackgroundDimEnable<EasyPopup>(true)
-                    .setWidth<EasyPopup>(dp2px(150F))
-                    .createPopup<EasyPopup>()
-
-            mQQPop.showAtAnchorView(v, VerticalGravity.BELOW, HorizontalGravity.LEFT, dp2px(30F), 0)
-            var lv = mQQPop.getView<ListView>(R.id.pop_lv)
-            pop_list = ArrayList()
-            pop_list.add(PopModel("即时注单", "(0.00)"))
-            pop_list.add(PopModel("今日已结", ""))
-            pop_list.add(PopModel("下注记录", ""))
-            pop_list.add(PopModel("开奖结果", ""))
-            pop_list.add(PopModel("提现", ""))
-            lv.adapter = adapter
-            adapter!!.refresh(pop_list)
+            title_right = v
+            control!!.get_dz_last("2")
         }
         cz_btn.setOnClickListener {
             startActivity(Intent(this@GameActivity, CapitalActivity::class.java).putExtra("position", "1"))

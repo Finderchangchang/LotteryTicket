@@ -1,5 +1,6 @@
 package gy.lotteryticket.ui.xz
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import com.arialyy.frame.module.AbsModule
@@ -18,11 +19,16 @@ import kotlinx.android.synthetic.main.ac_type2.*
 import android.os.Handler
 import android.view.View
 import android.widget.ListView
+import com.arialyy.frame.util.AndroidUtils
 import com.arialyy.frame.util.DensityUtils.dp2px
 import com.zyyoona7.lib.EasyPopup
 import com.zyyoona7.lib.HorizontalGravity
 import com.zyyoona7.lib.VerticalGravity
 import gd.mmanage.config.sp
+import gy.lotteryticket.ui.WebActivity
+import gy.lotteryticket.ui.main.CapitalActivity
+import gy.lotteryticket.ui.user.RecordActivity
+import gy.lotteryticket.ui.user.TodayActivity
 import kotlinx.android.synthetic.main.activity_js_gb.*
 import org.json.JSONArray
 
@@ -55,10 +61,20 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     var model = Gson().fromJson<PCDDModel>(success.obj!![0].toString(), PCDDModel::class.java)
                     var list = model.dataGroup
                     if (list.size > 0) {
+                        var a = 0
                         for (key in list) {
                             item_click_list.add("")
                             left_list.add(key.name)
-                            right_all_list.add(key.dataContent as ArrayList<XZModel>)
+                            if (a == 0 && cz_id == "1") {
+                                var list = key.dataContent as ArrayList<XZModel>
+                                for (i in 0 until 10) {
+                                    list.add(i * 6, XZModel(i.toString()))
+                                }
+                                right_all_list.add(list)
+                            } else {
+                                right_all_list.add(key.dataContent as ArrayList<XZModel>)
+                            }
+                            a++
                         }
                         left_adapter!!.refresh(left_list)
                         //加载默认数据
@@ -72,12 +88,11 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             command.xz + 1 -> {//下注
                 success as NormalRequest<JsonArray>
                 if (success.code == 0) {
-
+                    refreshUI()
+                    toast("下注成功")
                 } else {
-
+                    toast("下注失败")
                 }
-                toast(success.message)
-                var s = ""
             }
             command.xz + 2 -> {//切换AB盘
                 success as NormalRequest<JSONArray>
@@ -144,8 +159,73 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         old_qi_ll.visibility = View.VISIBLE
                 }
             }
+            command.xz + 5 -> {//即时注单
+                success as NormalRequest<ZDModel>
+                if (success.code == 0 && success.obj != null) {
+                    var mQQPop: EasyPopup = EasyPopup(this).setContentView<EasyPopup>(R.layout.layout_right_pop)
+
+                    mQQPop.setAnimationStyle<EasyPopup>(R.style.QQPopAnim)
+                            .setFocusAndOutsideEnable<EasyPopup>(true)
+                            .setBackgroundDimEnable<EasyPopup>(true)
+                            .setWidth<EasyPopup>(AndroidUtils.dp2px(150))
+                            .createPopup<EasyPopup>()
+
+                    mQQPop.showAtAnchorView(title_right!!, VerticalGravity.BELOW, HorizontalGravity.LEFT, AndroidUtils.dp2px(30), 0)
+                    var lv = mQQPop.getView<ListView>(R.id.pop_lv)
+                    pop_list = ArrayList()
+                    pop_list.add(PopModel("即时注单", "(${success.obj!!.totalMoney})"))
+                    pop_list.add(PopModel("今日已结", ""))
+                    pop_list.add(PopModel("下注记录", ""))
+                    pop_list.add(PopModel("开奖结果", ""))
+                    pop_list.add(PopModel("游戏规则", ""))
+                    pop_list.add(PopModel("充值", ""))
+                    pop_list.add(PopModel("提现", ""))
+                    pop_list.add(PopModel("今天输赢", "(${success.obj!!.totalShuyingMoney})"))
+                    lv.adapter = adapter
+                    lv.setOnItemClickListener { parent, view, position, id ->
+                        when (position) {
+                            0 -> {//即时注单
+
+                            }//startActivity(Intent(this@GameActivity))
+                            1 -> {
+                                startActivity(Intent(this, TodayActivity::class.java))
+                            }
+                            2 -> {
+                                startActivity(Intent(this, RecordActivity::class.java))
+                            }
+                            3 -> {//游戏规则
+                                startActivity(Intent(this, WebActivity::class.java).putExtra("position", "1"))
+                            }
+                            4 -> {//充值
+                                startActivity(Intent(this, CapitalActivity::class.java).putExtra("position", "1"))
+                            }
+                            5 -> {//提现
+                                startActivity(Intent(this, CapitalActivity::class.java).putExtra("position", "2"))
+                            }
+                            6 -> {
+                                startActivity(Intent(this, TodayActivity::class.java))
+                            }
+                        }
+                    }
+                    adapter!!.refresh(pop_list)
+                }
+            }
         }
         dialog!!.dismiss()
+    }
+
+    /**
+     * 刷新UI
+     * */
+    fun refreshUI() {
+        for (i in 0 until item_click_list.size) {
+            item_click_list[i] = ""
+        }
+        //计算当前下的注数
+        xz_num = 0
+        zhu_tv.text = xz_num.toString()
+        right_adapter!!.refresh(right_all_list[click_position])
+        left_adapter!!.refresh(left_list)
     }
 
     var can_run = true//执行循环操作
@@ -202,6 +282,8 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         return resources.getIdentifier("s_" + url, "mipmap", ctx.packageName)
     }
 
+    var title_right: View? = null
+
     var adapter: CommonAdapter<PopModel>? = null
     var pop_list: ArrayList<PopModel> = ArrayList()
     override fun init(savedInstanceState: Bundle?) {
@@ -219,27 +301,9 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             }
         }
         title_bar.setRightClick { v ->
-            var mQQPop: EasyPopup = EasyPopup(this).setContentView<EasyPopup>(R.layout.layout_right_pop)
 
-            mQQPop.setAnimationStyle<EasyPopup>(R.style.QQPopAnim)
-                    .setFocusAndOutsideEnable<EasyPopup>(true)
-                    .setBackgroundDimEnable<EasyPopup>(true)
-                    .setWidth<EasyPopup>(dp2px(150))
-                    .createPopup<EasyPopup>()
-
-            mQQPop.showAtAnchorView(v, VerticalGravity.BELOW, HorizontalGravity.LEFT, dp2px(30), 0)
-            var lv = mQQPop.getView<ListView>(R.id.pop_lv)
-            pop_list = ArrayList()
-            pop_list.add(PopModel("即时注单", "(0.00)"))
-            pop_list.add(PopModel("今日已结", ""))
-            pop_list.add(PopModel("下注记录", ""))
-            pop_list.add(PopModel("开奖结果", ""))
-            pop_list.add(PopModel("游戏规则", ""))
-            pop_list.add(PopModel("充值", ""))
-            pop_list.add(PopModel("提现", ""))
-            pop_list.add(PopModel("今天输赢", "(0.00)"))
-            lv.adapter = adapter
-            adapter!!.refresh(pop_list)
+            title_right = v
+            control!!.get_dz_last("2")
         }
         title_adapter = object : CommonAdapter<String>(this, title_list, R.layout.item_title) {
             override fun convert(holder: CommonViewHolder, model: String, position: Int) {
@@ -265,6 +329,14 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         dialog!!.setTitle(R.string.dialog_loading)
         dialog!!.show()
         cz_id = intent.getStringExtra("index")
+        when (cz_id) {
+            "1" -> {
+                ty2_top_gv.numColumns = 6
+            }
+            else -> {
+                ty2_top_gv.numColumns = 2
+            }
+        }
         control!!.get_tz(cz_id, "1")
         control!!.get_zj_last(cz_id)
         ty2_top_gv.setOnItemClickListener { _, _, position, _ ->
@@ -279,6 +351,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     holder.setTextColor(R.id.title, R.color.black)
                     holder.setBGColor(R.id.total_rl, R.color.tm_white)
                 }
+
                 if (item_click_list[position].length > 2) {
                     holder.setVisible(R.id.iv, true)
                 } else {
@@ -305,7 +378,13 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         } catch (e: Exception) {
                             holder.setBG(R.id.left_tv, R.color.quan_tm_white)
                         }
-                        holder.setText(R.id.right_tv, Utils.cut_all_0_num(model.odds))
+                        if (model.odds != null && click_position == 0) {
+                            holder.setVisible(R.id.left_tv, false)
+                            holder.setText(R.id.right_tv, Utils.cut_all_0_num(model.odds))
+                        } else {
+                            if (model.odds != null) holder.setText(R.id.right_tv, Utils.cut_all_0_num(model.odds))
+                            holder.setVisible(R.id.left_tv, true)
+                        }
                     }
                     "10" -> {//江苏快3
                         holder.setVisible(R.id.left1_tv, false)
@@ -365,6 +444,11 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         left_lv.setOnItemClickListener { parent, view, position, id ->
             if (click_position != position) {//两个位置不相同 执行点击操作
                 click_position = position
+                if (click_position == 0 && cz_id == "1") {
+                    ty2_top_gv.numColumns = 6
+                } else {
+                    ty2_top_gv.numColumns = 2
+                }
                 ty2_title.text = left_list[click_position]
                 left_adapter!!.refresh(left_list)
                 if (right_all_list.size > position) {

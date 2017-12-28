@@ -128,6 +128,33 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     }
                 }
             }
+            command.xz + 5 -> {//即时注单
+                success as NormalRequest<ZDModel>
+                if (success.code == 0 && success.obj != null) {
+                    var s = ""
+                    var mQQPop: EasyPopup = EasyPopup(this).setContentView<EasyPopup>(R.layout.layout_right_pop)
+
+                    mQQPop.setAnimationStyle<EasyPopup>(R.style.QQPopAnim)
+                            .setFocusAndOutsideEnable<EasyPopup>(true)
+                            .setBackgroundDimEnable<EasyPopup>(true)
+                            .setWidth<EasyPopup>(dp2px(150))
+                            .createPopup<EasyPopup>()
+
+                    mQQPop.showAtAnchorView(title_right!!, VerticalGravity.BELOW, HorizontalGravity.LEFT, dp2px(30), 0)
+                    var lv = mQQPop.getView<ListView>(R.id.pop_lv)
+                    pop_list = ArrayList()
+                    pop_list.add(PopModel("即时注单", "(${success.obj!!.totalMoney})"))
+                    pop_list.add(PopModel("今日已结", ""))
+                    pop_list.add(PopModel("下注记录", ""))
+                    pop_list.add(PopModel("开奖结果", ""))
+                    pop_list.add(PopModel("游戏规则", ""))
+                    pop_list.add(PopModel("充值", ""))
+                    pop_list.add(PopModel("提现", ""))
+                    pop_list.add(PopModel("今天输赢", "(${success.obj!!.totalShuyingMoney})"))
+                    lv.adapter = adapter
+                    adapter!!.refresh(pop_list)
+                }
+            }
             command.xz + 4 -> {//获得彩种顶部信息
                 success as NormalRequest<JsonArray>
                 if (success.obj != null && success.obj!!.size() > 0) {
@@ -202,7 +229,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             }
         }
     }
-
+    var title_right: View? = null
     override fun onError(result: Int, error: Any?) {
         dialog!!.dismiss()
     }
@@ -239,27 +266,8 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             }
         }
         title_bar.setRightClick { v ->
-            var mQQPop: EasyPopup = EasyPopup(this).setContentView<EasyPopup>(R.layout.layout_right_pop)
-
-            mQQPop.setAnimationStyle<EasyPopup>(R.style.QQPopAnim)
-                    .setFocusAndOutsideEnable<EasyPopup>(true)
-                    .setBackgroundDimEnable<EasyPopup>(true)
-                    .setWidth<EasyPopup>(dp2px(150))
-                    .createPopup<EasyPopup>()
-
-            mQQPop.showAtAnchorView(v, VerticalGravity.BELOW, HorizontalGravity.LEFT, dp2px(30), 0)
-            var lv = mQQPop.getView<ListView>(R.id.pop_lv)
-            pop_list = ArrayList()
-            pop_list.add(PopModel("即时注单", "(0.00)"))
-            pop_list.add(PopModel("今日已结", ""))
-            pop_list.add(PopModel("下注记录", ""))
-            pop_list.add(PopModel("开奖结果", ""))
-            pop_list.add(PopModel("游戏规则", ""))
-            pop_list.add(PopModel("充值", ""))
-            pop_list.add(PopModel("提现", ""))
-            pop_list.add(PopModel("今天输赢", "(0.00)"))
-            lv.adapter = adapter
-            adapter!!.refresh(pop_list)
+            title_right = v
+            control!!.get_dz_last("2")
         }
         when (Utils.getCache(sp.pan_id)) {
             "2" -> {
