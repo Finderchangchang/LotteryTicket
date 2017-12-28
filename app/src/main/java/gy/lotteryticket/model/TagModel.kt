@@ -5,6 +5,8 @@ package gy.lotteryticket.model
  */
 
 class TagModel{
+    constructor()
+
     var type=""//登录的类型
     var con=""//文字描述
 }

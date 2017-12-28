@@ -3,19 +3,26 @@ package gy.lotteryticket.control
 import android.text.TextUtils
 import com.google.gson.Gson
 import com.google.gson.JsonParser
+import com.google.gson.reflect.TypeToken
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.callback.StringCallback
 import gd.mmanage.callback.LzyResponse
 import gd.mmanage.config.sp
 import gy.lotteryticket.base.BaseModule
+import gy.lotteryticket.callback.BaseDao
+import gy.lotteryticket.callback.HibernateBaseDao
 import gy.lotteryticket.config.command.login
 import gy.lotteryticket.method.Utils
 import gy.lotteryticket.method.Utils.string2MD5
 import gy.lotteryticket.model.NormalRequest
+import gy.lotteryticket.model.TagModel
+import gy.lotteryticket.model.UserModel
 import okhttp3.Call
 import okhttp3.Response
 import wai.gr.cla.callback.JsonCallback
+import java.io.Serializable
 import java.lang.Exception
+import java.lang.reflect.ParameterizedType
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,7 +30,7 @@ import java.util.*
  * Created by Finder丶畅畅 on 2017/12/20 23:12
  * QQ群481606175
  */
-class HttpUtils<T> {
+class HttpUtils<T>() {
 
     fun post(url: String, back_id: Int, control: BaseModule) {
         post(url, back_id, null, control)
@@ -90,6 +97,46 @@ class HttpUtils<T> {
         })
     }
 
+    fun newgets(aa: String, type: TypeToken<T>) {
+        var t = Gson().fromJson<T>(aa, type.type)
+        var s = ""
+    }
+
+    fun new_get(url: String, back_id: Int, control: BaseModule, type: TypeToken<T>) {
+        new_get(url, back_id, null, control, type)
+    }
+
+    fun new_get(url: String, back_id: Int, map: HashMap<String, String>?, control: BaseModule, type: TypeToken<T>) {
+        var go = OkGo.get(url)
+        if (map != null) {
+            for (model in map) {
+                go.params(model.key, model.value)
+            }
+        }
+        var key = "7f8ddadbe4e91911a58ed525b3510748"
+        var ramdom = "778811"
+        go.params("signStr", ramdom)
+        go.params("sign", string2MD5("signStr=$ramdom&key=$key&timeStamp=${Utils.dateToStamp()}"))
+        go.execute(object : StringCallback() {
+            override fun onSuccess(str: String, call: okhttp3.Call?, response: okhttp3.Response?) {
+                var t = Gson().fromJson<T>(str, type.type) as LzyResponse<*>
+                if (t.state == 1) {
+                    try {
+                        control.callback(back_id, NormalRequest(0, t.msg, t.dataList))
+                    } catch (e: Exception) {
+                        control.callback(back_id, NormalRequest(2, "未知错误：" + e.toString(), null))
+                    }
+                } else {
+                    control.callback(back_id, NormalRequest(1, t.msg, t.Data))
+                }
+            }
+
+            override fun onError(call: Call?, response: Response?, e: Exception?) {
+                control.callback(back_id, NormalRequest(2, "未知错误：" + e.toString(), null))
+            }
+        })
+    }
+
     fun get(url: String, back_id: Int, control: BaseModule) {
         get(url, back_id, null, control)
     }
@@ -101,6 +148,7 @@ class HttpUtils<T> {
      * @param list post过去的参数
      * */
     fun get(url: String, back_id: Int, map: HashMap<String, String>?, control: BaseModule) {
+
         var go = OkGo.get(url)
         if (map != null) {
             for (model in map) {
@@ -114,7 +162,7 @@ class HttpUtils<T> {
         go.execute(object : StringCallback() {
             override fun onSuccess(str: String, call: okhttp3.Call?, response: okhttp3.Response?) {
                 var t = Gson().fromJson(str, LzyResponse::class.java)
-                if (t.state==1) {
+                if (t.state == 1) {
                     try {
                         //t.Data as LinkedTreeMap<String, String>
                         var em = JsonParser().parse(str).asJsonObject.get("dataList")

@@ -2,14 +2,20 @@ package gy.lotteryticket.control
 
 import android.content.Context
 import android.text.TextUtils
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import gd.mmanage.callback.LzyResponse
 import gd.mmanage.config.sp
 import gd.mmanage.config.url
 import gy.lotteryticket.base.BaseModule
 import gy.lotteryticket.config.command
 import gy.lotteryticket.method.Utils
 import gy.lotteryticket.method.Utils.string2MD5
+import gy.lotteryticket.model.NormalModel
 import gy.lotteryticket.model.NormalRequest
+import gy.lotteryticket.model.TagModel
 import gy.lotteryticket.model.UserModel
+import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,7 +33,8 @@ class MainModule : BaseModule {
     fun get_jb_main() {
         var map = HashMap<String, String>()
         map.put("type", "0")
-        HttpUtils<String>().get(url.normal + "ylMain.php", command.login, map, this)
+        HttpUtils<LzyResponse<TagModel>>()
+                .new_get(url.normal + "ylMain.php", command.login, map, this, object : TypeToken<LzyResponse<TagModel>>() {})
     }
 
     /**
@@ -67,6 +74,7 @@ class MainModule : BaseModule {
 
         HttpUtils<String>().get(url.normal + "ylUserUPass.php", command.login + 3, map, this)
     }
+
     /**
      * 银行卡（查询银行卡,查询银行列表）
      * */
@@ -74,8 +82,9 @@ class MainModule : BaseModule {
         var map = HashMap<String, String>()
         map.put("type", "0")//1，彩种列表  2，开奖结果
         map.put("uid", Utils.getCache(sp.user_id))//用户uid
-        HttpUtils<String>().get(url.normal + "ylUserBank.php", command.login+4, map, this)
+        HttpUtils<String>().get(url.normal + "ylUserBank.php", command.login + 4, map, this)
     }
+
     /**
      * .php银行卡（添加银行卡，修改银行卡）
      * */
