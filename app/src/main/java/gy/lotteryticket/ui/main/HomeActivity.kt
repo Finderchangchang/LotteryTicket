@@ -81,9 +81,9 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
             }
         })
         //重庆
-        ll1.setOnClickListener { startActivity(Intent(this@HomeActivity, JSGBActivity::class.java).putExtra("index", "1")) }
+        ll3.setOnClickListener { startActivity(Intent(this@HomeActivity, JSGBActivity::class.java).putExtra("index", "1")) }
         //北京赛车
-        ll2.setOnClickListener { startActivity(Intent(this@HomeActivity, PCDDActivity::class.java).putExtra("index", "50")) }
+        ll1.setOnClickListener { startActivity(Intent(this@HomeActivity, PCDDActivity::class.java).putExtra("index", "50")) }
         //幸运飞艇
         ll3.setOnClickListener { startActivity(Intent(this@HomeActivity, PCDDActivity::class.java).putExtra("index", "55")) }
         ll4.setOnClickListener { startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 0)) }//在线客服

@@ -62,6 +62,7 @@ class UserActivity : BaseActivity<ActivityUserBinding>(), AbsModule.OnCallback {
             Utils.putCache(sp.pwd, "")
             Utils.putCache(sp.pan_id, "")
             Utils.putCache(sp.coin, "")
+            finish()
         }
         getModule(MainModule::class.java, this).get_user_login(Utils.getCache(sp.login_name), Utils.getCache(sp.pwd), 2)//登录操作
         llay_data.setOnClickListener {
