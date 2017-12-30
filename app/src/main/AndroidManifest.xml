@@ -36,6 +36,7 @@
         <activity android:name=".ui.user.BankActivity" />
         <activity android:name=".ui.user.RecordActivity" />
         <activity android:name=".ui.user.TodayActivity" />
+        <activity android:name=".ui.user.RegisterActivity" />
     </application>
 
 </manifest>

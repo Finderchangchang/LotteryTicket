@@ -1,11 +1,9 @@
 package gy.lotteryticket.ui
 
-import android.os.Bundle
-import com.arialyy.frame.module.AbsModule
-
-import kotlinx.android.synthetic.main.activity_login.*
 import android.content.Intent
+import android.os.Bundle
 import android.text.TextUtils
+import com.arialyy.frame.module.AbsModule
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.jaeger.library.StatusBarUtil
@@ -18,10 +16,9 @@ import gy.lotteryticket.control.MainModule
 import gy.lotteryticket.databinding.ActivityLoginBinding
 import gy.lotteryticket.method.Utils
 import gy.lotteryticket.model.NormalRequest
-import gy.lotteryticket.model.TagModel
 import gy.lotteryticket.model.UserModel
-import gy.lotteryticket.ui.main.HomeActivity
-import net.tsz.afinal.view.LoadingDialog
+import gy.lotteryticket.ui.user.RegisterActivity
+import kotlinx.android.synthetic.main.activity_login.*
 
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(), AbsModule.OnCallback {
@@ -42,6 +39,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), AbsModule.OnCallback
                     control!!.get_user_login(name, pwd, 1)//登录操作
                 }
             }
+        }
+        //注册按钮
+        register_btn.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 

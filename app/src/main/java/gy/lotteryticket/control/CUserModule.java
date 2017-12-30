@@ -2,6 +2,7 @@ package gy.lotteryticket.control;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -27,6 +28,7 @@ public class CUserModule extends BaseModule {
     public static int GETRECORD = 111112;
     public static int GETTODAY = 111113;
     public static int UPDATEBANK = 111114;
+    public static int REGISTER = 111115;
 
     private Context mContext;
 
@@ -58,10 +60,10 @@ public class CUserModule extends BaseModule {
         HashMap<String, String> map = new HashMap<>();
         map.put("type", String.valueOf(type));
         map.put("uid", getUid());//从缓存抓取
-        map.put("bankId",bankId);
-        map.put("account",account);
-        map.put("countname",countname);
-        map.put("username",username);
+        map.put("bankId", bankId);
+        map.put("account", account);
+        map.put("countname", countname);
+        map.put("username", username);
         new HttpUtils<String>().get(normal + "ylUserBankSet.php", UPDATEBANK, map, this);
     }
 
@@ -89,6 +91,30 @@ public class CUserModule extends BaseModule {
         map.put("uid", getUid());//从缓存抓取
         new HttpUtils<ObjectRequest<TodayModel>>().new_get(normal + "ylUserBets.php", GETTODAY, map, this, new TypeToken<ObjectRequest<TodayModel>>() {
         });
+    }
+
+    /**
+     * 注册
+     *
+     * @param username
+     * @param password
+     * @param coinPassword
+     * @param qq
+     * @param name
+     */
+    public void register(String username, String password, String coinPassword, String qq, String name) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("username", username);
+        map.put("password", password);
+        map.put("qq", qq);
+        map.put("ptype", "1");
+        if (!TextUtils.isEmpty(coinPassword)) {
+            map.put("coinPassword", coinPassword);
+        }
+        if (!TextUtils.isEmpty(name)) {
+            map.put("name", name);
+        }
+        new HttpUtils<String>().get(normal + "ylUserReg.php", UPDATEBANK, map, this);
     }
 
     public String getUid() {
