@@ -10,8 +10,7 @@
         style="@style/type1_lab"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:gravity="center"
-        android:text="冠亚和值" />
+        android:gravity="center"/>
 
     <GridView
         android:id="@+id/ty2_top_gv"

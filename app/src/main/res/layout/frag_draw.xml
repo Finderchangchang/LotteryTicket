@@ -3,14 +3,84 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal">
 
         <Button
-            android:layout_width="200dp"
+            android:id="@+id/btn_add"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/btn_bg_selector"
+            android:text="添加银行卡"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="绑定银行卡" />
-    </LinearLayout>
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/fs_cb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="反水提现到余额"
+                android:layout_marginLeft="5dp"/>
+
+            <EditText
+                android:id="@+id/qk_je_et"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_bg"
+                android:hint="请填写取款金额"
+                android:paddingLeft="5dp"
+                android:inputType="number" />
+            <TextView
+                android:id="@+id/db_tv"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="单笔下限100，上限1000000"/>
+            <EditText
+                android:id="@+id/card_info_et"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@drawable/edit_bg"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:inputType="number"
+                android:layout_marginBottom="5dp"
+                android:enabled="false"/>
+            <EditText
+                android:id="@+id/qk_pwd_et"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:paddingLeft="5dp"
+                android:background="@drawable/edit_bg"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:inputType="number"
+                android:layout_marginBottom="5dp"
+                android:hint="请填写取款密码"/>
+            <Button
+                android:id="@+id/commit_btn"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/btn_bg_selector"
+                android:text="确认提交"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+    </RelativeLayout>
 </layout>

@@ -27,7 +27,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), AbsModule.OnCallback
         super.init(savedInstanceState)
         control = getModule(MainModule::class.java, this)//初始化网络请求
         getModule(LoginModule::class.java, this).check_version()
-        StatusBarUtil.setTransparent(this)//设置状态栏颜色
         //登录按钮
         login_btn.setOnClickListener {
             var name = id_et.text.toString().trim()
@@ -62,10 +61,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), AbsModule.OnCallback
                         Utils.putCache(sp.pwd, pwd_et.text.toString().trim())
                         Utils.putCache(sp.pan_id, user.panid)
                         Utils.putCache(sp.coin, user.coin)
+                        Utils.putCache(sp.coinPassword,user.coinPassword)
                     }
                     finish()
+                }else {
+                    toast(success.message)
                 }
-                toast(success.message)
             }
             command.xz -> {
 

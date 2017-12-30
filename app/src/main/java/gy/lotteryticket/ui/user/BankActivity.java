@@ -97,10 +97,14 @@ public class BankActivity extends BaseActivity implements AbsModule.OnCallback {
         Type type = new TypeToken<List<BankModel>>() {
         }.getType();
         List<BankModel> data = new Gson().fromJson(res.getObj(), type);
-        Log.e("TAG", "size : " + data.size());
         mData.clear();
         mData.addAll(data);
         mAdapter.notifyDataSetChanged();
+        if(data.size()>0){
+            btn_add.setVisibility(View.GONE);
+        }else{
+            btn_add.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

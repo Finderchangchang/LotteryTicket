@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LotteryTicket</string>
+    <string name="app_name">长实国际</string>
     <string name="toast_tz">请输入投注金额</string>
     <string name="toast_wf">请选择玩法</string>
     <string name="dialog_loading">加载中,请稍后...</string>

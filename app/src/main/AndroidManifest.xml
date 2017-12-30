@@ -5,9 +5,9 @@
     <application
         android:name=".base.BaseApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.LoginActivity"></activity>
@@ -29,7 +29,6 @@
         <activity android:name=".ui.user.QuPwdActivity" />
         <activity android:name=".ui.user.UserDataActivity" />
         <activity android:name=".ui.user.MessageActivity" />
-        <activity android:name=".ui.user.LoginPwdActivity" />
         <activity android:name=".ui.xz.PCDDActivity" />
         <activity android:name=".ui.xz.JSGBActivity" />
         <activity android:name=".ui.WebActivity"></activity>

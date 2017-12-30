@@ -8,6 +8,7 @@ object sp {
     var user_name = "user_name"
     var login_name="login_name"
     var pwd = "pwd"
+    var coinPassword="coinPassword"//取款密码
     var token = "token"
     var down_all = "down_all"
     var equipment_id = "equipment_id"//设备id

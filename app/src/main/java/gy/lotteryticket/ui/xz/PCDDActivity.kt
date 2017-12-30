@@ -79,7 +79,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         left_adapter!!.refresh(left_list)
                         //加载默认数据
                         if (right_all_list.size > 0) {
-                            ty2_title.text = "三军、大小"
+                            ty2_title.text = left_list[0]
                             right_adapter!!.refresh(right_all_list[0])
                         }
                     }

@@ -25,8 +25,8 @@ class CapitalActivity : BaseActivity<ActivityBjCarBinding>(), AbsModule.OnCallba
                 if (success.obj != null && success.obj!!.size() > 0) {
                     var user = Gson().fromJson<UserModel>(success.obj!![0].toString(), UserModel::class.java)
                     name_tv.text = Utils.getCache(sp.login_name)
-                    yue_tv.text = user.coin
-                    fs_yue_tv.text = user.coinFanShui
+                    yue_tv.text = user.coin+"RMB"
+                    fs_yue_tv.text = "反水金额："+user.coinFanShui
                 }
 
             }

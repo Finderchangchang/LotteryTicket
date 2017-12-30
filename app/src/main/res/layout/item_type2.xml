@@ -21,7 +21,8 @@
         android:gravity="center"
         android:textColor="@color/black"
         android:textSize="16sp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        />
 
     <TextView
         android:id="@+id/left2_tv"
@@ -48,5 +49,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:layout_marginLeft="5dp"/>
 </LinearLayout>

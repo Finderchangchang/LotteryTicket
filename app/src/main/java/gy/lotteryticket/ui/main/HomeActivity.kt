@@ -85,7 +85,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
         //北京赛车
         ll1.setOnClickListener { startActivity(Intent(this@HomeActivity, PCDDActivity::class.java).putExtra("index", "50")) }
         //幸运飞艇
-        ll3.setOnClickListener { startActivity(Intent(this@HomeActivity, PCDDActivity::class.java).putExtra("index", "55")) }
+        ll2.setOnClickListener { startActivity(Intent(this@HomeActivity, PCDDActivity::class.java).putExtra("index", "55")) }
         ll4.setOnClickListener { startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 0)) }//在线客服
         ll5.setOnClickListener { startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 1)) }//聊天室
         ll6.setOnClickListener { startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 2)) }//电脑版本
@@ -111,7 +111,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
         } else {
             login_tv.visibility = View.GONE
             user_ll.visibility = View.VISIBLE
-            main_tv_username.text = Utils.getCache(sp.user_name)
+            main_tv_username.text = Utils.getCache(sp.login_name)
         }
     }
 }

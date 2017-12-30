@@ -19,7 +19,6 @@
             android:id="@+id/title_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:center_tv="江苏骰宝（快3）"
             app:left_iv="@mipmap/left_jian"
             app:right_iv="@mipmap/caidan_san" />
 
@@ -67,7 +66,6 @@
                 android:id="@+id/next_qi_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1234567期"
                 android:textColor="@color/white" />
 
             <TextView
@@ -82,7 +80,7 @@
                 android:id="@+id/next2_qi_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00:15"
+                android:text="00:00"
                 android:textColor="@color/white" />
 
             <TextView
@@ -97,7 +95,7 @@
                 android:id="@+id/next4_qi_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00:45"
+                android:text="00:00"
                 android:textColor="@color/white" />
         </LinearLayout>
 
@@ -134,7 +132,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="60dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -151,7 +149,9 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="5dp"
+                        android:layout_gravity="center_vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -164,7 +164,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0"
-                            android:textColor="@color/yellow" />
+                            android:textColor="@color/yellow"
+                            android:textSize="18sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -176,10 +177,12 @@
                     <EditText
                         android:id="@+id/tz_et"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/edit_tm_bg"
                         android:hint="投注额"
-                        android:inputType="number" />
+                        android:inputType="number"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginBottom="8dp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -187,13 +190,18 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:padding="5dp">
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="7dp"
+                    android:paddingBottom="7dp"
+                    >
 
                     <Button
                         android:id="@+id/left_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/huired"
+                        android:background="@drawable/btn_bg_ups"
+
                         android:text="下注"
                         android:textColor="@color/white" />
 
@@ -202,7 +210,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:background="@color/colorPrimary"
+                        android:background="@drawable/btn_bg_up"
+
                         android:text="A盘√"
                         android:textColor="@color/white" />
 
@@ -211,7 +220,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:background="@color/huired"
+                        android:background="@drawable/btn_bg_ups"
+
                         android:text="B盘"
                         android:textColor="@color/white" />
                 </LinearLayout>

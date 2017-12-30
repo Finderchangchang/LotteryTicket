@@ -19,13 +19,7 @@ import gy.lotteryticket.databinding.ActivityUserBinding
 import gy.lotteryticket.method.Utils
 import gy.lotteryticket.model.NormalRequest
 import gy.lotteryticket.model.UserModel
-import gy.lotteryticket.ui.user.BankActivity
-import gy.lotteryticket.ui.user.LoginPwdActivity
-import gy.lotteryticket.ui.user.MessageActivity
-import gy.lotteryticket.ui.user.QuPwdActivity
-import gy.lotteryticket.ui.user.RecordActivity
-import gy.lotteryticket.ui.user.TodayActivity
-import gy.lotteryticket.ui.user.UserDataActivity
+import gy.lotteryticket.ui.user.*
 import kotlinx.android.synthetic.main.activity_user.*
 
 class UserActivity : BaseActivity<ActivityUserBinding>(), AbsModule.OnCallback {
@@ -70,9 +64,9 @@ class UserActivity : BaseActivity<ActivityUserBinding>(), AbsModule.OnCallback {
                     .putExtra("yue", user!!.coin)
                     .putExtra("real_name", user!!.nickname))
         }
-        llay_qu.setOnClickListener { startActivity(Intent(this, QuPwdActivity::class.java)) }
+        llay_qu.setOnClickListener { startActivity(Intent(this, ChangePwdActivity::class.java).putExtra("position","1")) }
         llay_msg.setOnClickListener { startActivity(Intent(this, MessageActivity::class.java)) }
-        llay_login_pwd.setOnClickListener { startActivity(Intent(this, LoginPwdActivity::class.java)) }
+        llay_login_pwd.setOnClickListener { startActivity(Intent(this, ChangePwdActivity::class.java).putExtra("position","2")) }
         llay_bank.setOnClickListener { startActivity(Intent(this, BankActivity::class.java)) }
         llay_today.setOnClickListener { startActivity(Intent(this, TodayActivity::class.java)) }
         llay_xiazhu.setOnClickListener { startActivity(Intent(this, RecordActivity::class.java)) }
