@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;
 
+import gy.lotteryticket.R;
 import gy.lotteryticket.model.BankModel;
 
 /**
@@ -22,6 +23,8 @@ public class BankAdapter extends BaseQuickAdapter<BankModel, BaseViewHolder> {
 
     @Override
     protected void convert(BaseViewHolder helper, BankModel item) {
-
+        helper.setText(R.id.tv_name, "开户姓名："+item.getUsername());
+        helper.setText(R.id.tv_accout, "开户账号："+item.getAccount());
+        helper.setText(R.id.tv_point, "开户网点："+item.getCountname());
     }
 }

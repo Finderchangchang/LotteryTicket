@@ -13,66 +13,94 @@
         app:center_tv="添加银行卡号"
         app:left_iv="@mipmap/left_jian" />
 
-    <LinearLayout
-        android:id="@+id/llay_select"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/fang_corner_up"
-        android:orientation="horizontal"
-        android:padding="10dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="选择银行" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@mipmap/down_jian" />
+            <LinearLayout
+                android:id="@+id/llay_select"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/fang_corner_up"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_bank"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="选择银行" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/edit_bg"
-        android:hint="请输入开户行"
-        android:inputType="textPassword"
-        android:padding="10dp"
-        android:textSize="15sp" />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/down_jian" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/edit_bg"
-        android:hint="请输入银行卡号"
-        android:inputType="textPassword"
-        android:padding="10dp"
-        android:textSize="15sp" />
+            </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="开户姓名：123456"
-        android:textSize="18dp" />
+            <EditText
+                android:id="@+id/et_kaihuhang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/edit_bg"
+                android:hint="请输入开户行"
+                android:padding="10dp"
+                android:textSize="15sp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/btn_round_main"
-        android:gravity="center"
-        android:padding="13dp"
-        android:text="确定"
-        android:textColor="@color/white" />
+            <EditText
+                android:id="@+id/et_kahao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/edit_bg"
+                android:inputType="number"
+                android:hint="请输入银行卡号"
+                android:padding="10dp"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/edit_bg"
+                android:hint="请输入姓名"
+                android:padding="10dp"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="开户姓名："
+                android:textSize="18dp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/btn_round_main"
+                android:gravity="center"
+                android:padding="13dp"
+                android:text="确定"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

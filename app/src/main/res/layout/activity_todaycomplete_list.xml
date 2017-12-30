@@ -85,6 +85,7 @@
         android:padding="10dp">
 
         <TextView
+            android:id="@+id/tv_xia"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -93,6 +94,7 @@
             android:textColor="@color/white" />
 
         <TextView
+            android:id="@+id/tv_fan"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -101,11 +103,13 @@
             android:textColor="@color/white" />
 
         <TextView
+            android:id="@+id/tv_shu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="输赢金额:0"
+            android:text="输赢金额：0"
             android:textColor="@color/white" />
     </LinearLayout>
+
 </LinearLayout>

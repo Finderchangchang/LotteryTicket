@@ -1,10 +1,18 @@
 package gy.lotteryticket.control;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.google.gson.reflect.TypeToken;
 
 import java.util.HashMap;
 
 import gy.lotteryticket.base.BaseModule;
+import gy.lotteryticket.model.ObjectRequest;
+import gy.lotteryticket.model.RecordModel;
+import gy.lotteryticket.model.TodayModel;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by JX on 2017/12/26.
@@ -16,9 +24,15 @@ public class CUserModule extends BaseModule {
     private String normal = key + "Api/";
 
     public static int GETBANK = 111111;
+    public static int GETRECORD = 111112;
+    public static int GETTODAY = 111113;
+    public static int UPDATEBANK = 111114;
+
+    private Context mContext;
 
     public CUserModule(Context context) {
         super(context);
+        mContext = context;
     }
 
     /**
@@ -27,10 +41,59 @@ public class CUserModule extends BaseModule {
      *
      * @param type
      */
-    public void getBankList(int type ,String uid) {
+    public void getBankList(int type) {
         HashMap<String, String> map = new HashMap<>();
         map.put("type", String.valueOf(type));
-        map.put("uid", uid);//从缓存抓取
+        map.put("uid", getUid());//从缓存抓取
         new HttpUtils<String>().get(normal + "ylUserBank.php", GETBANK, map, this);
     }
+
+    /**
+     * 1：添加银行卡
+     * 2：修改银行卡
+     *
+     * @param type
+     */
+    public void updateBank(int type, String bankId, String account, String countname, String username) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("type", String.valueOf(type));
+        map.put("uid", getUid());//从缓存抓取
+        map.put("bankId",bankId);
+        map.put("account",account);
+        map.put("countname",countname);
+        map.put("username",username);
+        new HttpUtils<String>().get(normal + "ylUserBankSet.php", UPDATEBANK, map, this);
+    }
+
+    /**
+     * 获取下注记录
+     *
+     * @param type
+     */
+    public void getRecord(int type) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("type", String.valueOf(type));
+        map.put("uid", getUid());//从缓存抓取
+        new HttpUtils<ObjectRequest<RecordModel>>().new_get(normal + "ylUserBetsAll.php", GETRECORD, map, this, new TypeToken<ObjectRequest<RecordModel>>() {
+        });
+    }
+
+    /**
+     * 获取今日已结
+     *
+     * @param type
+     */
+    public void getToday(int type) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("type", String.valueOf(type));
+        map.put("uid", getUid());//从缓存抓取
+        new HttpUtils<ObjectRequest<TodayModel>>().new_get(normal + "ylUserBets.php", GETTODAY, map, this, new TypeToken<ObjectRequest<TodayModel>>() {
+        });
+    }
+
+    public String getUid() {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences("grclass", MODE_PRIVATE);
+        return sharedPreferences.getString("user_id", "");
+    }
+
 }
