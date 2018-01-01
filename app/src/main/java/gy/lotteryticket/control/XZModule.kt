@@ -34,12 +34,12 @@ class XZModule : BaseModule {
      * 70，	六合彩
      * @param pan_id 1，2用户登录接口获得
      * */
-    fun get_tz(cz_id: String, pan_id: String) {
+    fun get_tz(cz_id: String) {
         var map = HashMap<String, String>()
         map.put("type", "1")
         map.put("uid", Utils.getCache(sp.user_id))
         map.put("czid", cz_id)//彩种ID
-        map.put("panid", pan_id)//盘ID
+        map.put("panid", Utils.getCache(sp.pan_id))//盘ID
         HttpUtils<String>().get(url.normal + "ylBets.php", command.xz, map, this)
     }
 
@@ -78,10 +78,7 @@ class XZModule : BaseModule {
         var map = HashMap<String, String>()
         map.put("type", "1")
         map.put("uid", Utils.getCache(sp.user_id))
-        when (Utils.getCache(sp.pan_id)) {
-            "1" -> map.put("panid", "2")//盘ID
-            else -> map.put("panid", "1")//盘ID
-        }
+        map.put("panid", Utils.getCache(sp.pan_id))//盘ID
         HttpUtils<String>().get(url.normal + "ylUserPan.php", command.xz + 2, map, this)
     }
 

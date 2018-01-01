@@ -60,6 +60,8 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 if (success.obj != null && success.obj!!.size() > 0) {
                     var model = Gson().fromJson<PCDDModel>(success.obj!![0].toString(), PCDDModel::class.java)
                     var list = model.dataGroup
+                    right_all_list = ArrayList()
+                    left_list = ArrayList()
                     if (list.size > 0) {
                         var a = 0
                         for (key in list) {
@@ -98,6 +100,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 success as NormalRequest<JSONArray>
                 if (success.code == 0) {
                     toast("切换成功")
+
                     when (Utils.getCache(sp.pan_id)) {
                         "1" -> {
                             Utils.putCache(sp.pan_id, "2")
@@ -110,7 +113,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                             right_btn.text = "B盘"
                         }
                     }
-
+                    control!!.get_tz(cz_id)
                     center_btn.isClickable = true
                     right_btn.isClickable = true
                 } else {
@@ -136,6 +139,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     fp_tv.visibility = View.GONE
                     top_qi_tv.text = model.lastNum + "期"
                     now_qh = model.kjNum//记录当前期号
+                    item_can_click = true
                     next_qi_tv.text = now_qh + "期"
                     title_bar.center_str = model.title
                     data_ftime = model.data_ftime
@@ -240,25 +244,32 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         can_run = false
                         next4_qi_tv.text = "开奖中"
                         control!!.get_zj_last(cz_id)//获得最新一期开奖信息
-                    }
-                    var x_time = time.split(":")[0].toInt() * 60 + time.split(":")[1].toInt()
-                    var fp_time = x_time - data_ftime.toInt()//封盘秒数
-                    next4_qi_tv.text = time
-                    //封盘时间
-                    var left_time = (fp_time / 60).toString()
-                    if (left_time.length == 1) {
-                        left_time = "0" + left_time
-                    }
-                    var right_time = (fp_time % 60).toString()
-                    if (right_time.length == 1) {
-                        right_time = "0" + right_time
-                    }
-                    //封盘时间
-                    if (left_time + ":" + right_time == "00:00" || (left_time + ":" + right_time).contains("-")) {
+                    } else if (time.split(":").size == 3) {//被截取成3份，未开盘
+                        next4_qi_tv.text = "未开盘"
+                        can_run = true
+                        item_can_click = false//禁止点击
                         fp_tv.visibility = View.VISIBLE
-                        next2_qi_tv.text = "封盘中"
                     } else {
-                        next2_qi_tv.text = left_time + ":" + right_time
+                        var x_time = time.split(":")[0].toInt() * 60 + time.split(":")[1].toInt()
+                        var fp_time = x_time - data_ftime.toInt()//封盘秒数
+                        next4_qi_tv.text = time
+                        //封盘时间
+                        var left_time = (fp_time / 60).toString()
+                        if (left_time.length == 1) {
+                            left_time = "0" + left_time
+                        }
+                        var right_time = (fp_time % 60).toString()
+                        if (right_time.length == 1) {
+                            right_time = "0" + right_time
+                        }
+                        //封盘时间
+                        if (left_time + ":" + right_time == "00:00" || (left_time + ":" + right_time).contains("-")) {
+                            fp_tv.visibility = View.VISIBLE
+                            next2_qi_tv.text = "封盘中"
+                            item_can_click = false
+                        } else {
+                            next2_qi_tv.text = left_time + ":" + right_time
+                        }
                     }
                     handler.postDelayed(this, 1000)
                 } else {
@@ -337,10 +348,10 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 ty2_top_gv.numColumns = 2
             }
         }
-        control!!.get_tz(cz_id, "1")
+        control!!.get_tz(cz_id)
         control!!.get_zj_last(cz_id)
         ty2_top_gv.setOnItemClickListener { _, _, position, _ ->
-            get_now_clicks(position)
+            if (item_can_click) get_now_clicks(position)
         }
         left_adapter = object : CommonAdapter<String>(this, left_list, R.layout.item_left) {
             override fun convert(holder: CommonViewHolder, model: String, position: Int) {
@@ -457,17 +468,31 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             }
         }
         ty2_top_gv.adapter = right_adapter
+        when (Utils.getCache(sp.pan_id)) {
+            "1" -> {
+                center_btn.text = "A盘√"
+                right_btn.text = "B盘"
+            }
+            "2" -> {
+                center_btn.text = "A盘"
+                right_btn.text = "B盘√"
+            }
+        }
         //A盘
         center_btn.setOnClickListener {
-            center_btn.isClickable = false
-            right_btn.isClickable = false
-            control?.change_ab()
+            if (Utils.getCache(sp.pan_id) == "2") {
+                center_btn.isClickable = false
+                right_btn.isClickable = false
+                control?.change_ab()
+            }
         }
         //B盘
         right_btn.setOnClickListener {
-            center_btn.isClickable = false
-            right_btn.isClickable = false
-            control?.change_ab()
+            if (Utils.getCache(sp.pan_id) == "1") {
+                center_btn.isClickable = false
+                right_btn.isClickable = false
+                control?.change_ab()
+            }
         }
         left_btn.setOnClickListener {
             var tz = tz_et.text.toString().trim()
@@ -488,10 +513,17 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         }
                     }
                 }
-                control!!.get_xz(cz_id, now_qh, tz, (tz.toInt() * xz_num).toString(), xz_list)
+                if (now_qh == "0") {
+                    toast("下单失败，请重试")
+                    control!!.get_tz(cz_id)//重新加载数据
+                } else {
+                    control!!.get_xz(cz_id, now_qh, tz, (tz.toInt() * xz_num).toString(), xz_list)
+                }
             }
         }
     }
+
+    var item_can_click = true//true:可以点击 false:不可以点击
 
     /**
      * 记录当前点击的item

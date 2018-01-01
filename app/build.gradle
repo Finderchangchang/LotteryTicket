@@ -45,4 +45,6 @@ dependencies {
     compile 'com.lzy.net:okserver:1.1.3'
     compile 'com.github.zyyoona7:EasyPopup:1.0.0'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+    compile 'com.tencent.bugly:crashreport:latest.release'
+
 }

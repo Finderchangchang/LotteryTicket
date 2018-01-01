@@ -1,5 +1,6 @@
 package gy.lotteryticket.ui.xz
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
@@ -23,6 +24,10 @@ import gd.mmanage.config.sp
 import gy.lotteryticket.config.command
 import gy.lotteryticket.method.Utils
 import gy.lotteryticket.model.*
+import gy.lotteryticket.ui.WebActivity
+import gy.lotteryticket.ui.main.CapitalActivity
+import gy.lotteryticket.ui.user.RecordActivity
+import gy.lotteryticket.ui.user.TodayActivity
 import kotlinx.android.synthetic.main.ac_type2.*
 import org.json.JSONArray
 
@@ -51,6 +56,8 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 if (success.obj != null && success.obj!!.size() > 0) {
                     var model = Gson().fromJson<PCDDModel>(success.obj!![0].toString(), PCDDModel::class.java)
                     var list = model.dataGroup
+                    left_list = ArrayList()
+                    right_all_list = ArrayList()
                     if (list.size > 0) {
                         var a = 0
                         for (key in list) {
@@ -89,10 +96,10 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 success as NormalRequest<JsonArray>
                 if (success.code == 0) {
                     refreshUI()
+                    toast("下注成功")
                 } else {
-
+                    toast("下注失败")
                 }
-                toast(success.message)
             }
             command.xz + 2 -> {//切换AB盘
                 success as NormalRequest<JSONArray>
@@ -110,6 +117,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                             right_btn.text = "B盘"
                         }
                     }
+                    control!!.get_tz(cz_id)
 
                     center_btn.isClickable = true
                     right_btn.isClickable = true
@@ -152,6 +160,34 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     pop_list.add(PopModel("提现", ""))
                     pop_list.add(PopModel("今天输赢", "(${success.obj!!.totalShuyingMoney})"))
                     lv.adapter = adapter
+                    lv.setOnItemClickListener { parent, view, position, id ->
+                        when (position) {
+                            0 -> {//即时注单
+
+                            }//startActivity(Intent(this@GameActivity))
+                            1 -> {
+                                startActivity(Intent(this, TodayActivity::class.java))
+                            }
+                            2 -> {
+                                startActivity(Intent(this, RecordActivity::class.java))
+                            }
+                            3 -> {//开奖结果
+                                startActivity(Intent(this, WebActivity::class.java).putExtra("position", "1"))
+                            }
+                            4 -> {//游戏规则
+                                startActivity(Intent(this, WebActivity::class.java).putExtra("position", "1"))
+                            }
+                            5 -> {//充值
+                                startActivity(Intent(this, CapitalActivity::class.java).putExtra("position", "1"))
+                            }
+                            6 -> {//提现
+                                startActivity(Intent(this, CapitalActivity::class.java).putExtra("position", "2"))
+                            }
+                            7 -> {//今日输赢
+                                startActivity(Intent(this, WebActivity::class.java).putExtra("position", "1"))
+                            }
+                        }
+                    }
                     adapter!!.refresh(pop_list)
                 }
             }
@@ -204,26 +240,32 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     can_run = false
                     next4_qi_tv.text = "开奖中"
                     control!!.get_zj_last(cz_id)//获得最新一期开奖信息
-                }
-                var x_time = time.split(":")[0].toInt() * 60 + time.split(":")[1].toInt()
-                var fp_time = x_time - data_ftime.toInt()//封盘秒数
-                next4_qi_tv.text = time
-                //封盘时间
-                var left_time = (fp_time / 60).toString()
-                if (left_time.length == 1) {
-                    left_time = "0" + left_time
-                }
-                var right_time = (fp_time % 60).toString()
-                if (right_time.length == 1) {
-                    right_time = "0" + right_time
-                }
-                //封盘时间
-                if (left_time + ":" + right_time == "00:00" || (left_time + ":" + right_time).contains("-")) {
+                } else if (time.split(":").size == 3) {//被截取成3份，未开盘
+                    next4_qi_tv.text = "未开盘"
+                    can_run = true
+                    item_can_click = false//禁止点击
                     fp_tv.visibility = View.VISIBLE
-                    item_can_click = false
-                    next2_qi_tv.text = "封盘中"
                 } else {
-                    next2_qi_tv.text = left_time + ":" + right_time
+                    var x_time = time.split(":")[0].toInt() * 60 + time.split(":")[1].toInt()
+                    var fp_time = x_time - data_ftime.toInt()//封盘秒数
+                    next4_qi_tv.text = time
+                    //封盘时间
+                    var left_time = (fp_time / 60).toString()
+                    if (left_time.length == 1) {
+                        left_time = "0" + left_time
+                    }
+                    var right_time = (fp_time % 60).toString()
+                    if (right_time.length == 1) {
+                        right_time = "0" + right_time
+                    }
+                    //封盘时间
+                    if (left_time + ":" + right_time == "00:00" || (left_time + ":" + right_time).contains("-")) {
+                        fp_tv.visibility = View.VISIBLE
+                        item_can_click = false
+                        next2_qi_tv.text = "封盘中"
+                    } else {
+                        next2_qi_tv.text = left_time + ":" + right_time
+                    }
                 }
                 handler.postDelayed(this, 1000)
             }
@@ -282,7 +324,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         dialog!!.setTitle(R.string.dialog_loading)
         dialog!!.show()
         cz_id = intent.getStringExtra("index")
-        control!!.get_tz(cz_id, "1")
+        control!!.get_tz(cz_id)
         control!!.get_zj_last(cz_id)
         ty2_top_gv.setOnItemClickListener { _, _, position, _ -> if (item_can_click) get_now_clicks(position) }
         ty2_top_gv.numColumns = 6
@@ -405,7 +447,12 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         }
                     }
                 }
-                control!!.get_xz(cz_id, now_qh, tz, (tz.toInt() * xz_num).toString(), xz_list)
+                if (now_qh == "0") {
+                    toast("下单失败，请重试")
+                    control!!.get_tz(cz_id)//重新加载数据
+                } else {
+                    control!!.get_xz(cz_id, now_qh, tz, (tz.toInt() * xz_num).toString(), xz_list)
+                }
             }
         }
     }

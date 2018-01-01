@@ -40,8 +40,7 @@
                 android:id="@+id/top_qi_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                />
+                android:textColor="@color/white" />
 
             <GridView
                 android:id="@+id/top_jiang_gv"
@@ -154,9 +153,9 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="5dp"
-                        android:layout_gravity="center_vertical">
+                        android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -183,11 +182,11 @@
                         android:id="@+id/tz_et"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="5dp"
                         android:background="@drawable/edit_tm_bg"
                         android:hint="投注额"
-                        android:inputType="number"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginBottom="8dp"/>
+                        android:inputType="number" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -195,11 +194,10 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:orientation="horizontal"
+                    android:paddingBottom="7dp"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:paddingTop="7dp"
-                    android:paddingBottom="7dp"
-                    >
+                    android:paddingTop="7dp">
 
                     <Button
                         android:id="@+id/left_btn"
@@ -236,7 +234,7 @@
                 android:id="@+id/fp_tv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorPrimary"
+                android:background="@color/tm_pressed_color"
                 android:visibility="gone" />
         </RelativeLayout>
     </LinearLayout>

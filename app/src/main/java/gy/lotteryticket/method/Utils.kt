@@ -412,7 +412,15 @@ object Utils {
         if (sec.length == 1) {
             sec = "0" + sec
         }
-        return min + ":" + sec
+        if (hour > 0) {
+            var h = hour.toString()
+            if (h.length == 1) {
+                h = "0" + h
+            }
+            return "$h:$min:$sec"
+        } else {
+            return min + ":" + sec
+        }
     }
 
     //获得当前期数

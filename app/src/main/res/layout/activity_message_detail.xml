@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -12,11 +12,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            app:center_tv="消息中心"
+            app:center_tv="通知详情"
             app:left_iv="@mipmap/left_jian" />
 
-        <ListView
-            android:id="@+id/lv"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/line_bg" />
+
+        <TextView
+            android:id="@+id/notice_tv"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
