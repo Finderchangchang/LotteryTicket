@@ -25,6 +25,9 @@ import gy.lotteryticket.config.command
 import gy.lotteryticket.method.Utils
 import gy.lotteryticket.model.*
 import gy.lotteryticket.ui.WebActivity
+import gy.lotteryticket.ui.capital.GZInfoActivity
+import gy.lotteryticket.ui.capital.JSZDListActivity
+import gy.lotteryticket.ui.capital.KJResultListActivity
 import gy.lotteryticket.ui.main.CapitalActivity
 import gy.lotteryticket.ui.user.RecordActivity
 import gy.lotteryticket.ui.user.TodayActivity
@@ -163,7 +166,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     lv.setOnItemClickListener { parent, view, position, id ->
                         when (position) {
                             0 -> {//即时注单
-
+                                startActivity(Intent(this, JSZDListActivity::class.java).putExtra("type", 0))
                             }//startActivity(Intent(this@GameActivity))
                             1 -> {
                                 startActivity(Intent(this, TodayActivity::class.java))
@@ -172,10 +175,10 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                                 startActivity(Intent(this, RecordActivity::class.java))
                             }
                             3 -> {//开奖结果
-                                startActivity(Intent(this, WebActivity::class.java).putExtra("position", "1"))
+                                startActivity(Intent(this, KJResultListActivity::class.java).putExtra("position", cz_id))
                             }
                             4 -> {//游戏规则
-                                startActivity(Intent(this, WebActivity::class.java).putExtra("position", "1"))
+                                startActivity(Intent(this, GZInfoActivity::class.java).putExtra("position", cz_id))
                             }
                             5 -> {//充值
                                 startActivity(Intent(this, CapitalActivity::class.java).putExtra("position", "1"))
@@ -184,7 +187,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                                 startActivity(Intent(this, CapitalActivity::class.java).putExtra("position", "2"))
                             }
                             7 -> {//今日输赢
-                                startActivity(Intent(this, WebActivity::class.java).putExtra("position", "1"))
+                                startActivity(Intent(this, JSZDListActivity::class.java).putExtra("type", 1))
                             }
                         }
                     }
@@ -197,6 +200,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     var model = Gson().fromJson<KJResultModel>(success.obj!![0].toString(), KJResultModel::class.java)
                     can_run = true
                     fp_tv.visibility = View.GONE
+                    bottom_ll.visibility = View.VISIBLE
                     item_can_click = true
                     top_qi_tv.text = model.lastNum + "期"
                     title_list.clear()
@@ -245,6 +249,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     can_run = true
                     item_can_click = false//禁止点击
                     fp_tv.visibility = View.VISIBLE
+                    bottom_ll.visibility = View.GONE
                 } else {
                     var x_time = time.split(":")[0].toInt() * 60 + time.split(":")[1].toInt()
                     var fp_time = x_time - data_ftime.toInt()//封盘秒数
@@ -261,6 +266,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     //封盘时间
                     if (left_time + ":" + right_time == "00:00" || (left_time + ":" + right_time).contains("-")) {
                         fp_tv.visibility = View.VISIBLE
+                        bottom_ll.visibility = View.GONE
                         item_can_click = false
                         next2_qi_tv.text = "封盘中"
                     } else {

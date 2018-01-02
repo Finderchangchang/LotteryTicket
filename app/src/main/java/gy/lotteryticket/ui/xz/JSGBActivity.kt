@@ -26,6 +26,9 @@ import com.zyyoona7.lib.HorizontalGravity
 import com.zyyoona7.lib.VerticalGravity
 import gd.mmanage.config.sp
 import gy.lotteryticket.ui.WebActivity
+import gy.lotteryticket.ui.capital.GZInfoActivity
+import gy.lotteryticket.ui.capital.JSZDListActivity
+import gy.lotteryticket.ui.capital.KJResultListActivity
 import gy.lotteryticket.ui.main.CapitalActivity
 import gy.lotteryticket.ui.user.RecordActivity
 import gy.lotteryticket.ui.user.TodayActivity
@@ -137,6 +140,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     var model = Gson().fromJson<KJResultModel>(success.obj!![0].toString(), KJResultModel::class.java)
                     can_run = true
                     fp_tv.visibility = View.GONE
+                    bottom_ll.visibility = View.VISIBLE
                     top_qi_tv.text = model.lastNum + "期"
                     now_qh = model.kjNum//记录当前期号
                     item_can_click = true
@@ -189,7 +193,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     lv.setOnItemClickListener { parent, view, position, id ->
                         when (position) {
                             0 -> {//即时注单
-
+                                startActivity(Intent(this, JSZDListActivity::class.java).putExtra("type", 0))
                             }//startActivity(Intent(this@GameActivity))
                             1 -> {
                                 startActivity(Intent(this, TodayActivity::class.java))
@@ -197,17 +201,20 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                             2 -> {
                                 startActivity(Intent(this, RecordActivity::class.java))
                             }
-                            3 -> {//游戏规则
-                                startActivity(Intent(this, WebActivity::class.java).putExtra("position", "1"))
+                            3 -> {//开奖结果
+                                startActivity(Intent(this, KJResultListActivity::class.java).putExtra("position", cz_id))
                             }
-                            4 -> {//充值
+                            4 -> {//游戏规则
+                                startActivity(Intent(this, GZInfoActivity::class.java).putExtra("position", cz_id))
+                            }
+                            5 -> {//充值
                                 startActivity(Intent(this, CapitalActivity::class.java).putExtra("position", "1"))
                             }
-                            5 -> {//提现
+                            6 -> {//提现
                                 startActivity(Intent(this, CapitalActivity::class.java).putExtra("position", "2"))
                             }
-                            6 -> {
-                                startActivity(Intent(this, TodayActivity::class.java))
+                            7 -> {//今日输赢
+                                startActivity(Intent(this, JSZDListActivity::class.java).putExtra("type", 1))
                             }
                         }
                     }
@@ -249,6 +256,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         can_run = true
                         item_can_click = false//禁止点击
                         fp_tv.visibility = View.VISIBLE
+                        bottom_ll.visibility = View.GONE
                     } else {
                         var x_time = time.split(":")[0].toInt() * 60 + time.split(":")[1].toInt()
                         var fp_time = x_time - data_ftime.toInt()//封盘秒数
@@ -265,6 +273,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         //封盘时间
                         if (left_time + ":" + right_time == "00:00" || (left_time + ":" + right_time).contains("-")) {
                             fp_tv.visibility = View.VISIBLE
+                            bottom_ll.visibility = View.GONE
                             next2_qi_tv.text = "封盘中"
                             item_can_click = false
                         } else {

@@ -102,6 +102,9 @@ public class ZDModel {
         private String amount;//金额
         private String info;//描述
 
+
+
+
         public String getAmount() {
             return amount;
         }

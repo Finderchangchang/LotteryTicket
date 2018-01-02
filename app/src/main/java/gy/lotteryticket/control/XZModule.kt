@@ -82,6 +82,10 @@ class XZModule : BaseModule {
         HttpUtils<String>().get(url.normal + "ylUserPan.php", command.xz + 2, map, this)
     }
 
+    fun get_cz_list(type: String) {
+        get_cz_list(type, "")
+    }
+
     /**
      * 获得彩种列表
      *
@@ -90,9 +94,10 @@ class XZModule : BaseModule {
      * czid type=1不传。
      *      type=2传彩种列表返回的id，默认1（北京赛车）
      * */
-    fun get_cz_list() {
+    fun get_cz_list(type: String, cz_id: String) {
         var map = HashMap<String, String>()
-        map.put("type", "1")
+        map.put("type", type)
+        map.put("czid", cz_id)
         map.put("uid", Utils.getCache(sp.user_id))
         HttpUtils<String>().get(url.normal + "ylUserType.php", command.xz + 3, map, this)
     }
@@ -116,5 +121,27 @@ class XZModule : BaseModule {
         map.put("uid", Utils.getCache(sp.user_id))
         map.put("type", type)
         HttpUtils<ObjectRequest<ZDModel>>().new_get(url.normal + "ylUserBets.php", command.xz + 5, map, this, object : TypeToken<ObjectRequest<ZDModel>>() {})
+    }
+
+    fun get_gz_info(type: String) {
+        //0全部
+        //1滚动文字广告，
+        //2在线客服地址，
+        //3聊天室地址，  //4电脑版地址  //5支付宝充值地址
+        //6微信充值地址  //10重庆游戏规则  //20赛车规则  30飞艇规则  40快三规则 50PC蛋蛋规则   60六合彩规则
+        var map = HashMap<String, String>()
+        var key = ""
+        when (type) {
+            "50" -> key = "20"
+            "1" -> key = "10"
+            "66" -> key = "50"
+            "55" -> key = "30"
+            "70" -> key = "60"
+            "10" -> key = "40"
+            else -> key = type
+        }
+        map.put("type", key)
+        HttpUtils<LzyResponse<TagModel>>().new_get(url.normal + "ylMain.php", command.xz + 6, map, this, object : TypeToken<LzyResponse<TagModel>>() {})
+
     }
 }

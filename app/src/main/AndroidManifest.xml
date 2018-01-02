@@ -18,6 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.capital.KJResultListActivity" />
         <activity android:name=".ui.user.ChangePwdActivity" />
         <activity android:name=".ui.xz.BJCarActivity" />
         <activity android:name=".ui.xz.CCsscActivity" />
@@ -36,7 +37,9 @@
         <activity android:name=".ui.user.RecordActivity" />
         <activity android:name=".ui.user.TodayActivity" />
         <activity android:name=".ui.user.RegisterActivity" />
-        <activity android:name=".ui.user.MessageDetailActivity"></activity>
+        <activity android:name=".ui.user.MessageDetailActivity" />
+        <activity android:name=".ui.capital.JSZDListActivity" />
+        <activity android:name=".ui.capital.GZInfoActivity"></activity>
     </application>
 
 </manifest>

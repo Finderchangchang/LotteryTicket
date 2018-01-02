@@ -98,7 +98,6 @@ class GameActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
                 }
             }
         }
-        dialog!!.dismiss()
     }
 
     var title_right: View? = null
@@ -119,8 +118,7 @@ class GameActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
                     var time = Utils.getDatePoor(Utils.change_data(t))
                     if (time == "00:00") {
                         time_result = "开奖中"
-                        dialog!!.show()
-                        control?.get_cz_list()
+                        control?.get_cz_list("1")
                     } else if (time.split(":").size == 3) {
                         time_result = "封盘中"
                     } else {
@@ -164,9 +162,7 @@ class GameActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
         ll5.setOnClickListener { skip_position(array_list[4].id) }
         ll6.setOnClickListener { skip_position(array_list[5].id) }
         control = getModule(XZModule::class.java, this)
-        dialog!!.setTitle(R.string.dialog_loading)
-        dialog!!.show()
-        control?.get_cz_list()//获得彩种列表
+        control?.get_cz_list("1")//获得彩种列表
         message_tv.text = Utils.getCache(sp.con1)
         title_bar.setRightClick { v ->
             title_right = v
