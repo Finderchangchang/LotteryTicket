@@ -11,10 +11,7 @@ import gy.lotteryticket.base.BaseModule
 import gy.lotteryticket.config.command
 import gy.lotteryticket.method.Utils
 import gy.lotteryticket.method.Utils.string2MD5
-import gy.lotteryticket.model.NormalModel
-import gy.lotteryticket.model.NormalRequest
-import gy.lotteryticket.model.TagModel
-import gy.lotteryticket.model.UserModel
+import gy.lotteryticket.model.*
 import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.*
@@ -97,13 +94,14 @@ class MainModule : BaseModule {
     }
 
     /**
-     * 彩种列表（彩种列表，开奖结果）
+     * 检查更新
      * */
     fun check_version() {
         var map = HashMap<String, String>()
-        map.put("type", "0")//1，彩种列表  2，开奖结果
         map.put("uid", Utils.getCache(sp.user_id))//用户uid
-        map.put("czid", "0")//彩种id  type=1不传。 type=2传彩种列表返回的id，默认1（北京赛车）
-        HttpUtils<String>().get(url.normal + "ylUserType.php", command.login, map, this)
+
+        HttpUtils<ObjectRequest<VersionModel>>().new_get(url.normal + "ylUpload.php", command.login+5, map, this, object : TypeToken<ObjectRequest<VersionModel>>() {})
+
     }
+
 }

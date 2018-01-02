@@ -503,6 +503,8 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             } else if (xz_num == 0) {
                 toast(resources.getString(R.string.toast_wf))
             } else {
+                xz_list = ArrayList()
+                var str_list = ArrayList<String>()
                 for (type1_index in 0 until item_click_list.size) {
                     var now_lists = item_click_list[type1_index]//当前选中的集合内容
                     if (now_lists.length > 2) {//确定有数值
@@ -510,15 +512,27 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         for (type2 in now_lists.split(",")) {//根据逗号隔开获得当前选择的数据
                             var num = type2.toInt()
                             xz_list.add(right_all_list[type1_index][num])
+                            str_list.add("【" + left_list[type1_index] + "-" + right_all_list[type1_index][num].name + "】 @"
+                                    + right_all_list[type1_index][num].odds + "X" + tz_et.text.toString())
                         }
                     }
                 }
-                if (now_qh == "0") {
-                    toast("下单失败，请重试")
-                    control!!.get_tz(cz_id)//重新加载数据
-                } else {
-                    control!!.get_xz(cz_id, now_qh, tz, (tz.toInt() * xz_num).toString(), xz_list)
+                var dialog_list = arrayOfNulls<String>(str_list.size)
+                for (i in 0 until str_list.size) {
+                    dialog_list[i] = str_list[i]
                 }
+                builder.setTitle("下注清单")
+                builder.setItems(dialog_list, null)
+                builder.setNegativeButton("确定") { v, b ->
+                    if (now_qh == "0") {
+                        toast("下单失败，请重试")
+                        control!!.get_tz(cz_id)//重新加载数据
+                    } else {
+                        control!!.get_xz(cz_id, now_qh, tz, (tz.toInt() * xz_num).toString(), xz_list)
+                    }
+                }
+                builder.setPositiveButton("取消") { v, b -> }
+                builder.show()
             }
         }
     }

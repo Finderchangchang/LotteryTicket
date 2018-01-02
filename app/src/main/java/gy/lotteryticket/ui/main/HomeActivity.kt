@@ -1,24 +1,32 @@
 package gy.lotteryticket.ui.main
 
+import android.Manifest
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.text.TextUtils
 import android.view.View
 import com.arialyy.frame.module.AbsModule
 import gd.mmanage.config.sp
+import gd.mmanage.config.url
 import gy.lotteryticket.R
 import gy.lotteryticket.adapter.MainAdapter
 import gy.lotteryticket.base.BaseActivity
 import gy.lotteryticket.control.MainModule
 import gy.lotteryticket.databinding.ActivityHomeBinding
+import gy.lotteryticket.down.DownloadUtils
+import gy.lotteryticket.down.UpdateManager
 import gy.lotteryticket.method.GlideImageLoader
 import gy.lotteryticket.method.Utils
 import gy.lotteryticket.model.NormalRequest
 import gy.lotteryticket.model.TagModel
+import gy.lotteryticket.model.VersionModel
 import gy.lotteryticket.ui.WebActivity
 import gy.lotteryticket.ui.xz.JSGBActivity
 import gy.lotteryticket.ui.xz.PCDDActivity
 import kotlinx.android.synthetic.main.activity_home.*
+import pub.devrel.easypermissions.EasyPermissions
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
     override fun onSuccess(result: Int, success: Any?) {
@@ -34,9 +42,40 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
                     }
                 }
             }
+            10005 -> {//检查更新
+                success as NormalRequest<VersionModel>
+                try {
+                    if (success.obj!!.version.replace(".", "").toInt() > Utils.version.replace(".", "").toInt()) {
+                        down_apk(success.obj!!)
+                    }
+                } catch (e: Exception) {
+                    if (Utils.version != success.obj!!.version) {
+                        down_apk(success.obj!!)
+                    }
+                }
+            }
         }
     }
-
+    fun down_apk(model: VersionModel) {
+        if (!EasyPermissions.hasPermissions(this@HomeActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            EasyPermissions.requestPermissions(this@HomeActivity, "需要下载新的apk",
+                    2, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        } else {
+            val builder = AlertDialog.Builder(this@HomeActivity)
+            builder.setTitle("提示")
+            builder.setMessage(model.content)
+            builder.setNegativeButton("确定") { _, _ ->
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    DownloadUtils(this).downloadAPK(model.download, "新版本Apk.apk")
+                } else {
+                    UpdateManager(this@HomeActivity).checkUpdateInfo(model.download)
+                }
+            }
+            builder.setPositiveButton("取消") { _, _ -> finish() }
+            builder.setCancelable(false)
+            builder.show()
+        }
+    }
     override fun onError(result: Int, error: Any?) {
 
     }
@@ -52,6 +91,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
         super.init(savedInstanceState)
         control = getModule(MainModule::class.java, this)
         control!!.get_jb_main()
+        control!!.check_version()
         var mAdapter = MainAdapter(supportFragmentManager)
         tab_pager.adapter = mAdapter
         //预加载页面的个数
