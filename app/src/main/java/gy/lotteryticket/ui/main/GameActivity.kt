@@ -168,12 +168,6 @@ class GameActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
         dialog!!.show()
         control?.get_cz_list()//获得彩种列表
         message_tv.text = Utils.getCache(sp.con1)
-        //跳转到充值
-        cz_btn.setOnClickListener {
-
-        }
-        //跳转到提现页面
-        tx_btn.setOnClickListener { }
         title_bar.setRightClick { v ->
             title_right = v
             control!!.get_dz_last("2")
