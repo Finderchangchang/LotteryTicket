@@ -149,12 +149,22 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     data_ftime = model.data_ftime
                     kjtime = model.kjtime
                     title_list.clear()
-                    for (key in model.lastKj.split(",")) {
+                    var total = 0
+                    var list = model.lastKj.split(",")
+                    for (i in 0 until list.size) {
+                        var key = list[i]
                         if (!TextUtils.isEmpty(key)) {
+                            if (cz_id == "66") {
+                                total += list[i].toInt()
+                            }
                             if (key.substring(0) == "0" && key.length > 1) {
                                 title_list.add(key.substring(1, key.length - 1))
                             } else {
                                 title_list.add(key)
+                                if (cz_id == "66" && i == 2) {
+                                    title_list.add("=")
+                                    title_list.add(total.toString())
+                                }
                             }
                         }
                     }
@@ -337,7 +347,9 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         holder.setVisible(R.id.tv, false)
                     }
                     "66" -> {//PC蛋蛋
-                        holder.setBG(R.id.tv, R.drawable.cycle)
+                        if (model != "=") {
+                            holder.setBG(R.id.tv, R.drawable.cycle)
+                        }
                         holder.setText(R.id.tv, model)
                         holder.setVisible(R.id.iv, false)
                     }
