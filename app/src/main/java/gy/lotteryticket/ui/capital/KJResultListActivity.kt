@@ -34,9 +34,27 @@ class KJResultListActivity : BaseActivity<ActivityJszdlistBinding>(), AbsModule.
         super.init(savedInstanceState)
         type = intent.getStringExtra("position")
         getModule(XZModule::class.java, this).get_cz_list("2", type)
-        title_adapter = object : CommonAdapter<String>(this, title_list, R.layout.item_title) {
+        title_adapter = object : CommonAdapter<String>(this, title_list, R.layout.item_kj_title) {
             override fun convert(holder: CommonViewHolder, model: String, position: Int) {
-                holder.setGImage(R.id.iv, getResource(model))
+                when (type) {
+                    "1" -> {//重庆时时彩
+                        holder.setBG(R.id.tv, R.drawable.cycle)
+                        holder.setText(R.id.tv, model)
+                        holder.setVisible(R.id.iv, false)
+                    }
+                    "10" -> {//江苏快3
+                        holder.setGImage(R.id.iv, getResources(model))
+                        holder.setVisible(R.id.tv, false)
+                    }
+                    "66" -> {//PC蛋蛋
+                        holder.setBG(R.id.tv, R.drawable.cycle)
+                        holder.setText(R.id.tv, model)
+                        holder.setVisible(R.id.iv, false)
+                    }
+                    else -> {
+                        holder.setGImage(R.id.iv, getResource(model))
+                    }
+                }
             }
         }
         adapter = object : CommonAdapter<CZModel>(this, array_list, R.layout.item_kj_result) {
@@ -55,6 +73,22 @@ class KJResultListActivity : BaseActivity<ActivityJszdlistBinding>(), AbsModule.
             }
         }
         jszd_lv.adapter = adapter
+        title_ll.setOnClickListener {
+            var array = arrayOf("重庆时时彩", "北京赛车", "PC蛋蛋", "江苏快三", "幸运飞艇", "香港六合彩")
+            builder.setItems(array) { a, index ->
+                when (index) {
+                    0 -> type = "1"
+                    1 -> type = "50"
+                    2 -> type = "66"
+                    3 -> type = "10"
+                    4 -> type = "55"
+                    5 -> type = "70"
+                }
+                select_tv.text = array[index]
+                getModule(XZModule::class.java, this).get_cz_list("2", type)
+            }
+            builder.show()
+        }
     }
 
     fun getResource(imageName: String): Int {
@@ -64,6 +98,15 @@ class KJResultListActivity : BaseActivity<ActivityJszdlistBinding>(), AbsModule.
             url = url.substring(1)
         }
         return resources.getIdentifier("num_" + url, "mipmap", ctx.packageName)
+    }
+
+    fun getResources(imageName: String): Int {
+        val ctx = baseContext
+        var url = imageName
+        if (!TextUtils.isEmpty(url) && url.substring(0, 1) == "0") {
+            url = url.substring(1)
+        }
+        return resources.getIdentifier("s_" + url, "mipmap", ctx.packageName)
     }
 
     override fun setLayoutId(): Int {

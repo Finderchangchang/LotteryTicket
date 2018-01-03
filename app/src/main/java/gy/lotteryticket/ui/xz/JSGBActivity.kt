@@ -214,7 +214,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                                 startActivity(Intent(this, CapitalActivity::class.java).putExtra("position", "2"))
                             }
                             7 -> {//今日输赢
-                                startActivity(Intent(this, JSZDListActivity::class.java).putExtra("type", 1))
+                                startActivity(Intent(this, TodayActivity::class.java))
                             }
                         }
                     }
@@ -321,11 +321,10 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             }
         }
         title_bar.setRightClick { v ->
-
             title_right = v
             control!!.get_dz_last("2")
         }
-        title_adapter = object : CommonAdapter<String>(this, title_list, R.layout.item_title) {
+        title_adapter = object : CommonAdapter<String>(this, title_list, R.layout.item_kj_title) {
             override fun convert(holder: CommonViewHolder, model: String, position: Int) {
                 when (cz_id) {
                     "1" -> {//重庆时时彩
@@ -342,6 +341,9 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         holder.setText(R.id.tv, model)
                         holder.setVisible(R.id.iv, false)
                     }
+                    else -> {
+                        holder.setGImage(R.id.iv, getResource(model))
+                    }
                 }
             }
         }
@@ -357,8 +359,6 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 ty2_top_gv.numColumns = 2
             }
         }
-        control!!.get_tz(cz_id)
-        control!!.get_zj_last(cz_id)
         ty2_top_gv.setOnItemClickListener { _, _, position, _ ->
             if (item_can_click) get_now_clicks(position)
         }
@@ -544,6 +544,12 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 builder.show()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        control!!.get_tz(cz_id)
+        control!!.get_zj_last(cz_id)
     }
 
     var item_can_click = true//true:可以点击 false:不可以点击

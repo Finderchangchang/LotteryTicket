@@ -62,6 +62,7 @@ class UserActivity : BaseActivity<ActivityUserBinding>(), AbsModule.OnCallback {
                 finish()
             }
             builder!!.setPositiveButton("取消") { a, b -> }
+            builder!!.show()
         }
         getModule(MainModule::class.java, this).get_user_login(Utils.getCache(sp.login_name), Utils.getCache(sp.pwd), 2)//登录操作
         llay_data.setOnClickListener {

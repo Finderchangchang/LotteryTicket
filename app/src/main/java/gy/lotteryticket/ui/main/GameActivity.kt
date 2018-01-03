@@ -27,6 +27,8 @@ import gy.lotteryticket.model.CZModel
 import gy.lotteryticket.model.NormalRequest
 import gy.lotteryticket.model.PopModel
 import gy.lotteryticket.model.ZDModel
+import gy.lotteryticket.ui.capital.JSZDListActivity
+import gy.lotteryticket.ui.capital.KJResultListActivity
 import gy.lotteryticket.ui.user.RecordActivity
 import gy.lotteryticket.ui.user.TodayActivity
 import gy.lotteryticket.ui.xz.*
@@ -51,6 +53,7 @@ class GameActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
                             5 -> binding.title6Ll = array_list[5].title
                         }
                     }
+                    can_run = true
                     handler.postDelayed(runnable, 1000)
                 }
             }
@@ -78,8 +81,8 @@ class GameActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
                     lv.setOnItemClickListener { parent, view, position, id ->
                         when (position) {
                             0 -> {//即时注单
-
-                            }//startActivity(Intent(this@GameActivity))
+                                startActivity(Intent(this, JSZDListActivity::class.java).putExtra("type", 0))
+                            }
                             1 -> {
                                 startActivity(Intent(this, TodayActivity::class.java))
                             }
@@ -87,7 +90,7 @@ class GameActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
                                 startActivity(Intent(this, RecordActivity::class.java))
                             }
                             3 -> {
-                                //startActivity(Intent(this, TodayActivity::class.java))
+                                startActivity(Intent(this, KJResultListActivity::class.java).putExtra("position", "1"))
                             }
                             4 -> {
                                 startActivity(Intent(this@GameActivity, CapitalActivity::class.java).putExtra("position", "2"))
@@ -108,35 +111,36 @@ class GameActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
 
     }
 
+    var can_run = true//倒计时可以执行
     var handler = Handler()
     var runnable: Runnable = object : Runnable {
         override fun run() {
-            for (index in 0 until array_list.size) {
-                var t = array_list[index].kjtime
-                var time_result = "未开盘"
-                if (t != "0") {
-                    var time = Utils.getDatePoor(Utils.change_data(t))
-                    if (time == "00:00") {
-                        time_result = "开奖中"
-                        control?.get_cz_list("1")
-                    } else if (time.split(":").size == 3) {
-                        time_result = "封盘中"
-                    } else {
-                        time_result = time
+            if (can_run) {
+                for (index in 0 until array_list.size) {
+                    var t = array_list[index].kjtime
+                    var time_result = "未开盘"
+                    if (t != "0") {
+                        var time = Utils.getDatePoor(Utils.change_data(t))
+                        if (time == "00:00") {
+                            time_result = "开奖中"
+                            control?.get_cz_list("1")
+                        } else if (time.split(":").size == 3) {
+                            time_result = "封盘中"
+                        } else {
+                            time_result = time
+                        }
+                    }
+                    when (index) {
+                        0 -> binding.time1Ll = time_result
+                        1 -> binding.time2Ll = time_result
+                        2 -> binding.time3Ll = time_result
+                        3 -> binding.time4Ll = time_result
+                        4 -> binding.time5Ll = time_result
+                        5 -> binding.time6Ll = time_result
                     }
                 }
-                when (index) {
-                    0 -> binding.time1Ll = time_result
-                    1 -> binding.time2Ll = time_result
-                    2 -> binding.time3Ll = time_result
-                    3 -> binding.time4Ll = time_result
-                    4 -> binding.time5Ll = time_result
-                    5 -> binding.time6Ll = time_result
-                }
+                handler.postDelayed(this, 1000)
             }
-
-
-            handler.postDelayed(this, 1000)
         }
     }
     var adapter: CommonAdapter<PopModel>? = null
@@ -154,13 +158,13 @@ class GameActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
                 }
             }
         }
-        ll1.setOnClickListener { skip_position(array_list[0].id) }
-        ll2.setOnClickListener { skip_position(array_list[1].id) }
+        ll1.setOnClickListener { skip_position(0) }
+        ll2.setOnClickListener { skip_position(1) }
         //pc蛋蛋点击事件
-        ll3.setOnClickListener { skip_position(array_list[2].id) }
-        ll4.setOnClickListener { skip_position(array_list[3].id) }
-        ll5.setOnClickListener { skip_position(array_list[4].id) }
-        ll6.setOnClickListener { skip_position(array_list[5].id) }
+        ll3.setOnClickListener { skip_position(2) }
+        ll4.setOnClickListener { skip_position(3) }
+        ll5.setOnClickListener { skip_position(4) }
+        ll6.setOnClickListener { skip_position(5) }
         control = getModule(XZModule::class.java, this)
         control?.get_cz_list("1")//获得彩种列表
         message_tv.text = Utils.getCache(sp.con1)
@@ -174,6 +178,7 @@ class GameActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
         tx_btn.setOnClickListener {
             startActivity(Intent(this@GameActivity, CapitalActivity::class.java).putExtra("position", "2"))
         }
+        name_tv.text = Utils.getCache(sp.login_name)
     }
 
     fun dp2px(var0: Float): Int {
@@ -181,25 +186,36 @@ class GameActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
         return (var0 * var1 + 0.5f).toInt()
     }
 
+    override fun onPause() {
+        super.onPause()
+        can_run = false//挂起的时候禁止倒计时
+    }
+
     override fun onResume() {
         super.onResume()
+        control?.get_cz_list("1")//获得彩种列表
         yue_tv.text = Utils.getCache(sp.coin)
     }
 
-    fun skip_position(index: String) {
-        when (index) {
-        //重庆
-            "1" -> startActivity(Intent(this@GameActivity, JSGBActivity::class.java).putExtra("index", "1"))
-        //北京赛车
-            "50" -> startActivity(Intent(this@GameActivity, PCDDActivity::class.java).putExtra("index", "50"))
-        //PC蛋蛋
-            "66" -> startActivity(Intent(this@GameActivity, JSGBActivity::class.java).putExtra("index", "66"))
-        //快三
-            "10" -> startActivity(Intent(this@GameActivity, JSGBActivity::class.java).putExtra("index", "10"))
-        //幸运飞艇
-            "55" -> startActivity(Intent(this@GameActivity, PCDDActivity::class.java).putExtra("index", "55"))
-        //六合彩
-            "70" -> startActivity(Intent(this@GameActivity, JSGBActivity::class.java).putExtra("index", "70"))
+    fun skip_position(i: Int) {
+        try {
+            var index = array_list[i].id
+            when (index) {
+            //重庆
+                "1" -> startActivity(Intent(this@GameActivity, JSGBActivity::class.java).putExtra("index", "1"))
+            //北京赛车
+                "50" -> startActivity(Intent(this@GameActivity, PCDDActivity::class.java).putExtra("index", "50"))
+            //PC蛋蛋
+                "66" -> startActivity(Intent(this@GameActivity, JSGBActivity::class.java).putExtra("index", "66"))
+            //快三
+                "10" -> startActivity(Intent(this@GameActivity, JSGBActivity::class.java).putExtra("index", "10"))
+            //幸运飞艇
+                "55" -> startActivity(Intent(this@GameActivity, PCDDActivity::class.java).putExtra("index", "55"))
+            //六合彩
+                "70" -> startActivity(Intent(this@GameActivity, JSGBActivity::class.java).putExtra("index", "70"))
+            }
+        } catch (e: Exception) {
+
         }
     }
 

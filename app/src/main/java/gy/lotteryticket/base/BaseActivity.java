@@ -1,6 +1,7 @@
 package gy.lotteryticket.base;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -12,6 +13,7 @@ import com.arialyy.frame.core.AbsActivity;
 import net.tsz.afinal.view.TitleBar;
 
 import gy.lotteryticket.method.LoadingDialog;
+import gy.lotteryticket.ui.LoginActivity;
 
 /**
  * Created by lyy on 2016/7/13.
@@ -47,6 +49,19 @@ public abstract class BaseActivity<VB extends ViewDataBinding> extends AbsActivi
         }
         dialog = new LoadingDialog.Builder(this);
         builder = new AlertDialog.Builder(this);
+    }
+
+    public void skip(Class cla) {
+        skip(cla, null);
+    }
+
+    public void skip(Class cla, Intent intent) {
+        if (intent == null) {
+            intent = new Intent(this, cla);
+        } else {
+            intent.setClass(this, cla);
+        }
+        startActivity(intent);
     }
 
     @Override

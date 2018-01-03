@@ -187,7 +187,8 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                                 startActivity(Intent(this, CapitalActivity::class.java).putExtra("position", "2"))
                             }
                             7 -> {//今日输赢
-                                startActivity(Intent(this, JSZDListActivity::class.java).putExtra("type", 1))
+                                //startActivity(Intent(this, JSZDListActivity::class.java).putExtra("type", 1))
+                                startActivity(Intent(this, TodayActivity::class.java))
                             }
                         }
                     }
@@ -330,8 +331,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         dialog!!.setTitle(R.string.dialog_loading)
         dialog!!.show()
         cz_id = intent.getStringExtra("index")
-        control!!.get_tz(cz_id)
-        control!!.get_zj_last(cz_id)
+
         ty2_top_gv.setOnItemClickListener { _, _, position, _ -> if (item_can_click) get_now_clicks(position) }
         ty2_top_gv.numColumns = 6
         title_adapter = object : CommonAdapter<String>(this, title_list, R.layout.item_title) {
@@ -443,6 +443,8 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 toast(resources.getString(R.string.toast_wf))
             } else {
                 xz_list.clear()
+                var str_list = ArrayList<String>()
+
                 for (type1_index in 0 until item_click_list.size) {
                     var now_lists = item_click_list[type1_index]//当前选中的集合内容
                     if (now_lists.length > 2) {//确定有数值
@@ -450,17 +452,36 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         for (type2 in now_lists.split(",")) {//根据逗号隔开获得当前选择的数据
                             var num = type2.toInt()
                             xz_list.add(right_all_list[type1_index][num])
+                            str_list.add("【" + left_list[type1_index] + "-" + right_all_list[type1_index][num].name + "】 @"
+                                    + right_all_list[type1_index][num].odds + "X" + tz_et.text.toString())
+
                         }
                     }
                 }
-                if (now_qh == "0") {
-                    toast("下单失败，请重试")
-                    control!!.get_tz(cz_id)//重新加载数据
-                } else {
-                    control!!.get_xz(cz_id, now_qh, tz, (tz.toInt() * xz_num).toString(), xz_list)
+                var dialog_list = arrayOfNulls<String>(str_list.size)
+                for (i in 0 until str_list.size) {
+                    dialog_list[i] = str_list[i]
                 }
+                builder.setTitle("下注清单")
+                builder.setItems(dialog_list, null)
+                builder.setNegativeButton("确定") { v, b ->
+                    if (now_qh == "0") {
+                        toast("下单失败，请重试")
+                        control!!.get_tz(cz_id)//重新加载数据
+                    } else {
+                        control!!.get_xz(cz_id, now_qh, tz, (tz.toInt() * xz_num).toString(), xz_list)
+                    }
+                }
+                builder.setPositiveButton("取消") { v, b -> }
+                builder.show()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        control!!.get_tz(cz_id)
+        control!!.get_zj_last(cz_id)
     }
 
     fun getResource(imageName: String): Int {
