@@ -68,6 +68,7 @@ class XZModule : BaseModule {
         map.put("totalMoney", totalMoney)//是	投注总金额	投注金额 * 注数
         map.put("betList", Gson().toJson(xzs))//玩法列表	格式与“投注页面数据加载”得借口返回得数据一样
         map.put("uid", Utils.getCache(sp.user_id))//从缓存抓取
+        map.put("username", Utils.getCache(sp.user_name))//从缓存抓取
         HttpUtils<String>().get(url.normal + "ylBetsAdd.php", command.xz + 1, map, this)
     }
 

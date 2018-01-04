@@ -33,70 +33,80 @@ import kotlinx.android.synthetic.main.frag_draw.*
 
 class DrawFragment : BaseFragment<FragCapitalBinding>(), AbsModule.OnCallback {
     override fun onSuccess(result: Int, success: Any?) {
-        when(result){
-            CUserModule.GETBANK->{
+        when (result) {
+            CUserModule.GETBANK -> {
                 val res = success as NormalRequest<JsonArray>
                 val type = object : TypeToken<List<BankModel>>() {
 
                 }.type
-                if(res.obj!=null) {
+                if (res.obj != null) {
                     val data = Gson().fromJson<List<BankModel>>(res.obj, type)
                     if (data.size > 0) {
-                        bank=data[0]
+                        bank = data[0]
                         btn_add.visibility = View.GONE
-                        card_info_et.setText(data[0].bankName+" "+data[0]!!.account+" "+data[0].username)
+                        card_info_et.setText(data[0].bankName + " " + data[0]!!.account + " " + data[0].username)
                     } else {
                         btn_add.visibility = View.VISIBLE
                     }
                 }
             }
-            CUserModule.GETMONEY->{
+            CUserModule.GETMONEY -> {
                 success as NormalRequest<ObjectRequest<String>>
-                if(success.code==0){
+                if (success.code == 0) {
                     CapitalActivity.context!!.toast(success.message)
-                }else{
+                } else {
                     CapitalActivity.context!!.toast(success.message)
                 }
             }
         }
+        clear_et()
     }
-    var bank:BankModel?=null
-    override fun onError(result: Int, error: Any?) {
 
+    var bank: BankModel? = null
+    override fun onError(result: Int, error: Any?) {
+        clear_et()
     }
 
     override fun initView(view: View?) {
 
     }
-    var control:CUserModule?=null
+
+    fun clear_et() {
+        commit_btn.isClickable = true
+        qk_je_et.setText("")
+        qk_pwd_et.setText("")
+    }
+
+    var control: CUserModule? = null
     override fun init(savedInstanceState: Bundle?) {
         fs_cb.setOnCheckedChangeListener { _, b ->
-            if(b){
-                db_tv.visibility=View.GONE
-                card_info_et.visibility=View.GONE
-            }else{
-                db_tv.visibility=View.VISIBLE
-                card_info_et.visibility=View.VISIBLE
+            if (b) {
+                db_tv.visibility = View.GONE
+                card_info_et.visibility = View.GONE
+            } else {
+                db_tv.visibility = View.VISIBLE
+                card_info_et.visibility = View.VISIBLE
             }
         }
         btn_add.setOnClickListener { startActivity(Intent(CapitalActivity.context, AddBankActivity::class.java)) }
-        control=getModule(CUserModule::class.java,this)
+        control = getModule(CUserModule::class.java, this)
         control!!.getBankList(1)
         //提交申请记录
         commit_btn.setOnClickListener {
-            var qk=qk_je_et.text.toString().trim()
-            var qk_pwd=qk_pwd_et.text.toString().trim()
-            if(TextUtils.isEmpty(qk)){
+            var qk = qk_je_et.text.toString().trim()
+            var qk_pwd = qk_pwd_et.text.toString().trim()
+            if (TextUtils.isEmpty(qk)) {
                 CapitalActivity.context!!.toast("请输入取款金额")
-            }else if(qk.toDouble()<100){
+            } else if (qk.toDouble() < 100) {
                 CapitalActivity.context!!.toast("取款金额不能小于100元")
-            }else if(qk.toDouble()>1000000){
+            } else if (qk.toDouble() > 1000000) {
                 CapitalActivity.context!!.toast("取款金额不能大于1000000元")
-            }else{
-                if(fs_cb.isChecked){
-                    control!!.getMoney(2,"","",Utils.getCache(sp.login_name),Utils.string2MD5(qk_pwd),qk)
-                }else{
-                    control!!.getMoney(1,bank!!.bankId,bank!!.account,Utils.getCache(sp.login_name),Utils.string2MD5(qk_pwd),qk)
+            } else {
+                commit_btn.isClickable = false
+                if (fs_cb.isChecked) {
+                    control!!.getMoney(2, "", "", Utils.getCache(sp.login_name), Utils.string2MD5(qk_pwd), qk)
+                } else {
+                    control!!.getMoney(1, bank!!.bankId, bank!!.account, Utils.getCache(sp.login_name), Utils.string2MD5(qk_pwd), qk)
                 }
             }
         }

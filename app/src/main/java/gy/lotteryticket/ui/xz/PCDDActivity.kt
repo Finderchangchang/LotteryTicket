@@ -359,6 +359,8 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         }
         right_adapter = object : CommonAdapter<XZModel>(this, right_list, R.layout.item_type2) {
             override fun convert(holder: CommonViewHolder, model: XZModel, position: Int) {
+                holder.setVisible(R.id.left_tv, false)
+                holder.setVisible(R.id.right_tv, false)
                 if (click_position == 1) {//特码的情况
                     holder.setBGColor(R.id.total_ll, R.color.colorPrimaryDark)
 //                    holder.setTextColor(R.id.left_tv, R.color.tm_colorPrimaryDark)

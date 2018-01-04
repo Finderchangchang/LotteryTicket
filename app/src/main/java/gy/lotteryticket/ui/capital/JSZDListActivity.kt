@@ -54,7 +54,7 @@ class JSZDListActivity : BaseActivity<ActivityJszdlistBinding>(), AbsModule.OnCa
                 holder.setText(R.id.item_jszd_qh, model.actionNo)
                 holder.setText(R.id.item_jszd_xzje, model.money)
 
-                holder.setText(R.id.item_jszd_xzmx, model.info)
+                holder.setText(R.id.item_jszd_xzmx, model.getGroupname() + "-" + model.getActionData() + "\n" + model.getOdds().toDoubleOrNull())
                 when (type) {
                     0 -> {
                         holder.setText(R.id.item_jszd_kyje, model.keying)

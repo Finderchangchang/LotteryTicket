@@ -41,6 +41,15 @@ public class TodayItemModel {
     private String rebateMoney;
     private String keying;
     private String state;
+    private String panid;
+
+    public String getPanid() {
+        return panid;
+    }
+
+    public void setPanid(String panid) {
+        this.panid = panid;
+    }
 
     public String getZjCount() {
         return zjCount;

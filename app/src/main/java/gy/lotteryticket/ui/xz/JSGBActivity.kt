@@ -394,6 +394,8 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         }
         right_adapter = object : CommonAdapter<XZModel>(this, right_list, R.layout.item_type2) {
             override fun convert(holder: CommonViewHolder, model: XZModel, position: Int) {
+                holder.setVisible(R.id.left_tv, false)
+                holder.setVisible(R.id.right_tv, false)
                 if (click_position == 1) {//特码的情况
                     holder.setBGColor(R.id.total_ll, R.color.colorPrimaryDark)
 //                    holder.setTextColor(R.id.left_tv, R.color.tm_colorPrimaryDark)
@@ -572,30 +574,33 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
      * */
     fun get_now_clicks(position: Int) {
         var clicks = item_click_list[click_position]
-        if (TextUtils.isEmpty(clicks)) clicks = "," + clicks//如果数据为空加一个逗号 好判断
-        if (clicks.isNotEmpty() && clicks.substring(0, 1) != ",") {
-            clicks = "," + clicks
-        }
-        var result = ""
-        if (clicks.contains("," + position.toString() + ",")) {
-            result = clicks.replace("," + position.toString() + ",", ",")
-        } else {
-            result = clicks + position.toString() + ","
-        }
-        if (result.isNotEmpty() && result.substring(0, 1) != ",") {
-            result = "," + result
-        }
-        item_click_list[click_position] = result
-        //计算当前下的注数
-        xz_num = item_click_list.sumBy {
-            if (it.length > 2) {
-                it.substring(1, it.length - 1).split(",").size
-            } else 0
-        }
-        zhu_tv.text = xz_num.toString()
+        var item = right_all_list[click_position]
+        if (item[position].odds != null) {
+            if (TextUtils.isEmpty(clicks)) clicks = "," + clicks//如果数据为空加一个逗号 好判断
+            if (clicks.isNotEmpty() && clicks.substring(0, 1) != ",") {
+                clicks = "," + clicks
+            }
+            var result = ""
+            if (clicks.contains("," + position.toString() + ",")) {
+                result = clicks.replace("," + position.toString() + ",", ",")
+            } else {
+                result = clicks + position.toString() + ","
+            }
+            if (result.isNotEmpty() && result.substring(0, 1) != ",") {
+                result = "," + result
+            }
+            item_click_list[click_position] = result
+            //计算当前下的注数
+            xz_num = item_click_list.sumBy {
+                if (it.length > 2) {
+                    it.substring(1, it.length - 1).split(",").size
+                } else 0
+            }
+            zhu_tv.text = xz_num.toString()
 
-        right_adapter!!.refresh(right_all_list[click_position])
-        left_adapter!!.refresh(left_list)
+            right_adapter!!.refresh(right_all_list[click_position])
+            left_adapter!!.refresh(left_list)
+        }
     }
 
     override fun setLayoutId(): Int {
