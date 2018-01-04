@@ -40,6 +40,7 @@ public class RecordActivity extends BaseActivity implements AbsModule.OnCallback
     private RecordModel recordModel;
 
     private Dialog loadingDialog;
+    public static RecordActivity context;
 
     @Override
     protected int setLayoutId() {
@@ -49,7 +50,7 @@ public class RecordActivity extends BaseActivity implements AbsModule.OnCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        context = this;
         loadingDialog = new LoadingDialog.Builder(this).create();
 
         initView();

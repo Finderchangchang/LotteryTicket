@@ -124,6 +124,18 @@ class XZModule : BaseModule {
         HttpUtils<ObjectRequest<ZDModel>>().new_get(url.normal + "ylUserBets.php", command.xz + 5, map, this, object : TypeToken<ObjectRequest<ZDModel>>() {})
     }
 
+    /**
+     * 撤销订单
+     * @param id 订单ID
+     * @param time 封单时间
+     * */
+    fun get_cx(id: String, time: String) {
+        var map = HashMap<String, String>()
+        map.put("id", id)
+        map.put("fdTime", time)
+        HttpUtils<ObjectRequest<String>>().new_get(url.normal + "ylUserDeleteLotteryData.php", command.xz + 7, map, this, object : TypeToken<ObjectRequest<String>>() {})
+    }
+
     fun get_gz_info(type: String) {
         //0全部
         //1滚动文字广告，

@@ -1,10 +1,12 @@
 package gy.lotteryticket.model;
 
+import java.io.Serializable;
+
 /**
  * Created by JX on 2017/12/30.
  */
 
-public class RecordItemItemModel {
+public class RecordItemItemModel implements Serializable {
 
     /**
      * zjCount : 1

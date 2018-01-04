@@ -101,9 +101,15 @@ public class ZDModel {
         private String state;
         private String amount;//金额
         private String info;//描述
+        private String fdTime;//封单时间
 
+        public String getFdTime() {
+            return fdTime;
+        }
 
-
+        public void setFdTime(String fdTime) {
+            this.fdTime = fdTime;
+        }
 
         public String getAmount() {
             return amount;
