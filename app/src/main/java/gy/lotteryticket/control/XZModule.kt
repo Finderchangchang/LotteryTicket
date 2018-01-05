@@ -68,6 +68,7 @@ class XZModule : BaseModule {
         map.put("totalMoney", totalMoney)//是	投注总金额	投注金额 * 注数
         map.put("betList", Gson().toJson(xzs))//玩法列表	格式与“投注页面数据加载”得借口返回得数据一样
         map.put("uid", Utils.getCache(sp.user_id))//从缓存抓取
+        map.put("username", Utils.getCache(sp.user_name))//从缓存抓取
         HttpUtils<String>().get(url.normal + "ylBetsAdd.php", command.xz + 1, map, this)
     }
 
@@ -121,6 +122,18 @@ class XZModule : BaseModule {
         map.put("uid", Utils.getCache(sp.user_id))
         map.put("type", type)
         HttpUtils<ObjectRequest<ZDModel>>().new_get(url.normal + "ylUserBets.php", command.xz + 5, map, this, object : TypeToken<ObjectRequest<ZDModel>>() {})
+    }
+
+    /**
+     * 撤销订单
+     * @param id 订单ID
+     * @param time 封单时间
+     * */
+    fun get_cx(id: String, time: String) {
+        var map = HashMap<String, String>()
+        map.put("id", id)
+        map.put("fdTime", time)
+        HttpUtils<ObjectRequest<String>>().new_get(url.normal + "ylUserDeleteLotteryData.php", command.xz + 7, map, this, object : TypeToken<ObjectRequest<String>>() {})
     }
 
     fun get_gz_info(type: String) {

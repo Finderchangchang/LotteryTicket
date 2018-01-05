@@ -29,15 +29,19 @@ public class TodayAdapter extends BaseQuickAdapter<TodayItemModel, BaseViewHolde
         helper.setText(R.id.tv_time, item.getActionTime());
 
         //明细
-        helper.setText(R.id.tv_detail, item.getMoney());
-        helper.setText(R.id.tv_detail_fan, "反水（" + item.getRebate() + "）");
+        helper.setText(R.id.tv_detail, item.getGroupname() + "-" + item.getActionData() + "\n" + Double.parseDouble(item.getOdds()));
+        helper.setText(R.id.tv_detail_fan, item.getPanid());
 
         //金额
         helper.setText(R.id.tv_money, item.getMoney());
 
         //输赢
-        helper.setText(R.id.tv_win, item.getKeying());
+        helper.setText(R.id.tv_win, Double.parseDouble(item.getKeying()) + "");
         helper.setText(R.id.tv_win_fan, "反水（" + item.getRebateMoney() + "）");
-
+        if (item.getState() == "1") {
+            helper.setText(R.id.result_tv, "中奖");
+        } else {
+            helper.setText(R.id.result_tv, "未中奖");
+        }
     }
 }

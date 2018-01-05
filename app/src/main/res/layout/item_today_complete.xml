@@ -23,8 +23,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="beijing"
-                android:textSize="12sp"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/tv_number"
@@ -32,8 +32,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:text="555"
-                android:textSize="12sp"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/tv_time"
@@ -41,8 +41,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:text="2017"
-                android:textSize="10sp"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="10sp" />
 
         </LinearLayout>
 
@@ -66,17 +66,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="beijing"
-                android:textSize="12sp"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/tv_detail_fan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="555"
-                android:textSize="12sp"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -93,8 +92,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="beijing"
-            android:textSize="12sp"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="12sp" />
 
         <View
             android:layout_width="0.5dp"
@@ -109,14 +108,18 @@
             android:gravity="center"
             android:orientation="vertical"
             android:padding="5dp">
-
+            <TextView
+                android:id="@+id/result_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"/>
             <TextView
                 android:id="@+id/tv_win"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="beijing"
-                android:textSize="12sp"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/tv_win_fan"
@@ -124,8 +127,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:text="555"
-                android:textSize="12sp"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="12sp" />
 
         </LinearLayout>
 

@@ -33,6 +33,14 @@ class KJResultListActivity : BaseActivity<ActivityJszdlistBinding>(), AbsModule.
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
         type = intent.getStringExtra("position")
+        when (type) {//"重庆时时彩", "北京赛车", "PC蛋蛋", "江苏快三", "幸运飞艇", "香港六合彩"
+            "1" -> select_tv.text = "重庆时时彩"
+            "50" -> select_tv.text = "北京赛车"
+            "66" -> select_tv.text = "PC蛋蛋"
+            "10" -> select_tv.text = "江苏快三"
+            "55" -> select_tv.text = "幸运飞艇"
+            "70" -> select_tv.text = "香港六合彩"
+        }
         getModule(XZModule::class.java, this).get_cz_list("2", type)
         title_adapter = object : CommonAdapter<String>(this, title_list, R.layout.item_kj_title) {
             override fun convert(holder: CommonViewHolder, model: String, position: Int) {
@@ -47,7 +55,9 @@ class KJResultListActivity : BaseActivity<ActivityJszdlistBinding>(), AbsModule.
                         holder.setVisible(R.id.tv, false)
                     }
                     "66" -> {//PC蛋蛋
-                        holder.setBG(R.id.tv, R.drawable.cycle)
+                        if (model != "=") {
+                            holder.setBG(R.id.tv, R.drawable.cycle)
+                        }
                         holder.setText(R.id.tv, model)
                         holder.setVisible(R.id.iv, false)
                     }
@@ -64,8 +74,16 @@ class KJResultListActivity : BaseActivity<ActivityJszdlistBinding>(), AbsModule.
                 if (!TextUtils.isEmpty(model.data)) {
                     var list = model.data.split(",")
                     title_list.clear()
-                    for (i in list) {
-                        title_list.add(i)
+                    var total = 0
+                    for (i in 0 until list.size) {
+                        if (type == "66") {
+                            total += list[i].toInt()
+                        }
+                        title_list.add(list[i])
+                        if (type == "66" && i == 2) {
+                            title_list.add("=")
+                            title_list.add(total.toString())
+                        }
                     }
                     var gv: GridView = holder.getView(R.id.gv)
                     gv.adapter = title_adapter
@@ -75,6 +93,7 @@ class KJResultListActivity : BaseActivity<ActivityJszdlistBinding>(), AbsModule.
         jszd_lv.adapter = adapter
         title_ll.setOnClickListener {
             var array = arrayOf("重庆时时彩", "北京赛车", "PC蛋蛋", "江苏快三", "幸运飞艇", "香港六合彩")
+            builder.setTitle("请选择彩种类型")
             builder.setItems(array) { a, index ->
                 when (index) {
                     0 -> type = "1"
