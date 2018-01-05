@@ -99,9 +99,7 @@ class MainModule : BaseModule {
     fun check_version() {
         var map = HashMap<String, String>()
         map.put("uid", Utils.getCache(sp.user_id))//用户uid
-
         HttpUtils<ObjectRequest<VersionModel>>().new_get(url.normal + "ylUpload.php", command.login+5, map, this, object : TypeToken<ObjectRequest<VersionModel>>() {})
-
     }
 
 }
