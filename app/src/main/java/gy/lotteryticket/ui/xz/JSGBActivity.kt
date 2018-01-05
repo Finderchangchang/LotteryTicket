@@ -25,6 +25,7 @@ import com.zyyoona7.lib.EasyPopup
 import com.zyyoona7.lib.HorizontalGravity
 import com.zyyoona7.lib.VerticalGravity
 import gd.mmanage.config.sp
+import gy.lotteryticket.control.MainModule
 import gy.lotteryticket.ui.WebActivity
 import gy.lotteryticket.ui.capital.GZInfoActivity
 import gy.lotteryticket.ui.capital.JSZDListActivity
@@ -95,8 +96,16 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 if (success.code == 0) {
                     refreshUI()
                     toast("下注成功")
+                    getModule(MainModule::class.java, this).get_user_login(Utils.getCache(sp.login_name), Utils.getCache(sp.pwd), 2)//登录操作
                 } else {
                     toast("下注失败")
+                }
+            }
+            command.login + 1 -> {//获得账户余额
+                success as NormalRequest<JsonArray>
+                if (success.obj != null && success.obj!!.size() > 0) {
+                    var user = Gson().fromJson<UserModel>(success.obj!![0].toString(), UserModel::class.java)
+                    yue_tv.text = "￥" + user.coin
                 }
             }
             command.xz + 2 -> {//切换AB盘
@@ -362,7 +371,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         top_jiang_gv.adapter = title_adapter
         dialog!!.setTitle(R.string.dialog_loading)
         dialog!!.show()
-        yue_tv.text = "余额：" + Utils.getCache(sp.coin)
+        yue_tv.text = "￥" + Utils.getCache(sp.coin)
 
         cz_id = intent.getStringExtra("index")
         when (cz_id) {

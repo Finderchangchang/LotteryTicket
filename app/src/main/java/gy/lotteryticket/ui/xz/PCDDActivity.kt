@@ -110,7 +110,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 success as NormalRequest<JsonArray>
                 if (success.obj != null && success.obj!!.size() > 0) {
                     var user = Gson().fromJson<UserModel>(success.obj!![0].toString(), UserModel::class.java)
-                    yue_tv.text = "余额：" + user.coin
+                    yue_tv.text = "￥" + user.coin
                 }
             }
             command.xz + 2 -> {//切换AB盘
@@ -311,7 +311,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     var control: XZModule? = null
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
-        yue_tv.text = "余额：" + Utils.getCache(sp.coin)
+        yue_tv.text = "￥" + Utils.getCache(sp.coin)
         control = getModule(XZModule::class.java, this)
         adapter = object : CommonAdapter<PopModel>(this, pop_list, R.layout.item_pop) {
             override fun convert(holder: CommonViewHolder, model: PopModel, position: Int) {
