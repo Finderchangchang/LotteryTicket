@@ -22,6 +22,7 @@ import com.zyyoona7.lib.HorizontalGravity
 import com.zyyoona7.lib.VerticalGravity
 import gd.mmanage.config.sp
 import gy.lotteryticket.config.command
+import gy.lotteryticket.control.MainModule
 import gy.lotteryticket.method.Utils
 import gy.lotteryticket.model.*
 import gy.lotteryticket.ui.WebActivity
@@ -100,8 +101,16 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 if (success.code == 0) {
                     refreshUI()
                     toast("下注成功")
+                    getModule(MainModule::class.java, this).get_user_login(Utils.getCache(sp.login_name), Utils.getCache(sp.pwd), 2)//登录操作
                 } else {
                     toast("下注失败")
+                }
+            }
+            command.login + 1 -> {//获得账户余额
+                success as NormalRequest<JsonArray>
+                if (success.obj != null && success.obj!!.size() > 0) {
+                    var user = Gson().fromJson<UserModel>(success.obj!![0].toString(), UserModel::class.java)
+                    yue_tv.text = "余额：" + user.coin
                 }
             }
             command.xz + 2 -> {//切换AB盘
@@ -302,6 +311,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     var control: XZModule? = null
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
+        yue_tv.text = "余额：" + Utils.getCache(sp.coin)
         control = getModule(XZModule::class.java, this)
         adapter = object : CommonAdapter<PopModel>(this, pop_list, R.layout.item_pop) {
             override fun convert(holder: CommonViewHolder, model: PopModel, position: Int) {

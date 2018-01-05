@@ -362,6 +362,8 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         top_jiang_gv.adapter = title_adapter
         dialog!!.setTitle(R.string.dialog_loading)
         dialog!!.show()
+        yue_tv.text = "余额：" + Utils.getCache(sp.coin)
+
         cz_id = intent.getStringExtra("index")
         when (cz_id) {
             "1" -> {
