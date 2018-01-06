@@ -28,7 +28,7 @@ import gy.lotteryticket.ui.xz.PCDDActivity
 import kotlinx.android.synthetic.main.activity_home.*
 import pub.devrel.easypermissions.EasyPermissions
 
-class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
+class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback, EasyPermissions.PermissionCallbacks {
     override fun onSuccess(result: Int, success: Any?) {
         when (result) {
             10000 -> {//加载配置数据
@@ -56,6 +56,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
             }
         }
     }
+
     fun down_apk(model: VersionModel) {
         if (!EasyPermissions.hasPermissions(this@HomeActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             EasyPermissions.requestPermissions(this@HomeActivity, "需要下载新的apk",
@@ -76,12 +77,36 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
             builder.show()
         }
     }
+
     override fun onError(result: Int, error: Any?) {
 
     }
 
-    var control: MainModule? = null
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
 
+    //成功
+    override fun onPermissionsGranted(requestCode: Int, list: List<String>) {
+        if (!EasyPermissions.hasPermissions(this@HomeActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            EasyPermissions.requestPermissions(this@HomeActivity, "您需要允许以下权限,否则无法注册企业信息",
+                    2, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        } else {
+            control!!.check_version()
+        }
+    }
+
+    //失败
+    override fun onPermissionsDenied(requestCode: Int, list: List<String>) {
+        if (!EasyPermissions.hasPermissions(this@HomeActivity,  Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            EasyPermissions.requestPermissions(this@HomeActivity, "您需要允许以下权限",
+                    2, Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        }
+    }
+
+    var control: MainModule? = null
     override fun setLayoutId(): Int {
         return R.layout.activity_home
     }
