@@ -154,8 +154,8 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     now_qh = model.kjNum//记录当前期号
                     item_can_click = true
                     next_qi_tv.text = now_qh + "期"
-                    title_bar.center_str = model.title
-                    data_ftime = model.data_ftime
+                    title_tv.text = model.title
+                    data_ftime = model.data_ftime//封盘时间
                     kjtime = model.kjtime
                     title_list.clear()
                     var total = 0
@@ -197,7 +197,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                             .setWidth<EasyPopup>(AndroidUtils.dp2px(150))
                             .createPopup<EasyPopup>()
 
-                    mQQPop.showAtAnchorView(title_right!!, VerticalGravity.BELOW, HorizontalGravity.LEFT, AndroidUtils.dp2px(30), 0)
+                    mQQPop.showAtAnchorView(right99_iv!!, VerticalGravity.BELOW, HorizontalGravity.LEFT, AndroidUtils.dp2px(30), 0)
                     var lv = mQQPop.getView<ListView>(R.id.pop_lv)
                     pop_list = ArrayList()
                     pop_list.add(PopModel("即时注单", "(${success.obj!!.totalMoney})"))
@@ -242,6 +242,46 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             }
         }
         dialog!!.dismiss()
+    }
+
+    fun load_left() {
+        var mQQPop: EasyPopup = EasyPopup(this).setContentView<EasyPopup>(R.layout.layout_center_pop)
+
+        mQQPop.setAnimationStyle<EasyPopup>(R.style.QQPopAnim)
+                .setFocusAndOutsideEnable<EasyPopup>(true)
+                .setBackgroundDimEnable<EasyPopup>(true)
+                .setWidth<EasyPopup>(AndroidUtils.dp2px(150))
+                .createPopup<EasyPopup>()
+
+        mQQPop.showAtAnchorView(title_tv!!, VerticalGravity.BELOW, HorizontalGravity.LEFT, AndroidUtils.dp2px(30), 0)
+        var lv = mQQPop.getView<ListView>(R.id.pop_lv)
+        pop_list = ArrayList()
+        pop_list.add(PopModel("返回大厅", ""))
+        pop_list.add(PopModel("北京赛车", ""))
+        pop_list.add(PopModel("重庆时时彩", ""))
+        pop_list.add(PopModel("PC蛋蛋", ""))
+        pop_list.add(PopModel("江苏骰宝", ""))
+        pop_list.add(PopModel("幸运飞艇", ""))
+        pop_list.add(PopModel("香港六合彩", ""))
+        lv.adapter = adapter
+        lv.setOnItemClickListener { parent, view, position, id ->
+            when (position) {
+            //重庆
+                2 -> startActivity(Intent(this@JSGBActivity, JSGBActivity::class.java).putExtra("index", "1"))
+            //北京赛车
+                1 -> startActivity(Intent(this@JSGBActivity, PCDDActivity::class.java).putExtra("index", "50"))
+            //PC蛋蛋
+                3 -> startActivity(Intent(this@JSGBActivity, JSGBActivity::class.java).putExtra("index", "66"))
+            //快三
+                4 -> startActivity(Intent(this@JSGBActivity, JSGBActivity::class.java).putExtra("index", "10"))
+            //幸运飞艇
+                5 -> startActivity(Intent(this@JSGBActivity, PCDDActivity::class.java).putExtra("index", "55"))
+            //六合彩
+                6 -> startActivity(Intent(this@JSGBActivity, JSGBActivity::class.java).putExtra("index", "70"))
+            }
+            finish()
+        }
+        adapter!!.refresh(pop_list)
     }
 
     /**
@@ -321,12 +361,17 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         return resources.getIdentifier("s_" + url, "mipmap", ctx.packageName)
     }
 
-    var title_right: View? = null
 
     var adapter: CommonAdapter<PopModel>? = null
     var pop_list: ArrayList<PopModel> = ArrayList()
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
+        left_ll.setOnClickListener {
+            load_left()
+        }
+        right99_iv.setOnClickListener {
+            control!!.get_dz_last("2")
+        }
         control = getModule(XZModule::class.java, this)
         adapter = object : CommonAdapter<PopModel>(this, pop_list, R.layout.item_pop) {
             override fun convert(holder: CommonViewHolder, model: PopModel, position: Int) {
@@ -339,10 +384,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 }
             }
         }
-        title_bar.setRightClick { v ->
-            title_right = v
-            control!!.get_dz_last("2")
-        }
+
         title_adapter = object : CommonAdapter<String>(this, title_list, R.layout.item_kj_title) {
             override fun convert(holder: CommonViewHolder, model: String, position: Int) {
                 when (cz_id) {
@@ -548,6 +590,12 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                             xz_list.add(right_all_list[type1_index][num])
                             str_list.add("【" + left_list[type1_index] + "-" + right_all_list[type1_index][num].name + "】 @"
                                     + right_all_list[type1_index][num].odds + "X" + tz_et.text.toString())
+                        }
+                        str_list.add("——————————————————————————")
+                        try {
+                            str_list.add("【合计】总注数：" + now_lists.split(",").size + "   总金额：" + (now_lists.split(",").size * (tz_et.text.toString()).toDouble()).toString())
+                        } catch (e: Exception) {
+
                         }
                     }
                 }

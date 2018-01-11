@@ -91,7 +91,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
         super.init(savedInstanceState)
         control = getModule(MainModule::class.java, this)
         control!!.get_jb_main()
-        control!!.check_version()
+//        control!!.check_version()
         var mAdapter = MainAdapter(supportFragmentManager)
         tab_pager.adapter = mAdapter
         //预加载页面的个数

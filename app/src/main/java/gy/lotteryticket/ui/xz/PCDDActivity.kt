@@ -7,6 +7,7 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.ListView
 import com.arialyy.frame.module.AbsModule
+import com.arialyy.frame.util.AndroidUtils
 import com.arialyy.frame.util.AndroidUtils.dp2px
 import com.google.gson.Gson
 import gy.lotteryticket.R
@@ -40,16 +41,16 @@ import org.json.JSONArray
  * */
 class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     var left_list: ArrayList<String> = ArrayList<String>()
-    var right_all_list: ArrayList<ArrayList<XZModel>> = ArrayList<ArrayList<XZModel>>()
+    var right_all_list: ArrayList<ArrayList<XZModel>> = ArrayList()
     var left_adapter: CommonAdapter<String>? = null
     var right_adapter: CommonAdapter<XZModel>? = null
     var title_adapter: CommonAdapter<String>? = null
     var title_list: ArrayList<String> = ArrayList()
-    var right_list: ArrayList<XZModel> = ArrayList<XZModel>()
+    var right_list: ArrayList<XZModel> = ArrayList()
     var click_position = 0
     var xz_num = 0
-    var item_click_list: ArrayList<String> = ArrayList<String>()
-    var xz_list: ArrayList<XZModel> = ArrayList<XZModel>()//下注列表
+    var item_click_list: ArrayList<String> = ArrayList()
+    var xz_list: ArrayList<XZModel> = ArrayList()//下注列表
     var cz_id = "10"
     var now_qh = ""//当前期号
     var data_ftime = ""//封盘秒数
@@ -160,7 +161,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                             .setWidth<EasyPopup>(dp2px(150))
                             .createPopup<EasyPopup>()
 
-                    mQQPop.showAtAnchorView(title_right!!, VerticalGravity.BELOW, HorizontalGravity.LEFT, dp2px(30), 0)
+                    mQQPop.showAtAnchorView(right99_iv!!, VerticalGravity.BELOW, HorizontalGravity.LEFT, dp2px(30), 0)
                     var lv = mQQPop.getView<ListView>(R.id.pop_lv)
                     pop_list = ArrayList()
                     pop_list.add(PopModel("即时注单", "(${success.obj!!.totalMoney})"))
@@ -176,7 +177,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         when (position) {
                             0 -> {//即时注单
                                 startActivity(Intent(this, JSZDListActivity::class.java).putExtra("type", 0))
-                            }//startActivity(Intent(this@GameActivity))
+                            }
                             1 -> {
                                 startActivity(Intent(this, TodayActivity::class.java))
                             }
@@ -227,7 +228,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
 
                     now_qh = model.kjNum//记录当前期号
                     next_qi_tv.text = now_qh + "期"
-                    title_bar.center_str = model.title
+                    title_tv.text = model.title
                     data_ftime = model.data_ftime
                     kjtime = model.kjtime
                     handler.postDelayed(runnable, 1000)
@@ -287,7 +288,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             }
         }
     }
-    var title_right: View? = null
+
     override fun onError(result: Int, error: Any?) {
         dialog!!.dismiss()
     }
@@ -323,10 +324,6 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     holder.setText(R.id.bottom_tv, model.bottom)
                 }
             }
-        }
-        title_bar.setRightClick { v ->
-            title_right = v
-            control!!.get_dz_last("2")
         }
         when (Utils.getCache(sp.pan_id)) {
             "2" -> {
@@ -445,6 +442,14 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 control?.change_ab()
             }
         }
+        //加载左侧弹框
+        left_ll.setOnClickListener {
+            load_left()
+        }
+        //加载右侧弹框
+        right99_iv.setOnClickListener {
+            control!!.get_dz_last("2")
+        }
         left_btn.setOnClickListener {
             var tz = tz_et.text.toString().trim()
             if (TextUtils.isEmpty(tz)) {
@@ -456,7 +461,6 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             } else {
                 xz_list.clear()
                 var str_list = ArrayList<String>()
-
                 for (type1_index in 0 until item_click_list.size) {
                     var now_lists = item_click_list[type1_index]//当前选中的集合内容
                     if (now_lists.length > 2) {//确定有数值
@@ -466,6 +470,11 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                             xz_list.add(right_all_list[type1_index][num])
                             str_list.add("【" + left_list[type1_index] + "-" + right_all_list[type1_index][num].name + "】 @"
                                     + right_all_list[type1_index][num].odds + "X" + tz_et.text.toString())
+                        }
+                        str_list.add("——————————————————————————")
+                        try {
+                            str_list.add("【合计】总注数：" + now_lists.split(",").size + "   总金额：" + (now_lists.split(",").size * (tz_et.text.toString()).toDouble()).toString())
+                        } catch (e: Exception) {
 
                         }
                     }
@@ -488,6 +497,46 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 builder.show()
             }
         }
+    }
+
+    fun load_left() {
+        var mQQPop: EasyPopup = EasyPopup(this).setContentView<EasyPopup>(R.layout.layout_center_pop)
+
+        mQQPop.setAnimationStyle<EasyPopup>(R.style.QQPopAnim)
+                .setFocusAndOutsideEnable<EasyPopup>(true)
+                .setBackgroundDimEnable<EasyPopup>(true)
+                .setWidth<EasyPopup>(AndroidUtils.dp2px(150))
+                .createPopup<EasyPopup>()
+
+        mQQPop.showAtAnchorView(title_tv!!, VerticalGravity.BELOW, HorizontalGravity.LEFT, AndroidUtils.dp2px(30), 0)
+        var lv = mQQPop.getView<ListView>(R.id.pop_lv)
+        pop_list = ArrayList()
+        pop_list.add(PopModel("返回大厅", ""))
+        pop_list.add(PopModel("北京赛车", ""))
+        pop_list.add(PopModel("重庆时时彩", ""))
+        pop_list.add(PopModel("PC蛋蛋", ""))
+        pop_list.add(PopModel("江苏骰宝", ""))
+        pop_list.add(PopModel("幸运飞艇", ""))
+        pop_list.add(PopModel("香港六合彩", ""))
+        lv.adapter = adapter
+        lv.setOnItemClickListener { parent, view, position, id ->
+            when (position) {
+            //重庆
+                2 -> startActivity(Intent(this@PCDDActivity, JSGBActivity::class.java).putExtra("index", "1"))
+            //北京赛车
+                1 -> startActivity(Intent(this@PCDDActivity, PCDDActivity::class.java).putExtra("index", "50"))
+            //PC蛋蛋
+                3 -> startActivity(Intent(this@PCDDActivity, JSGBActivity::class.java).putExtra("index", "66"))
+            //快三
+                4 -> startActivity(Intent(this@PCDDActivity, JSGBActivity::class.java).putExtra("index", "10"))
+            //幸运飞艇
+                5 -> startActivity(Intent(this@PCDDActivity, PCDDActivity::class.java).putExtra("index", "55"))
+            //六合彩
+                6 -> startActivity(Intent(this@PCDDActivity, JSGBActivity::class.java).putExtra("index", "70"))
+            }
+            finish()
+        }
+        adapter!!.refresh(pop_list)
     }
 
     override fun onResume() {

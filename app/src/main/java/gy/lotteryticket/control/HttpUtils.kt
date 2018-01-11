@@ -162,7 +162,6 @@ class HttpUtils<T>() {
      * @param list post过去的参数
      * */
     fun get(url: String, back_id: Int, map: HashMap<String, String>?, control: BaseModule) {
-
         var go = OkGo.get(url)
         if (map != null) {
             for (model in map) {

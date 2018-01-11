@@ -19,8 +19,56 @@
             android:id="@+id/title_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:left_iv="@mipmap/left_jian"
             app:right_iv="@mipmap/caidan_san" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/left_ll"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center_vertical"
+                    android:text="赛车"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:padding="12dp"
+                    android:src="@mipmap/right_back" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/yue_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="￥88888888888888"
+                android:textColor="@color/white" />
+
+
+            <ImageView
+                android:id="@+id/right99_iv"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:clickable="true"
+                android:padding="14dp"
+                android:src="@mipmap/caidan_san" />
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -73,7 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="封盘:"
+                android:text="封盘："
                 android:textColor="@color/white" />
 
             <TextView
@@ -97,12 +145,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="00:00"
-                android:textColor="@color/white" />
-
-            <TextView
-                android:id="@+id/yue_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:textColor="@color/white" />
         </LinearLayout>
 
@@ -223,7 +265,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:background="@drawable/btn_bg_up"
-
                         android:text="A盘√"
                         android:textColor="@color/white" />
 
@@ -244,6 +285,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/tm_pressed_color"
+                android:gravity="center"
+                android:text="封盘中"
+                android:textColor="@color/white"
+                android:textSize="22sp"
                 android:visibility="gone" />
         </RelativeLayout>
     </LinearLayout>
