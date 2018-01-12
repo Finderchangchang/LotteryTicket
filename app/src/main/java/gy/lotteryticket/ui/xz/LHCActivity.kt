@@ -40,7 +40,7 @@ import org.json.JSONArray
  * */
 class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     var left_list: ArrayList<String> = ArrayList<String>()
-    var right_all_list: ArrayList<ArrayList<XZModel>> = ArrayList()
+    var right_all_list: ArrayList<ArrayList<LHCResult.DataGroupBean.DataTitleBean>> = ArrayList()
     var title_tab_list: ArrayList<ArrayList<PCDDModel.DataGroupBean.DataTitleBean>> = ArrayList()
     var left_adapter: CommonAdapter<String>? = null
     var right_adapter: CommonAdapter<XZModel>? = null
@@ -54,12 +54,13 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     var cz_id = "10"
     var now_qh = ""//当前期号
     var data_ftime = ""//封盘秒数
+    var tab_click = 0
     override fun onSuccess(result: Int, success: Any?) {
         when (result) {
             command.xz -> {//加载数据
                 success as NormalRequest<JsonArray>
                 if (success.obj != null && success.obj!!.size() > 0) {
-                    var model = Gson().fromJson<PCDDModel>(success.obj!![0].toString(), PCDDModel::class.java)
+                    var model = Gson().fromJson<LHCResult>(success.obj!![0].toString(), LHCResult::class.java)
                     var list = model.dataGroup
                     left_list = ArrayList()
                     right_all_list = ArrayList()
@@ -69,19 +70,24 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         for (key in list) {
                             item_click_list.add("")
                             left_list.add(key.name)
-                            title_tab_list.add(key.dataTitle as ArrayList<PCDDModel.DataGroupBean.DataTitleBean>)
-                            if (a == 0) {
-                                right_all_list.add(key.dataContent as ArrayList<XZModel>)
-                            } else {
-                                right_all_list.add(key.dataContent as ArrayList<XZModel>)
-                            }
+                            //title_tab_list.add(key.dataTitle)
+                            right_all_list.add(key.dataTitle as ArrayList<LHCResult.DataGroupBean.DataTitleBean>)
+
+//                            if (a == 0) {
+//                                right_all_list.add(key.dataTitle as ArrayList<LHCResult.DataGroupBean>)
+//                            } else {
+//                                right_all_list.add(key.dataTitle as ArrayList<LHCResult.DataGroupBean>)
+//                            }
                             a++
                         }
                         left_adapter!!.refresh(left_list)
                         //加载默认数据
                         if (right_all_list.size > 0) {
                             ty2_title.text = left_list[0]
-                            right_adapter!!.refresh(right_all_list[0])
+                            var a = right_all_list[0]
+                            var b = a.size
+                            var c = a[0]
+                            right_adapter!!.refresh(right_all_list[0][0].dataContent)
                             if (title_tab_list[0].size > 1) {
                                 tab.visibility = View.VISIBLE
                                 if (title_tab_list[click_position].size == 2) {
@@ -310,7 +316,7 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         //计算当前下的注数
         xz_num = 0
         zhu_tv.text = xz_num.toString()
-        right_adapter!!.refresh(right_all_list[click_position])
+//        right_adapter!!.refresh(right_all_list[click_position][tab_click].dataTitle)
         left_adapter!!.refresh(left_list)
         if (title_tab_list[click_position].size > 0) {
             tab.visibility = View.VISIBLE
@@ -434,7 +440,7 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 ty2_title.text = left_list[click_position]
                 left_adapter!!.refresh(left_list)
                 if (right_all_list.size > position) {
-                    right_adapter!!.refresh(right_all_list[position])
+                    //right_adapter!!.refresh(right_all_list[position])
                 }
                 if (title_tab_list[click_position].size > 1) {
                     tab.visibility = View.VISIBLE
@@ -496,9 +502,9 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         now_lists = now_lists.substring(1, now_lists.length - 1)
                         for (type2 in now_lists.split(",")) {//根据逗号隔开获得当前选择的数据
                             var num = type2.toInt()
-                            xz_list.add(right_all_list[type1_index][num])
-                            str_list.add("【" + left_list[type1_index] + "-" + right_all_list[type1_index][num].name + "】 @"
-                                    + right_all_list[type1_index][num].odds + "X" + tz_et.text.toString())
+//                            xz_list.add(right_all_list[type1_index][num])
+//                            str_list.add("【" + left_list[type1_index] + "-" + right_all_list[type1_index][num].name + "】 @"
+//                                    + right_all_list[type1_index][num].odds + "X" + tz_et.text.toString())
                         }
                         str_list.add("————————————————————")
                         try {
@@ -590,31 +596,31 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     fun get_now_clicks(position: Int) {
         var clicks = item_click_list[click_position]
         var item = right_all_list[click_position]
-        if (item[position].odds != null) {
-            if (TextUtils.isEmpty(clicks)) clicks = "," + clicks//如果数据为空加一个逗号 好判断
-            if (clicks.isNotEmpty() && clicks.substring(0, 1) != ",") {
-                clicks = "," + clicks
-            }
-            var result = ""
-            if (clicks.contains("," + position.toString() + ",")) {
-                result = clicks.replace("," + position.toString() + ",", ",")
-            } else {
-                result = clicks + position.toString() + ","
-            }
-            if (result.isNotEmpty() && result.substring(0, 1) != ",") {
-                result = "," + result
-            }
-            item_click_list[click_position] = result
-            //计算当前下的注数
-            xz_num = item_click_list.sumBy {
-                if (it.length > 2) {
-                    it.substring(1, it.length - 1).split(",").size
-                } else 0
-            }
-            zhu_tv.text = xz_num.toString()
-            right_adapter!!.refresh(item)
-            left_adapter!!.refresh(left_list)
-        }
+//        if (item[position].odds != null) {
+//            if (TextUtils.isEmpty(clicks)) clicks = "," + clicks//如果数据为空加一个逗号 好判断
+//            if (clicks.isNotEmpty() && clicks.substring(0, 1) != ",") {
+//                clicks = "," + clicks
+//            }
+//            var result = ""
+//            if (clicks.contains("," + position.toString() + ",")) {
+//                result = clicks.replace("," + position.toString() + ",", ",")
+//            } else {
+//                result = clicks + position.toString() + ","
+//            }
+//            if (result.isNotEmpty() && result.substring(0, 1) != ",") {
+//                result = "," + result
+//            }
+//            item_click_list[click_position] = result
+//            //计算当前下的注数
+//            xz_num = item_click_list.sumBy {
+//                if (it.length > 2) {
+//                    it.substring(1, it.length - 1).split(",").size
+//                } else 0
+//            }
+//            zhu_tv.text = xz_num.toString()
+//            right_adapter!!.refresh(item)
+//            left_adapter!!.refresh(left_list)
+//        }
     }
 
     override fun setLayoutId(): Int {
