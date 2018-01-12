@@ -24,7 +24,7 @@ class CJActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
         if (success.code == 0 && success.obj!!.isNotEmpty()) {
             var a = success.obj
             var mode = success.obj!![0]
-            var urk = mode.con + "?sign=" + Utils.string2MD5("signStr=${sp.http_random}&key=${sp.http_key}&timeStamp=${Utils.dateToStamp()}") +
+            var urk = mode.con + "?signStr=${sp.http_random}&sign=" + Utils.string2MD5("signStr=${sp.http_random}&key=${sp.http_key}&timeStamp=${Utils.dateToStamp()}") +
                     "&uid=" + Utils.getCache(sp.user_id)
             load_web(urk)
         }
