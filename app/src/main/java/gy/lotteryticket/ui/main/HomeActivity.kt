@@ -148,7 +148,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
         ll2.setOnClickListener { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, PCDDActivity::class.java).putExtra("index", "55")) }
         ll4.setOnClickListener { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 0)) }//在线客服
         ll5.setOnClickListener { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 1)) }//聊天室
-        ll6.setOnClickListener { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, CJActivity::class.java).putExtra("index", 1)) }//电脑版本
+        ll6.setOnClickListener { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, CJActivity::class.java).putExtra("index", 7)) }//电脑版本
         init_title_imgs()
     }
 
