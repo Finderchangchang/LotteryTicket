@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         app:center_tv="银行账号"
-        app:left_iv="@mipmap/left_jian" />
+        app:left_iv="@mipmap/left_jian"
+        app:right_tv="修改"/>
 
     <Button
         android:id="@+id/btn_add"

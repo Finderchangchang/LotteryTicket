@@ -15,6 +15,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 
+import net.tsz.afinal.view.TitleBar;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,7 @@ public class BankActivity extends BaseActivity implements AbsModule.OnCallback {
     private List<BankModel> mData;
 
     private Dialog loadingDialog;
+    private TitleBar titleBar;
 
     @Override
     protected int setLayoutId() {
@@ -52,7 +55,7 @@ public class BankActivity extends BaseActivity implements AbsModule.OnCallback {
         super.onCreate(savedInstanceState);
 
         loadingDialog = new LoadingDialog.Builder(this).create();
-
+        titleBar = (TitleBar) findViewById(R.id.title_bar);
         btn_add = (Button) findViewById(R.id.btn_add);
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +74,20 @@ public class BankActivity extends BaseActivity implements AbsModule.OnCallback {
 
     private void initView() {
         recy_bank = (RecyclerView) findViewById(R.id.recy_bank);
+
+        titleBar.setRightClick(new TitleBar.RightClick() {
+            @Override
+            public void onClick(View view) {
+
+                if (mData.size() > 0) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("bank", mData.get(0));
+                    startActivityForResult(new Intent(BankActivity.this, AddBankActivity.class).putExtras(bundle), 1000);
+
+                }
+
+            }
+        });
         initAdapter();
     }
 
@@ -100,10 +117,13 @@ public class BankActivity extends BaseActivity implements AbsModule.OnCallback {
         mData.clear();
         mData.addAll(data);
         mAdapter.notifyDataSetChanged();
-        if(data.size()>0){
+        if (data.size() > 0) {
             btn_add.setVisibility(View.GONE);
-        }else{
+            titleBar.setRightClose(true);
+
+        } else {
             btn_add.setVisibility(View.VISIBLE);
+            titleBar.setRightClose(false);
         }
     }
 

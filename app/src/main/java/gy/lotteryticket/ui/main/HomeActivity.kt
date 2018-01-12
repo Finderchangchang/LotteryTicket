@@ -56,6 +56,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
             }
         }
     }
+
     fun down_apk(model: VersionModel) {
         if (!EasyPermissions.hasPermissions(this@HomeActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             EasyPermissions.requestPermissions(this@HomeActivity, "需要下载新的apk",
@@ -76,6 +77,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
             builder.show()
         }
     }
+
     override fun onError(result: Int, error: Any?) {
 
     }
@@ -99,7 +101,24 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
         //跳转到个人中心
         user_ll.setOnClickListener { startActivity(Intent(this, UserActivity::class.java)) }
         //跳转到登录页面
-        login_tv.setOnClickListener { Utils.check_login(this) }
+        login_tv.setOnClickListener {
+            if (login_tv.text.equals("登录")) {
+                Utils.check_login(this)
+            } else {
+                builder!!.setTitle("提示")
+                builder!!.setMessage("确定要退出当前账号吗？")
+                builder!!.setPositiveButton("确定") { a, b ->
+                    Utils.putCache(sp.user_id, "")
+                    Utils.putCache(sp.login_name, "")
+                    Utils.putCache(sp.pwd, "")
+                    Utils.putCache(sp.pan_id, "")
+                    Utils.putCache(sp.coin, "")
+                    finish()
+                }
+                builder!!.setNegativeButton("取消") { a, b -> }
+                builder!!.show()
+            }
+        }
         alphaIndicator!!.setViewPager(tab_pager)
         alphaIndicator!!.setOnTabChangedListner({ tabNum ->
             when (tabNum) {
@@ -146,10 +165,12 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
     override fun onResume() {
         super.onResume()
         if (TextUtils.isEmpty(Utils.getCache(sp.user_id))) {
-            login_tv.visibility = View.VISIBLE
+            login_tv.setText("登录")
+            //login_tv.visibility = View.VISIBLE
             user_ll.visibility = View.GONE
         } else {
-            login_tv.visibility = View.GONE
+            //login_tv.visibility = View.GONE
+            login_tv.setText("退出")
             user_ll.visibility = View.VISIBLE
             main_tv_username.text = Utils.getCache(sp.login_name)
         }

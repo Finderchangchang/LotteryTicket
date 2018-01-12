@@ -41,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="80dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -363,7 +363,7 @@
                     android:padding="2dp"
                     app:tabIconNormal="@mipmap/yx"
                     app:tabIconSelected="@mipmap/yx"
-                    app:tabText="游戏"
+                    app:tabText="游戏大厅"
                     app:tabTextSize="10sp"
                     app:textColorNormal="@color/bottom_bg" />
 
@@ -374,7 +374,7 @@
                     android:padding="2dp"
                     app:tabIconNormal="@mipmap/zj"
                     app:tabIconSelected="@mipmap/zj"
-                    app:tabText="资金"
+                    app:tabText="资金管理"
                     app:tabTextSize="10sp"
                     app:textColorNormal="@color/bottom_bg"
                     app:textColorSelected="@color/colorPrimary" />

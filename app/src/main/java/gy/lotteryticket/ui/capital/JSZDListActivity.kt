@@ -66,7 +66,20 @@ class JSZDListActivity : BaseActivity<ActivityJszdlistBinding>(), AbsModule.OnCa
 
         adapter = object : CommonAdapter<ZDModel.DataBean>(this, list, R.layout.item_jszd) {
             override fun convert(holder: CommonViewHolder, model: ZDModel.DataBean, position: Int) {
+                holder.setText(R.id.item_jszd_mz, model.title)
                 holder.setText(R.id.item_jszd_qh, model.actionNo)
+                holder.setText(R.id.item_jszd_rq, model.actionTime)
+
+
+                holder.setText(R.id.item_jszd_xzmx1, model.actionTime)
+                holder.setText(R.id.item_jszd_xzmx2, model.actionTime)
+                if (model.panid.equals("1")) {
+                    holder.setText(R.id.item_jszd_xzmx3, "A盘")
+                } else {
+                    holder.setText(R.id.item_jszd_xzmx3, "B盘")
+                }
+
+
                 holder.setText(R.id.item_jszd_xzje, model.money)
                 if (type == 0) {
                     holder.setVisible(R.id.cx_btn, true)
@@ -76,53 +89,53 @@ class JSZDListActivity : BaseActivity<ActivityJszdlistBinding>(), AbsModule.OnCa
                 } else {
                     holder.setVisible(R.id.cx_btn, false)
                 }
-                holder.setText(R.id.item_jszd_xzmx, model.getGroupname() + "-" + model.getActionData() + "\n" + model.getOdds().toDoubleOrNull())
+                //holder.setText(R.id.item_jszd_xzmx, model.getGroupname() + "-" + model.getActionData() + "\n" + model.getOdds().toDoubleOrNull())
+
+                if (model.zjCount.equals("0")) {
+                    holder.setText(R.id.item_jszd_kyje, "0.00")
+                } else {
+                    holder.setText(R.id.item_jszd_kyje, model.money + model.keying)
+                }
+
+
+        }
+    }
+    jszd_lv.adapter = adapter
+}
+
+override fun setLayoutId(): Int {
+    return R.layout.activity_jszdlist;
+}
+
+override fun onSuccess(result: Int, success: Any?) {
+    when (result) {
+        command.xz + 5 -> {//加载配置数据
+            success as NormalRequest<ZDModel>
+            if (success.code == 0 && success.obj != null) {
+                list = (success.obj!!.data as ArrayList<ZDModel.DataBean>?)!!
+                adapter!!.refresh(list)
                 when (type) {
                     0 -> {
-                        holder.setText(R.id.item_jszd_kyje, model.keying)
+                        jszd_allmoney.text = success.obj!!.totalMoney.toString()
+                        jszd_symoney.text= success.obj!!.totalShuyingMoney.toString()
                     }
                     1 -> {
-                        holder.setText(R.id.item_jszd_kyje, model.keying)
+
+                        jszd_xzmoney.text = success.obj!!.totalMoney.toString()
+                        jszd_fsmoney.text = success.obj!!.totalRebateMoney.toString()
+                        jszd_all2money.text = success.obj!!.totalShuyingMoney.toString()
                     }
                 }
 
             }
         }
-        jszd_lv.adapter = adapter
-    }
-
-    override fun setLayoutId(): Int {
-        return R.layout.activity_jszdlist;
-    }
-
-    override fun onSuccess(result: Int, success: Any?) {
-        when (result) {
-            command.xz + 5 -> {//加载配置数据
-                success as NormalRequest<ZDModel>
-                if (success.code == 0 && success.obj != null) {
-                    list = (success.obj!!.data as ArrayList<ZDModel.DataBean>?)!!
-                    adapter!!.refresh(list)
-                    when (type) {
-                        0 -> {
-                            jszd_allmoney.text = success.obj!!.totalShuyingMoney.toString()
-                        }
-                        1 -> {
-
-                            jszd_xzmoney.text = success.obj!!.totalMoney.toString()
-                            jszd_fsmoney.text = success.obj!!.totalRebateMoney.toString()
-                            jszd_all2money.text = success.obj!!.totalShuyingMoney.toString()
-                        }
-                    }
-
-                }
+        command.xz + 7 -> {//撤销订单
+            success as NormalRequest<String>
+            if (success.code == 0) {
+                control!!.get_dz_last("2")
             }
-            command.xz + 7 -> {//撤销订单
-                success as NormalRequest<String>
-                if (success.code == 0) {
-                    control!!.get_dz_last("2")
-                }
-                toast(success.message)
-            }
+            toast(success.message)
         }
     }
+}
 }
