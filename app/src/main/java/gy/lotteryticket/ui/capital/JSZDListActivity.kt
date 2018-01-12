@@ -71,8 +71,8 @@ class JSZDListActivity : BaseActivity<ActivityJszdlistBinding>(), AbsModule.OnCa
                 holder.setText(R.id.item_jszd_rq, model.actionTime)
 
 
-                holder.setText(R.id.item_jszd_xzmx1, model.actionTime)
-                holder.setText(R.id.item_jszd_xzmx2, model.actionTime)
+                holder.setText(R.id.item_jszd_xzmx1,  model.getGroupname() + "-" + model.getActionData())
+                holder.setText(R.id.item_jszd_xzmx2,  "@"+model.getOdds().toDoubleOrNull())
                 if (model.panid.equals("1")) {
                     holder.setText(R.id.item_jszd_xzmx3, "A盘")
                 } else {
