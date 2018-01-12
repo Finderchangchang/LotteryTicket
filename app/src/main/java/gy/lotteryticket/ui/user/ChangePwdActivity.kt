@@ -26,7 +26,7 @@ class ChangePwdActivity : BaseActivity<ActivityChangePwdBinding>(), AbsModule.On
                 "2" -> {
                     Utils.putCache(sp.pwd, new_again_et.text.toString().trim())
                 }
-                "1"->{
+                "1" -> {
                     Utils.putCache(sp.coinPassword, new_again_et.text.toString().trim())
                 }
             }
@@ -65,13 +65,13 @@ class ChangePwdActivity : BaseActivity<ActivityChangePwdBinding>(), AbsModule.On
             var old = old_et.text.toString().trim()
             var new = new_et.text.toString().trim()
             var new_again = new_again_et.text.toString().trim()
-            var oldpsw=Utils.getCache(sp.pwd)
-            var zhipsw=Utils.getCache(sp.coinPassword)
+            var oldpsw = Utils.getCache(sp.pwd)
+            var zhipsw = Utils.getCache(sp.coinPassword)
             when (position) {
                 "1" -> {
                     if (check_null(old) && old_pwd_have) {
                         toast("旧密码不能为空")
-                    }else if(!oldpsw.equals(old)){
+                    } else if (!Utils.string2MD5(old).equals(zhipsw)) {
                         toast("旧密码错误")
                     } else if (check_null(new) || new != new_again) {
                         toast("请输入正确的新密码")
@@ -82,7 +82,7 @@ class ChangePwdActivity : BaseActivity<ActivityChangePwdBinding>(), AbsModule.On
                 "2" -> {
                     if (check_null(old)) {
                         toast("旧密码不能为空")
-                    }else if(!Utils.string2MD5(old).equals(zhipsw)){
+                    } else if (!oldpsw.equals(old)) {
                         toast("旧密码错误")
                     } else if (check_null(new) || new != new_again) {
                         toast("请输入正确的新密码")

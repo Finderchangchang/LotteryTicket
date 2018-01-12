@@ -212,7 +212,7 @@ class GameActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
             //幸运飞艇
                 "55" -> startActivity(Intent(this@GameActivity, PCDDActivity::class.java).putExtra("index", "55"))
             //六合彩
-                "70" -> startActivity(Intent(this@GameActivity, JSGBActivity::class.java).putExtra("index", "70"))
+                "70" -> startActivity(Intent(this@GameActivity, LHCActivity::class.java).putExtra("index", "70"))
             }
         } catch (e: Exception) {
 

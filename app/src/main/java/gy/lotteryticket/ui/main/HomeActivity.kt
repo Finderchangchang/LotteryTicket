@@ -22,6 +22,7 @@ import gy.lotteryticket.method.Utils
 import gy.lotteryticket.model.NormalRequest
 import gy.lotteryticket.model.TagModel
 import gy.lotteryticket.model.VersionModel
+import gy.lotteryticket.ui.CJActivity
 import gy.lotteryticket.ui.WebActivity
 import gy.lotteryticket.ui.xz.JSGBActivity
 import gy.lotteryticket.ui.xz.PCDDActivity
@@ -92,7 +93,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
         control = getModule(MainModule::class.java, this)
-        control!!.get_jb_main()
+        control!!.get_jb_main(0)
 //        control!!.check_version()
         var mAdapter = MainAdapter(supportFragmentManager)
         tab_pager.adapter = mAdapter
@@ -147,7 +148,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback {
         ll2.setOnClickListener { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, PCDDActivity::class.java).putExtra("index", "55")) }
         ll4.setOnClickListener { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 0)) }//在线客服
         ll5.setOnClickListener { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 1)) }//聊天室
-        ll6.setOnClickListener { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 2)) }//电脑版本
+        ll6.setOnClickListener { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, CJActivity::class.java).putExtra("index", 1)) }//电脑版本
         init_title_imgs()
     }
 

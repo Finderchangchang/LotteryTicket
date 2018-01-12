@@ -112,10 +112,8 @@ class HttpUtils<T>() {
                 go.params(model.key, model.value)
             }
         }
-        var key = "7f8ddadbe4e91911a58ed525b3510748"
-        var ramdom = "778811"
-        go.params("signStr", ramdom)
-        go.params("sign", string2MD5("signStr=$ramdom&key=$key&timeStamp=${Utils.dateToStamp()}"))
+        go.params("signStr", sp.http_random)
+        go.params("sign", string2MD5("signStr=${sp.http_random}&key=${sp.http_key}&timeStamp=${Utils.dateToStamp()}"))
         go.execute(object : StringCallback() {
             override fun onSuccess(str: String, call: okhttp3.Call?, response: okhttp3.Response?) {
                 var t = Gson().fromJson<T>(str, type.type)
@@ -168,10 +166,8 @@ class HttpUtils<T>() {
                 go.params(model.key, model.value)
             }
         }
-        var key = "7f8ddadbe4e91911a58ed525b3510748"
-        var ramdom = "778811"
-        go.params("signStr", ramdom)
-        go.params("sign", string2MD5("signStr=$ramdom&key=$key&timeStamp=${Utils.dateToStamp()}"))
+        go.params("signStr", sp.http_random)
+        go.params("sign", string2MD5("signStr=${sp.http_random}&key=${sp.http_key}&timeStamp=${Utils.dateToStamp()}"))
         go.execute(object : StringCallback() {
             override fun onSuccess(str: String, call: okhttp3.Call?, response: okhttp3.Response?) {
                 var t = Gson().fromJson(str, LzyResponse::class.java)

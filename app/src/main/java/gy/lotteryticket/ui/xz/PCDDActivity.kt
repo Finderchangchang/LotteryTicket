@@ -264,7 +264,11 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 } else {
                     var x_time = time.split(":")[0].toInt() * 60 + time.split(":")[1].toInt()
                     var fp_time = x_time - data_ftime.toInt()//封盘秒数
-                    next4_qi_tv.text = time
+                    if (!TextUtils.isEmpty(time) && time.contains("-")) {
+                        next4_qi_tv.text = "00:00"
+                    } else {
+                        next4_qi_tv.text = time
+                    }
                     //封盘时间
                     var left_time = (fp_time / 60).toString()
                     if (left_time.length == 1) {
@@ -471,7 +475,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                             str_list.add("【" + left_list[type1_index] + "-" + right_all_list[type1_index][num].name + "】 @"
                                     + right_all_list[type1_index][num].odds + "X" + tz_et.text.toString())
                         }
-                        str_list.add("——————————————————————————")
+                        str_list.add("————————————————————")
                         try {
                             str_list.add("【合计】总注数：" + now_lists.split(",").size + "   总金额：" + (now_lists.split(",").size * (tz_et.text.toString()).toDouble()).toString())
                         } catch (e: Exception) {
@@ -532,7 +536,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             //幸运飞艇
                 5 -> startActivity(Intent(this@PCDDActivity, PCDDActivity::class.java).putExtra("index", "55"))
             //六合彩
-                6 -> startActivity(Intent(this@PCDDActivity, JSGBActivity::class.java).putExtra("index", "70"))
+                6 -> startActivity(Intent(this@PCDDActivity, LHCActivity::class.java).putExtra("index", "70"))
             }
             finish()
         }
