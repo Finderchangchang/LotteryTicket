@@ -72,37 +72,11 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                             left_list.add(key.name)
                             //title_tab_list.add(key.dataTitle)
                             right_all_list.add(key.dataTitle as ArrayList<LHCResult.DataGroupBean.DataTitleBean>)
-
-//                            if (a == 0) {
-//                                right_all_list.add(key.dataTitle as ArrayList<LHCResult.DataGroupBean>)
-//                            } else {
-//                                right_all_list.add(key.dataTitle as ArrayList<LHCResult.DataGroupBean>)
-//                            }
                             a++
                         }
                         left_adapter!!.refresh(left_list)
                         //加载默认数据
-                        if (right_all_list.size > 0) {
-                            ty2_title.text = left_list[0]
-                            var a = right_all_list[0]
-                            var b = a.size
-                            var c = a[0]
-                            right_adapter!!.refresh(right_all_list[0][0].dataContent)
-                            if (title_tab_list[0].size > 1) {
-                                tab.visibility = View.VISIBLE
-                                if (title_tab_list[click_position].size == 2) {
-                                    tab.tabMode = TabLayout.MODE_FIXED
-                                } else {
-                                    tab.tabMode = TabLayout.MODE_SCROLLABLE
-                                }
-                                tab.removeAllTabs()
-                                for (m in title_tab_list[0]) {
-                                    tab.addTab(tab.newTab().setText(m.name))
-                                }
-                            } else {
-                                tab.visibility = View.GONE
-                            }
-                        }
+                        load_right(0)
                     }
                 }
             }
@@ -251,7 +225,7 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         }
         dialog!!.dismiss()
     }
-
+    //和肖，自选不中
     var item_can_click = true//true:可以点击 false:不可以点击
     var can_run = true//执行循环操作
     var kjtime = ""
@@ -360,7 +334,9 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         dialog!!.show()
         cz_id = intent.getStringExtra("index")
 
-        ty2_top_gv.setOnItemClickListener { _, _, position, _ -> if (item_can_click) get_now_clicks(position) }
+        ty2_top_gv.setOnItemClickListener { _, _, position, _ ->
+            //if (item_can_click)
+            get_now_clicks(position) }
         ty2_top_gv.numColumns = 6
         title_adapter = object : CommonAdapter<String>(this, title_list, R.layout.item_title) {
             override fun convert(holder: CommonViewHolder, model: String, position: Int) {
@@ -421,7 +397,7 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     }
                 }
                 var clicks = item_click_list[click_position]
-                if (clicks.contains("," + position.toString() + ",")) {//被点击
+                if (clicks.contains(",$tab_click_position:$position,")) {//被点击
                     holder.setBGColor(R.id.total_ll, R.color.tm_pressed_color)
                 } else {
                     holder.setBGColor(R.id.total_ll, R.color.tm_white)
@@ -431,31 +407,7 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         left_lv.adapter = left_adapter
         left_lv.setOnItemClickListener { parent, view, position, id ->
             if (click_position != position) {//两个位置不相同 执行点击操作
-                if (position == 0) {
-                    ty2_top_gv.numColumns = 6
-                } else {
-                    ty2_top_gv.numColumns = 2
-                }
-                click_position = position
-                ty2_title.text = left_list[click_position]
-                left_adapter!!.refresh(left_list)
-                if (right_all_list.size > position) {
-                    //right_adapter!!.refresh(right_all_list[position])
-                }
-                if (title_tab_list[click_position].size > 1) {
-                    tab.visibility = View.VISIBLE
-                    if (title_tab_list[click_position].size == 2) {
-                        tab.tabMode = TabLayout.MODE_FIXED
-                    } else {
-                        tab.tabMode = TabLayout.MODE_SCROLLABLE
-                    }
-                    tab.removeAllTabs()
-                    for (m in title_tab_list[click_position]) {
-                        tab.addTab(tab.newTab().setText(m.name))
-                    }
-                } else {
-                    tab.visibility = View.GONE
-                }
+                load_right(position)
             }
         }
         left_lv.cacheColorHint = 0
@@ -533,7 +485,51 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             }
         }
     }
+    var tab_click_position=0//tab点击事件
+    fun load_right(position:Int){
+        if (position == 0) {
+            ty2_top_gv.numColumns = 6
+        } else {
+            ty2_top_gv.numColumns = 2
+        }
+        click_position = position
+        ty2_title.text = left_list[click_position]
+        left_adapter!!.refresh(left_list)
+        if (right_all_list.size > position) {
+            right_adapter!!.refresh(right_all_list[position][0].dataContent)
+        }
+        if (right_all_list[click_position].size > 1) {
+            tab.visibility = View.VISIBLE
+            if (right_all_list[click_position].size == 2) {
+                tab.tabMode = TabLayout.MODE_FIXED
+            } else {
+                tab.tabMode = TabLayout.MODE_SCROLLABLE
+            }
+            tab.removeAllTabs()
+            for (m in right_all_list[click_position]) {
+                tab.addTab(tab.newTab().setText(m.name))
+            }
+            ty2_title.text = right_all_list[click_position][0].name
+            tab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab) {
+                    //选择
+                    tab_click_position=tab.position//当前选择的位置
+                    ty2_title.text = right_all_list[click_position][tab_click_position].name
+                    right_adapter!!.refresh(right_all_list[click_position][tab_click_position].dataContent)
+                }
 
+                override fun onTabUnselected(tab: TabLayout.Tab) {
+
+                }
+
+                override fun onTabReselected(tab: TabLayout.Tab) {
+
+                }
+            })
+        } else {
+            tab.visibility = View.GONE
+        }
+    }
     fun load_left() {
         var mQQPop: EasyPopup = EasyPopup(this).setContentView<EasyPopup>(R.layout.layout_center_pop)
 
@@ -596,31 +592,31 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     fun get_now_clicks(position: Int) {
         var clicks = item_click_list[click_position]
         var item = right_all_list[click_position]
-//        if (item[position].odds != null) {
-//            if (TextUtils.isEmpty(clicks)) clicks = "," + clicks//如果数据为空加一个逗号 好判断
-//            if (clicks.isNotEmpty() && clicks.substring(0, 1) != ",") {
-//                clicks = "," + clicks
-//            }
-//            var result = ""
-//            if (clicks.contains("," + position.toString() + ",")) {
-//                result = clicks.replace("," + position.toString() + ",", ",")
-//            } else {
-//                result = clicks + position.toString() + ","
-//            }
-//            if (result.isNotEmpty() && result.substring(0, 1) != ",") {
-//                result = "," + result
-//            }
-//            item_click_list[click_position] = result
-//            //计算当前下的注数
-//            xz_num = item_click_list.sumBy {
-//                if (it.length > 2) {
-//                    it.substring(1, it.length - 1).split(",").size
-//                } else 0
-//            }
-//            zhu_tv.text = xz_num.toString()
-//            right_adapter!!.refresh(item)
-//            left_adapter!!.refresh(left_list)
-//        }
+        if (item[tab_click_position].dataContent[position].odds != null) {
+            //if (TextUtils.isEmpty(clicks)) clicks = ",$tab_click_position:$clicks"//如果数据为空加一个逗号 好判断
+            if (clicks.isNotEmpty() && clicks.substring(0, 1) != ",") {
+                clicks = ",$tab_click_position:$position"
+            }
+            var result = ""
+            if (clicks.contains(",$tab_click_position:$position,")) {
+                result = clicks.replace(",$tab_click_position:$position,", ",")
+            } else {
+                result = clicks + "$tab_click_position:$position,"
+            }
+            if (result.isNotEmpty() && result.substring(0, 1) != ",") {
+                result = "," + result
+            }
+            item_click_list[click_position] = result
+            //计算当前下的注数
+            xz_num = item_click_list.sumBy {
+                if (it.length > 2) {
+                    it.substring(1, it.length - 1).split(",").size
+                } else 0
+            }
+            zhu_tv.text = xz_num.toString()
+            right_adapter!!.refresh(right_all_list[click_position][tab_click_position].dataContent)
+            left_adapter!!.refresh(left_list)
+        }
     }
 
     override fun setLayoutId(): Int {

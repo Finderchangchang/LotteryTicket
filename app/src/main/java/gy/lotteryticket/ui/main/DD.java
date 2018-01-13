@@ -17,11 +17,6 @@ public class DD extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AlphaTabsIndicator a;
-//        a.setOnTabChangedListner(new OnTabChangedListner() {
-//            @Override
-//            public void onTabSelected(int tabNum) {
-//                String s = tabNum + "";
-//            }
-//        });
+
     }
 }
