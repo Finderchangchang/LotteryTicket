@@ -6,9 +6,9 @@ package gd.mmanage.config
 object sp {
     var user_id = "user_id"
     var user_name = "user_name"
-    var login_name="login_name"
+    var login_name = "login_name"
     var pwd = "pwd"
-    var coinPassword="coinPassword"//取款密码
+    var coinPassword = "coinPassword"//取款密码
     var token = "token"
     var down_all = "down_all"
     var equipment_id = "equipment_id"//设备id
@@ -24,5 +24,7 @@ object sp {
     var con5 = "con5"//支付宝充值地址
     var con6 = "con6"//微信充值地址
     var coin = "coin"//账户余额
+    var http_key = "7f8ddadbe4e91911a58ed525b3510748"
+    var http_random = "778811"
 
 }

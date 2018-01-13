@@ -22,6 +22,7 @@ import gy.lotteryticket.method.Utils
 import gy.lotteryticket.model.NormalRequest
 import gy.lotteryticket.model.TagModel
 import gy.lotteryticket.model.VersionModel
+import gy.lotteryticket.ui.CJActivity
 import gy.lotteryticket.ui.WebActivity
 import gy.lotteryticket.ui.xz.JSGBActivity
 import gy.lotteryticket.ui.xz.PCDDActivity
@@ -115,8 +116,8 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback, 
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
         control = getModule(MainModule::class.java, this)
-        control!!.get_jb_main()
-        control!!.check_version()
+        control!!.get_jb_main(0)
+//        control!!.check_version()
         var mAdapter = MainAdapter(supportFragmentManager)
         tab_pager.adapter = mAdapter
         //预加载页面的个数
@@ -124,7 +125,24 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback, 
         //跳转到个人中心
         user_ll.setOnClickListener { startActivity(Intent(this, UserActivity::class.java)) }
         //跳转到登录页面
-        login_tv.setOnClickListener { Utils.check_login(this) }
+        login_tv.setOnClickListener {
+            if (login_tv.text.equals("登录")) {
+                Utils.check_login(this)
+            } else {
+                builder!!.setTitle("提示")
+                builder!!.setMessage("确定要退出当前账号吗？")
+                builder!!.setPositiveButton("确定") { a, b ->
+                    Utils.putCache(sp.user_id, "")
+                    Utils.putCache(sp.login_name, "")
+                    Utils.putCache(sp.pwd, "")
+                    Utils.putCache(sp.pan_id, "")
+                    Utils.putCache(sp.coin, "")
+                    finish()
+                }
+                builder!!.setNegativeButton("取消") { a, b -> }
+                builder!!.show()
+            }
+        }
         alphaIndicator!!.setViewPager(tab_pager)
         alphaIndicator!!.setOnTabChangedListner({ tabNum ->
             when (tabNum) {
@@ -153,7 +171,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback, 
         ll2.setOnClickListener { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, PCDDActivity::class.java).putExtra("index", "55")) }
         ll4.setOnClickListener { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 0)) }//在线客服
         ll5.setOnClickListener { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 1)) }//聊天室
-        ll6.setOnClickListener { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 2)) }//电脑版本
+        ll6.setOnClickListener { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, CJActivity::class.java).putExtra("index", 7)) }//电脑版本
         init_title_imgs()
     }
 
@@ -171,10 +189,12 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback, 
     override fun onResume() {
         super.onResume()
         if (TextUtils.isEmpty(Utils.getCache(sp.user_id))) {
-            login_tv.visibility = View.VISIBLE
+            login_tv.setText("登录")
+            //login_tv.visibility = View.VISIBLE
             user_ll.visibility = View.GONE
         } else {
-            login_tv.visibility = View.GONE
+            //login_tv.visibility = View.GONE
+            login_tv.setText("退出")
             user_ll.visibility = View.VISIBLE
             main_tv_username.text = Utils.getCache(sp.login_name)
         }

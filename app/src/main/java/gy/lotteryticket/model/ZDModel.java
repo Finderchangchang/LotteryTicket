@@ -102,6 +102,15 @@ public class ZDModel {
         private String amount;//金额
         private String info;//描述
         private String fdTime;//封单时间
+        private String panid;//1显示A 2显示B
+
+        public String getPanid() {
+            return panid;
+        }
+
+        public void setPanid(String panid) {
+            this.panid = panid;
+        }
 
         public String getFdTime() {
             return fdTime;

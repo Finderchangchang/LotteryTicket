@@ -13,8 +13,8 @@
             android:id="@+id/title_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:center_tv="即时注单"
             android:background="@color/colorPrimary"
+            app:center_tv="即时注单"
             app:left_iv="@mipmap/left_jian" />
 
         <TextView
@@ -33,7 +33,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="期号"
@@ -51,7 +51,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.8"
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="下注金额"
@@ -74,67 +74,91 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"></ListView>
+
         <LinearLayout
             android:id="@+id/jszd_ll_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp">
+
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="9"
                 android:layout_height="wrap_content"
+                android:layout_weight="5"
                 android:gravity="right"
-                android:text="总下注金额："/>
+                android:text="总下注金额：" />
+
             <TextView
                 android:id="@+id/jszd_allmoney"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textColor="@color/green"
-                android:text="0"/>
+                android:layout_weight="5"
+                android:text="0"
+                android:textColor="@color/green" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="总输赢：" />
+
+            <TextView
+                android:id="@+id/jszd_symoney"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.2"
+                android:text="0"
+                android:textColor="@color/green" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/jszd_ll_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:visibility="gone">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:text="下注金额："/>
+                android:text="下注金额：" />
+
             <TextView
                 android:id="@+id/jszd_xzmoney"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textColor="@color/green"
-                android:text="0"/>
+                android:layout_weight="1"
+                android:text="0"
+                android:textColor="@color/green" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:text="反水金额："/>
+                android:text="反水金额：" />
+
             <TextView
                 android:id="@+id/jszd_fsmoney"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textColor="@color/green"
-                android:text="0"/>
+                android:layout_weight="1"
+                android:text="0"
+                android:textColor="@color/green" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:text="输赢金额："/>
+                android:text="输赢金额：" />
+
             <TextView
                 android:id="@+id/jszd_all2money"
                 android:layout_width="0dp"
-                android:layout_weight="1.2"
                 android:layout_height="wrap_content"
-                android:textColor="@color/green"
-                android:text="0"/>
+                android:layout_weight="1.2"
+                android:text="0"
+                android:textColor="@color/green" />
         </LinearLayout>
     </LinearLayout>
 </layout>

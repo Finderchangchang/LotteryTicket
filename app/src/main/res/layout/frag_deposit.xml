@@ -9,6 +9,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/zfb_ll"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="10dp"
@@ -49,6 +50,7 @@
             android:background="@color/line_bg" />
 
         <LinearLayout
+            android:id="@+id/wx_ll"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:gravity="center_vertical"

@@ -27,9 +27,9 @@ class MainModule : BaseModule {
     /**
      * 基本参数请求
      * */
-    fun get_jb_main() {
+    fun get_jb_main(type: Int) {
         var map = HashMap<String, String>()
-        map.put("type", "0")
+        map.put("type", type.toString())
         HttpUtils<LzyResponse<TagModel>>()
                 .new_get(url.normal + "ylMain.php", command.login, map, this, object : TypeToken<LzyResponse<TagModel>>() {})
     }
@@ -99,7 +99,7 @@ class MainModule : BaseModule {
     fun check_version() {
         var map = HashMap<String, String>()
         map.put("uid", Utils.getCache(sp.user_id))//用户uid
-        HttpUtils<ObjectRequest<VersionModel>>().new_get(url.normal + "ylUpload.php", command.login+5, map, this, object : TypeToken<ObjectRequest<VersionModel>>() {})
+        HttpUtils<ObjectRequest<VersionModel>>().new_get(url.normal + "ylUpload.php", command.login + 5, map, this, object : TypeToken<ObjectRequest<VersionModel>>() {})
     }
 
 }
