@@ -1,6 +1,7 @@
 package gy.lotteryticket.ui.xz
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.TabLayout
@@ -55,6 +56,9 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     var now_qh = ""//当前期号
     var data_ftime = ""//封盘秒数
     var tab_click = 0
+    var hx_list: ArrayList<LHCResult.DataGroupBean.DataTitleBean> = ArrayList()//合肖的数据集合
+    var zxbz_list: ArrayList<LHCResult.DataGroupBean.DataTitleBean> = ArrayList()//自选不中的数据集合
+
     override fun onSuccess(result: Int, success: Any?) {
         when (result) {
             command.xz -> {//加载数据
@@ -69,9 +73,43 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         var a = 0
                         for (key in list) {
                             item_click_list.add("")
+                            if (key.name == "合肖" || key.name == "自选不中") {
+                                when (key.name) {
+                                    "合肖" -> {
+                                        hx_list = ArrayList()
+                                        hx_list = key.dataTitle as ArrayList<LHCResult.DataGroupBean.DataTitleBean>
+                                        var l = ArrayList<LHCResult.DataGroupBean.DataTitleBean>()
+                                        var xz = ArrayList<XZModel>()
+                                        for (i in 0 until 12) {
+                                            xz.add(XZModel((i + 1).toString()))
+                                        }
+                                        var model = LHCResult.DataGroupBean.DataTitleBean()
+                                        model.name = key.name
+                                        model.dataContent = xz
+                                        l.add(model)
+                                        right_all_list.add(l)
+                                    }
+                                    else -> {
+                                        zxbz_list = ArrayList()
+                                        zxbz_list = key.dataTitle as ArrayList<LHCResult.DataGroupBean.DataTitleBean>
+                                        var l = ArrayList<LHCResult.DataGroupBean.DataTitleBean>()
+                                        var xz = ArrayList<XZModel>()
+                                        for (i in 0 until 49) {
+                                            xz.add(XZModel((i + 1).toString()))
+                                        }
+                                        var model = LHCResult.DataGroupBean.DataTitleBean()
+                                        model.name = key.name
+                                        model.dataContent = xz
+                                        l.add(model)
+                                        right_all_list.add(l)
+                                    }
+                                }
+
+                            } else {
+                                right_all_list.add(key.dataTitle as ArrayList<LHCResult.DataGroupBean.DataTitleBean>)
+                            }
                             left_list.add(key.name)
                             //title_tab_list.add(key.dataTitle)
-                            right_all_list.add(key.dataTitle as ArrayList<LHCResult.DataGroupBean.DataTitleBean>)
                             a++
                         }
                         left_adapter!!.refresh(left_list)
@@ -95,6 +133,7 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 if (success.obj != null && success.obj!!.size() > 0) {
                     var user = Gson().fromJson<UserModel>(success.obj!![0].toString(), UserModel::class.java)
                     yue_tv.text = "￥" + user.coin
+                    Utils.putCache(sp.coin, user.coin)
                 }
             }
             command.xz + 2 -> {//切换AB盘
@@ -225,6 +264,7 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         }
         dialog!!.dismiss()
     }
+
     //和肖，自选不中
     var item_can_click = true//true:可以点击 false:不可以点击
     var can_run = true//执行循环操作
@@ -263,7 +303,7 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     }
                     //封盘时间
                     if (left_time + ":" + right_time == "00:00" || (left_time + ":" + right_time).contains("-")) {
-                        fp_tv.visibility = View.VISIBLE
+                        fp_tv.visibility = View.VISIBLE//封盘中，需要显示字
                         bottom_ll.visibility = View.GONE
                         item_can_click = false
                         next2_qi_tv.text = "封盘中"
@@ -336,11 +376,19 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
 
         ty2_top_gv.setOnItemClickListener { _, _, position, _ ->
             //if (item_can_click)
-            get_now_clicks(position) }
+            get_now_clicks(position)
+        }
         ty2_top_gv.numColumns = 6
         title_adapter = object : CommonAdapter<String>(this, title_list, R.layout.item_title) {
             override fun convert(holder: CommonViewHolder, model: String, position: Int) {
-                holder.setGImage(R.id.iv, getResource(model))
+                if (!TextUtils.isEmpty(model)) {
+                    if (model[0].toString() == "0") {
+                        holder.setGImage(R.id.iv, getResource(model[1].toInt()))
+                    } else {
+                        holder.setGImage(R.id.iv, getResource(model.toInt()))
+                    }
+                }
+                holder.setText(R.id.tv, model)
             }
         }
         top_jiang_gv.adapter = title_adapter
@@ -365,36 +413,26 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             override fun convert(holder: CommonViewHolder, model: XZModel, position: Int) {
                 holder.setVisible(R.id.left_tv, false)
                 holder.setVisible(R.id.right_tv, false)
-                if (click_position == 1) {//特码的情况
-                    holder.setBGColor(R.id.total_ll, R.color.colorPrimaryDark)
-//                    holder.setTextColor(R.id.left_tv, R.color.tm_colorPrimaryDark)
-                } else {
-                    holder.setBGColor(R.id.total_ll, R.color.tm_white)
-                    holder.setTextColor(R.id.left_tv, R.color.black)
-                }
-
                 when (click_position) {
-                    0 -> {
-                        if (position % 6 == 0 || position in 60..65) {
-                            holder.setText(R.id.left_tv, model.name)
-                            holder.setVisible(R.id.right_tv, false)
-                        } else {
-                            holder.setText(R.id.left_tv, Utils.cut_all_0_num(model.odds))
+                    0, 2, 3, 4 -> {//左侧球右侧赔率
+                        holder.setBGColor(R.id.total_ll, R.color.tm_white)
+                        if (!TextUtils.isEmpty(model.name)) {
+                            try {
+                                var s = model.name.toInt()
+                                holder.setBG(R.id.left_tv, getResource(s))
+                                var ss = ""
+                            } catch (e: Exception) {
+                                holder.setBGColor(R.id.left_tv, Color.TRANSPARENT)
+                            }
                         }
                     }
                     else -> {
-                        holder.setText(R.id.left_tv, model.name)
-                        if (model.odds != null) {
-                            if (position % 6 == 0) {
-                                holder.setVisible(R.id.right_tv, false)
-                            } else {
-                                holder.setVisible(R.id.right_tv, true)
-                            }
-                            holder.setText(R.id.right_tv, Utils.cut_all_0_num(model.odds))
-                        } else {
-                            holder.setVisible(R.id.right_tv, false)
-                        }
+                        holder.setBGColor(R.id.left_tv, Color.TRANSPARENT)
                     }
+                }
+                holder.setText(R.id.left_tv, model.name)
+                if (!TextUtils.isEmpty(model.odds)) {
+                    holder.setText(R.id.right_tv, Utils.cut_all_0_num(model.odds))
                 }
                 var clicks = item_click_list[click_position]
                 if (clicks.contains(",$tab_click_position:$position,")) {//被点击
@@ -407,6 +445,7 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         left_lv.adapter = left_adapter
         left_lv.setOnItemClickListener { parent, view, position, id ->
             if (click_position != position) {//两个位置不相同 执行点击操作
+
                 load_right(position)
             }
         }
@@ -452,45 +491,127 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     var now_lists = item_click_list[type1_index]//当前选中的集合内容
                     if (now_lists.length > 2) {//确定有数值
                         now_lists = now_lists.substring(1, now_lists.length - 1)
-                        for (type2 in now_lists.split(",")) {//根据逗号隔开获得当前选择的数据
-                            var num = type2.toInt()
-//                            xz_list.add(right_all_list[type1_index][num])
-//                            str_list.add("【" + left_list[type1_index] + "-" + right_all_list[type1_index][num].name + "】 @"
-//                                    + right_all_list[type1_index][num].odds + "X" + tz_et.text.toString())
-                        }
-                        str_list.add("————————————————————")
-                        try {
-                            str_list.add("【合计】总注数：" + now_lists.split(",").size + "   总金额：" + (now_lists.split(",").size * (tz_et.text.toString()).toDouble()).toString())
-                        } catch (e: Exception) {
+                        when (type1_index) {
+                            10 -> {//合肖
+                                val n = now_lists.length - now_lists.replace(":", "").length//判断当前包含几个冒号
+                                if (n in 2..11) {
+                                    var model = zxbz_list[n - 2].dataContent[0]
+                                    var bet = ""
+                                    for (key in now_lists.split(",")) {
+                                        bet += (key.replace(":", "").toInt() + 1).toString() + ","
+                                    }
+                                    if (bet.isNotEmpty()) {
+                                        bet = bet.substring(0, bet.length - 1)
+                                    }
+                                    model.betInfo = bet
+                                    xz_list.add(model)
+                                    str_list.add("【" + left_list[type1_index] + "-" + model.name + "】 @"
+                                            + model.odds + "X" + tz_et.text.toString())
+                                }
+                            }
+                            14 -> {//自选不中
+                                val n = now_lists.length - now_lists.replace(":", "").length
+                                if (n in 5..12) {
+                                    var model = zxbz_list[n - 5].dataContent[0]
+                                    var bet = ""
+                                    for (key in now_lists.split(",")) {
+                                        bet += (key.replace(":", "").toInt() + 1).toString() + ","
+                                    }
+                                    if (bet.length > 0) {
+                                        bet = bet.substring(0, bet.length - 1)
+                                    }
+                                    model.betInfo = bet
+                                    xz_list.add(model)
+                                    str_list.add("【" + left_list[type1_index] + "-" + model.name + "】 @"
+                                            + model.odds + "X" + tz_et.text.toString())
+                                }
+                            }
+                            else -> {
+                                for (type2 in now_lists.split(",")) {//根据逗号隔开获得当前选择的数据
+                                    var nums = type2.split(":")//截取前后字段
+                                    var tab_position = nums[0].toInt()//右侧顶部选中的tab
+                                    var num = nums[1].toInt()//选中的第几个球
+                                    var now_zhu = right_all_list[type1_index][tab_position].dataContent[num]
+                                    xz_list.add(now_zhu)
+                                    str_list.add("【" + left_list[type1_index] + "-" + now_zhu.name + "】 @"
+                                            + now_zhu.odds + "X" + tz_et.text.toString())
+                                }
+                            }
 
                         }
                     }
                 }
-                var dialog_list = arrayOfNulls<String>(str_list.size)
-                for (i in 0 until str_list.size) {
-                    dialog_list[i] = str_list[i]
+                str_list.add("————————————————————")
+                try {
+                    str_list.add("【合计】总注数：" + xz_list.size + "   总金额：" + (xz_list.size * (tz_et.text.toString()).toDouble()).toString())
+                } catch (e: Exception) {
+
                 }
-                builder.setTitle("下注清单")
-                builder.setItems(dialog_list, null)
-                builder.setNegativeButton("确定") { v, b ->
-                    if (now_qh == "0") {
-                        toast("下单失败，请重试")
-                        control!!.get_tz(cz_id)//重新加载数据
-                    } else {
-                        control!!.get_xz(cz_id, now_qh, tz, (tz.toInt() * xz_num).toString(), xz_list)
+                if (xz_list.size > 0) {
+                    var dialog_list = arrayOfNulls<String>(str_list.size)
+                    for (i in 0 until str_list.size) {
+                        dialog_list[i] = str_list[i]
                     }
+                    builder.setTitle("下注清单")
+                    builder.setItems(dialog_list, null)
+                    builder.setNegativeButton("确定") { v, b ->
+                        if (now_qh == "0") {
+                            toast("下单失败，请重试")
+                            control!!.get_tz(cz_id)//重新加载数据
+                        } else {
+                            control!!.get_xz(cz_id, now_qh, tz, (tz.toInt() * xz_num).toString(), xz_list)
+                        }
+                    }
+                    builder.setPositiveButton("取消") { v, b -> }
+                    builder.show()
+                } else {
+                    toast("请选择下注内容")
                 }
-                builder.setPositiveButton("取消") { v, b -> }
-                builder.show()
             }
         }
     }
-    var tab_click_position=0//tab点击事件
-    fun load_right(position:Int){
-        if (position == 0) {
-            ty2_top_gv.numColumns = 6
-        } else {
-            ty2_top_gv.numColumns = 2
+
+    var tab_click_position = 0//tab点击事件
+    fun load_right(position: Int) {
+        when (position) {
+            7, 8, 9, 10, 11, 12 -> {
+                ty2_top_gv.numColumns = 1
+            }
+            14 -> {
+                ty2_top_gv.numColumns = 5
+            }
+            4, 6, 13 -> {
+                ty2_top_gv.numColumns = 2
+            }
+            else -> {
+                ty2_top_gv.numColumns = 3
+            }
+        }
+        when (click_position) {
+            10 -> {//合肖：如果选择的范围不在2-11 那么清空布局
+                var now_lists = item_click_list[click_position]//当前选中的集合内容
+                if (now_lists.length > 2) {//确定有数值
+                    now_lists = now_lists.substring(1, now_lists.length - 1)
+                    val n = now_lists.length - now_lists.replace(":", "").length
+                    if (n in 2..11) {
+
+                    } else {
+                        item_click_list.removeAt(click_position)
+                    }
+                }
+            }
+            14 -> {//如果当前选中的没有在5..12
+                var now_lists = item_click_list[click_position]//当前选中的集合内容
+                if (now_lists.length > 2) {//确定有数值
+                    now_lists = now_lists.substring(1, now_lists.length - 1)
+                    val n = now_lists.length - now_lists.replace(":", "").length
+                    if (n in 5..12) {
+
+                    } else {
+                        item_click_list.removeAt(click_position)
+                    }
+                }
+            }
         }
         click_position = position
         ty2_title.text = left_list[click_position]
@@ -513,7 +634,7 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             tab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab) {
                     //选择
-                    tab_click_position=tab.position//当前选择的位置
+                    tab_click_position = tab.position//当前选择的位置
                     ty2_title.text = right_all_list[click_position][tab_click_position].name
                     right_adapter!!.refresh(right_all_list[click_position][tab_click_position].dataContent)
                 }
@@ -530,6 +651,7 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             tab.visibility = View.GONE
         }
     }
+
     fun load_left() {
         var mQQPop: EasyPopup = EasyPopup(this).setContentView<EasyPopup>(R.layout.layout_center_pop)
 
@@ -576,13 +698,27 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         control!!.get_zj_last(cz_id)
     }
 
-    fun getResource(imageName: String): Int {
+    fun getResource(imageName: Int): Int {
+        var url = "1"
+        when (imageName) {
+            1, 2, 7, 8, 12, 13, 18, 19, 23, 24, 29,
+            30, 34, 35, 40, 45, 46 -> {
+                url = "1"
+            }
+            3, 4, 9, 10, 14, 15, 20, 25, 26, 31, 36,
+            37, 41, 42, 47, 48 -> {
+                url = "2"
+            }
+            else -> {
+                url = "3"
+            }
+        }
         val ctx = baseContext
-        var url = imageName
+
         if (!TextUtils.isEmpty(url) && url.substring(0, 1) == "0") {
             url = url.substring(1)
         }
-        return resources.getIdentifier("num_" + url, "mipmap", ctx.packageName)
+        return resources.getIdentifier("qiu_" + url, "mipmap", ctx.packageName)
     }
 
     /**
@@ -592,31 +728,31 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     fun get_now_clicks(position: Int) {
         var clicks = item_click_list[click_position]
         var item = right_all_list[click_position]
-        if (item[tab_click_position].dataContent[position].odds != null) {
-            //if (TextUtils.isEmpty(clicks)) clicks = ",$tab_click_position:$clicks"//如果数据为空加一个逗号 好判断
-            if (clicks.isNotEmpty() && clicks.substring(0, 1) != ",") {
-                clicks = ",$tab_click_position:$position"
-            }
-            var result = ""
-            if (clicks.contains(",$tab_click_position:$position,")) {
-                result = clicks.replace(",$tab_click_position:$position,", ",")
-            } else {
-                result = clicks + "$tab_click_position:$position,"
-            }
-            if (result.isNotEmpty() && result.substring(0, 1) != ",") {
-                result = "," + result
-            }
-            item_click_list[click_position] = result
-            //计算当前下的注数
-            xz_num = item_click_list.sumBy {
-                if (it.length > 2) {
-                    it.substring(1, it.length - 1).split(",").size
-                } else 0
-            }
-            zhu_tv.text = xz_num.toString()
-            right_adapter!!.refresh(right_all_list[click_position][tab_click_position].dataContent)
-            left_adapter!!.refresh(left_list)
+        //if (item[tab_click_position].dataContent[position].odds != null) {
+        //if (TextUtils.isEmpty(clicks)) clicks = ",$tab_click_position:$clicks"//如果数据为空加一个逗号 好判断
+        if (clicks.isNotEmpty() && clicks.substring(0, 1) != ",") {
+            clicks = ",$tab_click_position:$position"
         }
+        var result = ""
+        if (clicks.contains(",$tab_click_position:$position,")) {
+            result = clicks.replace(",$tab_click_position:$position,", ",")
+        } else {
+            result = clicks + "$tab_click_position:$position,"
+        }
+        if (result.isNotEmpty() && result.substring(0, 1) != ",") {
+            result = "," + result
+        }
+        item_click_list[click_position] = result
+        //计算当前下的注数
+        xz_num = item_click_list.sumBy {
+            if (it.length > 2) {
+                it.substring(1, it.length - 1).split(",").size
+            } else 0
+        }
+        zhu_tv.text = xz_num.toString()
+        right_adapter!!.refresh(right_all_list[click_position][tab_click_position].dataContent)
+        left_adapter!!.refresh(left_list)
+        //}
     }
 
     override fun setLayoutId(): Int {

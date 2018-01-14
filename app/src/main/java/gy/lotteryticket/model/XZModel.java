@@ -32,6 +32,15 @@ public class XZModel {
     private String ruleFun;
     private String minMoney;
     private String maxMoney;
+    private String betInfo;//仅特殊玩法要传
+
+    public String getBetInfo() {
+        return betInfo;
+    }
+
+    public void setBetInfo(String betInfo) {
+        this.betInfo = betInfo;
+    }
 
     public String getId() {
         return id;

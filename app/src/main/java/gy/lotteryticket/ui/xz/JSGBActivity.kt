@@ -106,6 +106,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 if (success.obj != null && success.obj!!.size() > 0) {
                     var user = Gson().fromJson<UserModel>(success.obj!![0].toString(), UserModel::class.java)
                     yue_tv.text = "￥" + user.coin
+                    Utils.putCache(sp.coin, user.coin)
                 }
             }
             command.xz + 2 -> {//切换AB盘

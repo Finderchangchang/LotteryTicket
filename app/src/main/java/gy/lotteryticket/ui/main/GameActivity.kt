@@ -181,11 +181,6 @@ class GameActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
         name_tv.text = Utils.getCache(sp.login_name)
     }
 
-    fun dp2px(var0: Float): Int {
-        val var1 = resources.displayMetrics.density
-        return (var0 * var1 + 0.5f).toInt()
-    }
-
     override fun onPause() {
         super.onPause()
         can_run = false//挂起的时候禁止倒计时

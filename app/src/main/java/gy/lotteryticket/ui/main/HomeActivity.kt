@@ -39,7 +39,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback, 
                         if (model.type == "1") {
                             message_tv.text = model.con
                         }
-                        Utils.putCache("con" + model.con, model.con)
+                        Utils.putCache("con" + model.type, model.con)
                     }
                 }
             }

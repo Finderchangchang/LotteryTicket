@@ -22,7 +22,6 @@ class CJActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
     override fun onSuccess(result: Int, success: Any?) {
         success as NormalRequest<List<TagModel>>
         if (success.code == 0 && success.obj!!.isNotEmpty()) {
-            var a = success.obj
             var mode = success.obj!![0]
             var urk = mode.con + "?signStr=${sp.http_random}&sign=" + Utils.string2MD5("signStr=${sp.http_random}&key=${sp.http_key}&timeStamp=${Utils.dateToStamp()}") +
                     "&uid=" + Utils.getCache(sp.user_id)
@@ -78,6 +77,11 @@ class CJActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
 
     override fun setLayoutId(): Int {
         return R.layout.activity_web
+    }
+
+    override fun onDestroy() {
+        web.destroy()
+        super.onDestroy()
     }
 
     var index = 0

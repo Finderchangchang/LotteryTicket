@@ -67,8 +67,8 @@ class UserActivity : BaseActivity<ActivityUserBinding>(), AbsModule.OnCallback {
         getModule(MainModule::class.java, this).get_user_login(Utils.getCache(sp.login_name), Utils.getCache(sp.pwd), 2)//登录操作
         llay_data.setOnClickListener {
             startActivity(Intent(this, UserDataActivity::class.java)
-                    .putExtra("yue", user!!.coin)
-                    .putExtra("real_name", user!!.nickname))
+                    .putExtra("yue", user?.coin)
+                    .putExtra("real_name", user?.nickname))
         }
         llay_qu.setOnClickListener { startActivity(Intent(this, ChangePwdActivity::class.java).putExtra("position", "1")) }
         llay_msg.setOnClickListener { startActivity(Intent(this, MessageActivity::class.java)) }
