@@ -66,6 +66,7 @@ public class AddBankActivity extends BaseActivity implements AbsModule.OnCallbac
         super.onCreate(savedInstanceState);
 
         loadingDialog = new LoadingDialog.Builder(this).create();
+        loadingDialog.setCanceledOnTouchOutside(false);
 
         initView();
 
@@ -108,6 +109,9 @@ public class AddBankActivity extends BaseActivity implements AbsModule.OnCallbac
                             tv_bank.setText(data.get(position).getName());
                         }
                     });
+                }else {
+                    loadingDialog.show();
+                    cUserModule.getBankList(2);
                 }
             }
         });
