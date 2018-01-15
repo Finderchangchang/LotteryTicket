@@ -88,7 +88,7 @@ public class RecordActivity extends BaseActivity implements AbsModule.OnCallback
 
     private void setData() {
         tv_count.setText("总笔数：" + recordModel.getTotalCount());
-        tv_money.setText("总输赢：" + recordModel.getTotalRebateMoney());
+        tv_money.setText("总输赢：" + recordModel.getTotalMoney());
         mData.addAll(recordModel.getData());
         Log.e("TAG", "mData.size = " + mData.size());
         mAdapter.notifyDataSetChanged();

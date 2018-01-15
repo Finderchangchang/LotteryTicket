@@ -30,7 +30,12 @@ public class TodayAdapter extends BaseQuickAdapter<TodayItemModel, BaseViewHolde
 
         //明细
         helper.setText(R.id.tv_detail, item.getGroupname() + "-" + item.getActionData() + "\n" + Double.parseDouble(item.getOdds()));
-        helper.setText(R.id.tv_detail_fan, item.getPanid());
+        if(item.getPanid().equals("1")){
+            helper.setText(R.id.tv_detail_fan, "A盘");
+        }else{
+            helper.setText(R.id.tv_detail_fan, "B盘");
+        }
+
 
         //金额
         helper.setText(R.id.tv_money, item.getMoney());

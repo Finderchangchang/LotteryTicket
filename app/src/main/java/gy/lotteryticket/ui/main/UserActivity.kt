@@ -80,5 +80,6 @@ class UserActivity : BaseActivity<ActivityUserBinding>(), AbsModule.OnCallback {
             startActivity(Intent(this, CapitalActivity::class.java).putExtra("position", ""))
             finish()
         }
+        my_user_banben.text="当前版本号："+Utils.version
     }
 }
