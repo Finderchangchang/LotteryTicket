@@ -236,6 +236,10 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     fp_tv.visibility = View.GONE
                     bottom_ll.visibility = View.VISIBLE
                     item_can_click = true
+                    refresh_new_num = 0
+
+                    top_qh = model.lastNum
+
                     top_qi_tv.text = model.lastNum + "期"
                     title_list.clear()
                     for (key in model.lastKj.split(",")) {
@@ -273,11 +277,15 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     var item_can_click = true//true:可以点击 false:不可以点击
     var can_run = true//执行循环操作
     var kjtime = ""
+    var top_qh = ""//顶部期号
+
     var handler = Handler()
     var runnable: Runnable = object : Runnable {
         override fun run() {
-            if (refresh_new) {
-                if (refresh_new_num % 5 == 0) {//隔5秒请求一次
+            var now_q = now_qh.substring(now_qh.length - 5, now_qh.length)
+            var top_q = top_qh.substring(top_qh.length - 5, top_qh.length)
+            if (now_q.toInt() - top_q.toInt() == 2) {
+                if (refresh_new_num % 15 == 0) {//隔15秒请求一次
                     control!!.get_zj_last(cz_id)//获得最新一期开奖信息
                 }
                 refresh_new_num++
@@ -287,9 +295,7 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 if (time == "00:00") {
                     can_run = false
                     next4_qi_tv.text = "开奖中"
-                    refresh_new_num = 0//开始循环获得中奖结果
-                    refresh_new = true
-//                    control!!.get_zj_last(cz_id)//获得最新一期开奖信息
+                    control!!.get_zj_last(cz_id)//获得最新一期开奖信息
                 } else if (time.split(":").size == 3) {//被截取成3份，未开盘
                     next4_qi_tv.text = "未开盘"
                     can_run = true

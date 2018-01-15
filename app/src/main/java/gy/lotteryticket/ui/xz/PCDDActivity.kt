@@ -54,6 +54,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     var xz_list: ArrayList<XZModel> = ArrayList()//下注列表
     var cz_id = "10"
     var now_qh = ""//当前期号
+    var top_qh = ""//顶部期号
     var data_ftime = ""//封盘秒数
     override fun onSuccess(result: Int, success: Any?) {
         when (result) {
@@ -222,6 +223,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     bottom_ll.visibility = View.VISIBLE
                     item_can_click = true
                     refresh_new_num = 0
+                    top_qh = model.lastNum
                     top_qi_tv.text = model.lastNum + "期"
                     title_list.clear()
                     for (key in model.lastKj.split(",")) {
@@ -258,19 +260,20 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     var handler = Handler()
     var runnable: Runnable = object : Runnable {
         override fun run() {
+            var now_q=now_qh.substring(now_qh.length-5,now_qh.length)
+            var top_q=top_qh.substring(top_qh.length-5,top_qh.length)
+            if (now_q.toInt() - top_q.toInt() == 2) {
+                if (refresh_new_num % 15 == 0) {//隔15秒请求一次
+                    control!!.get_zj_last(cz_id)//获得最新一期开奖信息
+                }
+                refresh_new_num++
+            }
             if (can_run) {
                 var time = Utils.getDatePoor(Utils.change_data(kjtime))
                 if (time == "00:00") {
                     can_run = false
                     next4_qi_tv.text = "开奖中"
-//                    refresh_new_num = 0//开始循环获得中奖结果
-//                    refresh_new = true
-                    if (refresh_new_num % 5 == 0) {//隔5秒请求一次
-                        control!!.get_zj_last(cz_id)//获得最新一期开奖信息
-                    }
-                    refresh_new_num++
-
-//                    control!!.get_zj_last(cz_id)//获得最新一期开奖信息
+                    control!!.get_zj_last(cz_id)//获得最新一期开奖信息
                 } else if (time.split(":").size == 3) {//被截取成3份，未开盘
                     next4_qi_tv.text = "未开盘"
                     can_run = true
@@ -295,7 +298,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         right_time = "0" + right_time
                     }
                     //封盘时间
-                    if (left_time + ":" + right_time == "00:00") {
+                    if (left_time + ":" + right_time == "00:00" || (left_time + ":" + right_time).contains("-")) {
                         fp_tv.visibility = View.VISIBLE
                         bottom_ll.visibility = View.GONE
                         item_can_click = false
