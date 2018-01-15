@@ -304,13 +304,13 @@
                             style="@style/main_item_iv"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:src="@mipmap/g_computer" />
+                            android:src="@mipmap/jiang" />
 
                         <TextView
                             style="@style/main_item_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="网页版本" />
+                            android:text="抽奖" />
                     </LinearLayout>
 
                     <TextView

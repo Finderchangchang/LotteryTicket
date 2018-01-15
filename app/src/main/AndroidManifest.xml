@@ -25,7 +25,9 @@
         <activity android:name=".ui.xz.LHCActivity" />
         <activity android:name=".ui.main.UserActivity" />
         <activity android:name=".ui.main.CapitalActivity" />
-        <activity android:name=".ui.main.GameActivity" />
+        <activity
+            android:name=".ui.main.GameActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".ui.user.AddBankActivity" />
         <activity android:name=".ui.user.QuPwdActivity" />
         <activity android:name=".ui.user.UserDataActivity" />

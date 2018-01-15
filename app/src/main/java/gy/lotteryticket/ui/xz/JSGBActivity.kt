@@ -31,6 +31,7 @@ import gy.lotteryticket.ui.capital.GZInfoActivity
 import gy.lotteryticket.ui.capital.JSZDListActivity
 import gy.lotteryticket.ui.capital.KJResultListActivity
 import gy.lotteryticket.ui.main.CapitalActivity
+import gy.lotteryticket.ui.main.GameActivity
 import gy.lotteryticket.ui.user.RecordActivity
 import gy.lotteryticket.ui.user.TodayActivity
 import kotlinx.android.synthetic.main.activity_js_gb.*
@@ -73,8 +74,14 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                             left_list.add(key.name)
                             if (a == 0 && cz_id == "1") {
                                 var list = key.dataContent as ArrayList<XZModel>
-                                for (i in 0 until 10) {
-                                    list.add(i * 6, XZModel(i.toString()))
+                                list.add(0, XZModel("位置"))
+                                list.add(1, XZModel("第一"))
+                                list.add(2, XZModel("第二"))
+                                list.add(3, XZModel("第三"))
+                                list.add(4, XZModel("第四"))
+                                list.add(5, XZModel("第五"))
+                                for (i in 1 until 11) {
+                                    list.add(i * 6, XZModel((i - 1).toString()))
                                 }
                                 right_all_list.add(list)
                             } else {
@@ -149,6 +156,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 if (success.obj != null && success.obj!!.size() > 0) {
                     var model = Gson().fromJson<KJResultModel>(success.obj!![0].toString(), KJResultModel::class.java)
                     can_run = true
+                    refresh_new = true
                     fp_tv.visibility = View.GONE
                     bottom_ll.visibility = View.VISIBLE
                     top_qi_tv.text = model.lastNum + "期"
@@ -267,6 +275,8 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         lv.adapter = adapter
         lv.setOnItemClickListener { parent, view, position, id ->
             when (position) {
+                0 -> startActivity(Intent(this@JSGBActivity, GameActivity::class.java))
+
             //重庆
                 2 -> startActivity(Intent(this@JSGBActivity, JSGBActivity::class.java).putExtra("index", "1"))
             //北京赛车
@@ -300,17 +310,29 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     }
 
     var can_run = true//执行循环操作
+    var refresh_new = false//刷新最新数据
+    var refresh_new_num = 0
+
     var kjtime = ""
     var handler = Handler()
     var runnable: Runnable = object : Runnable {
         override fun run() {
+            if (refresh_new) {
+                if (refresh_new_num % 5 == 0) {//隔5秒请求一次
+                    control!!.get_zj_last(cz_id)//获得最新一期开奖信息
+                }
+                refresh_new_num++
+            }
+
             if (can_run) {
                 if (kjtime != "") {
                     var time = Utils.getDatePoor(Utils.change_data(kjtime))
                     if (time == "00:00") {
                         can_run = false
                         next4_qi_tv.text = "开奖中"
-                        control!!.get_zj_last(cz_id)//获得最新一期开奖信息
+                        refresh_new_num = 0//开始循环获得中奖结果
+                        refresh_new = true
+//                        control!!.get_zj_last(cz_id)//获得最新一期开奖信息
                     } else if (time.split(":").size == 3) {//被截取成3份，未开盘
                         next4_qi_tv.text = "未开盘"
                         can_run = true
@@ -424,8 +446,10 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         when (cz_id) {
             "1" -> {
                 ty2_top_gv.numColumns = 6
+                ty2_title.visibility = View.GONE
             }
             else -> {
+                ty2_title.visibility = View.VISIBLE
                 ty2_top_gv.numColumns = 2
             }
         }
@@ -538,10 +562,20 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 click_position = position
                 if (click_position == 0 && cz_id == "1") {
                     ty2_top_gv.numColumns = 6
+                    ty2_title.visibility = View.GONE
                 } else {
+                    ty2_title.visibility = View.VISIBLE
                     ty2_top_gv.numColumns = 2
                 }
-                ty2_title.text = left_list[click_position]
+                if (cz_id == "10") {
+                    when (click_position) {
+                        0 -> ty2_title.text = "三军、大小"
+                        1 -> ty2_title.text = "围骰、全骰"
+                        else -> ty2_title.text = left_list[click_position]
+                    }
+                } else {
+                    ty2_title.text = left_list[click_position]
+                }
                 left_adapter!!.refresh(left_list)
                 if (right_all_list.size > position) {
                     right_adapter!!.refresh(right_all_list[position])
@@ -593,16 +627,18 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         for (type2 in now_lists.split(",")) {//根据逗号隔开获得当前选择的数据
                             var num = type2.toInt()
                             xz_list.add(right_all_list[type1_index][num])
-                            str_list.add("【" + left_list[type1_index] + "-" + right_all_list[type1_index][num].name + "】 @"
-                                    + right_all_list[type1_index][num].odds + "X" + tz_et.text.toString())
+                            str_list.add("【" + right_all_list[type1_index][num].groupname + "-"
+                                    + right_all_list[type1_index][num].name + "】 @"
+                                    + right_all_list[type1_index][num].odds?.toDoubleOrNull() + "X" + tz_et.text.toString())
                         }
-                        str_list.add("————————————————————")
-                        try {
-                            str_list.add("【合计】总注数：" + now_lists.split(",").size + "   总金额：" + (now_lists.split(",").size * (tz_et.text.toString()).toDouble()).toString())
-                        } catch (e: Exception) {
 
-                        }
                     }
+                }
+                str_list.add("――――――――――――")
+                try {
+                    str_list.add("【合计】总注数：" + xz_list.size + "   总金额：" + (xz_list.size * (tz_et.text.toString()).toDouble()).toString())
+                } catch (e: Exception) {
+
                 }
                 var dialog_list = arrayOfNulls<String>(str_list.size)
                 for (i in 0 until str_list.size) {
@@ -639,7 +675,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     fun get_now_clicks(position: Int) {
         var clicks = item_click_list[click_position]
         var item = right_all_list[click_position]
-        if (item[position].odds != null) {
+        if (item[position].odds != null || (cz_id == "1" && position in 0..5)) {
             if (TextUtils.isEmpty(clicks)) clicks = "," + clicks//如果数据为空加一个逗号 好判断
             if (clicks.isNotEmpty() && clicks.substring(0, 1) != ",") {
                 clicks = "," + clicks

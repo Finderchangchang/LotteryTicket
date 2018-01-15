@@ -170,6 +170,7 @@ class HttpUtils<T>() {
         go.params("sign", string2MD5("signStr=${sp.http_random}&key=${sp.http_key}&timeStamp=${Utils.dateToStamp()}"))
         go.execute(object : StringCallback() {
             override fun onSuccess(str: String, call: okhttp3.Call?, response: okhttp3.Response?) {
+                var s=str
                 var t = Gson().fromJson(str, LzyResponse::class.java)
                 if (t.state == 1) {
                     try {

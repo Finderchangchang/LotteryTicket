@@ -22,7 +22,7 @@ public class XZModel {
      * minMoney : 1
      * maxMoney : 500000
      */
-
+    private String groupname;
     private String id;
     private String name;
     private String code;
@@ -33,6 +33,14 @@ public class XZModel {
     private String minMoney;
     private String maxMoney;
     private String betInfo;//仅特殊玩法要传
+
+    public String getGroupname() {
+        return groupname;
+    }
+
+    public void setGroupname(String groupname) {
+        this.groupname = groupname;
+    }
 
     public String getBetInfo() {
         return betInfo;

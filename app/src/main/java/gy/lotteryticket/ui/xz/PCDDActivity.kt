@@ -31,6 +31,7 @@ import gy.lotteryticket.ui.capital.GZInfoActivity
 import gy.lotteryticket.ui.capital.JSZDListActivity
 import gy.lotteryticket.ui.capital.KJResultListActivity
 import gy.lotteryticket.ui.main.CapitalActivity
+import gy.lotteryticket.ui.main.GameActivity
 import gy.lotteryticket.ui.user.RecordActivity
 import gy.lotteryticket.ui.user.TodayActivity
 import kotlinx.android.synthetic.main.ac_type2.*
@@ -70,17 +71,23 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                             left_list.add(key.name)
                             if (a == 0) {
                                 var list = key.dataContent as ArrayList<XZModel>
-                                for (i in 0 until 10) {
-                                    list.add(i * 6, XZModel((i + 1).toString()))
+                                list.add(0, XZModel("名次"))
+                                list.add(1, XZModel("冠军"))
+                                list.add(2, XZModel("亚军"))
+                                list.add(3, XZModel("季军"))
+                                list.add(4, XZModel("第四"))
+                                list.add(5, XZModel("第五"))
+                                for (i in 1 until 11) {
+                                    list.add(i * 6, XZModel(i.toString()))
                                 }
-                                list.add(60, XZModel("名次"))
-                                list.add(61, XZModel("第六"))
-                                list.add(62, XZModel("第七"))
-                                list.add(63, XZModel("第八"))
-                                list.add(64, XZModel("第九"))
-                                list.add(65, XZModel("第十"))
-                                for (i in 11 until 21) {
-                                    list.add(i * 6, XZModel((i - 10).toString()))
+                                list.add(66, XZModel("名次"))
+                                list.add(67, XZModel("第六"))
+                                list.add(68, XZModel("第七"))
+                                list.add(69, XZModel("第八"))
+                                list.add(70, XZModel("第九"))
+                                list.add(71, XZModel("第十"))
+                                for (i in 12 until 22) {
+                                    list.add(i * 6, XZModel((i - 11).toString()))
                                 }
                                 right_all_list.add(list)
                             } else {
@@ -214,6 +221,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     fp_tv.visibility = View.GONE
                     bottom_ll.visibility = View.VISIBLE
                     item_can_click = true
+                    refresh_new_num = 0
                     top_qi_tv.text = model.lastNum + "期"
                     title_list.clear()
                     for (key in model.lastKj.split(",")) {
@@ -255,7 +263,14 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 if (time == "00:00") {
                     can_run = false
                     next4_qi_tv.text = "开奖中"
-                    control!!.get_zj_last(cz_id)//获得最新一期开奖信息
+//                    refresh_new_num = 0//开始循环获得中奖结果
+//                    refresh_new = true
+                    if (refresh_new_num % 5 == 0) {//隔5秒请求一次
+                        control!!.get_zj_last(cz_id)//获得最新一期开奖信息
+                    }
+                    refresh_new_num++
+
+//                    control!!.get_zj_last(cz_id)//获得最新一期开奖信息
                 } else if (time.split(":").size == 3) {//被截取成3份，未开盘
                     next4_qi_tv.text = "未开盘"
                     can_run = true
@@ -280,11 +295,12 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         right_time = "0" + right_time
                     }
                     //封盘时间
-                    if (left_time + ":" + right_time == "00:00" || (left_time + ":" + right_time).contains("-")) {
+                    if (left_time + ":" + right_time == "00:00") {
                         fp_tv.visibility = View.VISIBLE
                         bottom_ll.visibility = View.GONE
                         item_can_click = false
                         next2_qi_tv.text = "封盘中"
+
                     } else {
                         next2_qi_tv.text = left_time + ":" + right_time
                     }
@@ -315,6 +331,9 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     var adapter: CommonAdapter<PopModel>? = null
     var pop_list: ArrayList<PopModel> = ArrayList()
     var control: XZModule? = null
+    var refresh_new = false//刷新最新数据
+    var refresh_new_num = 0
+
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
         yue_tv.text = "￥" + Utils.getCache(sp.coin)
@@ -346,6 +365,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
 
         ty2_top_gv.setOnItemClickListener { _, _, position, _ -> if (item_can_click) get_now_clicks(position) }
         ty2_top_gv.numColumns = 6
+        ty2_title.visibility = View.GONE
         title_adapter = object : CommonAdapter<String>(this, title_list, R.layout.item_title) {
             override fun convert(holder: CommonViewHolder, model: String, position: Int) {
                 holder.setGImage(R.id.iv, getResource(model))
@@ -383,7 +403,7 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
 
                 when (click_position) {
                     0 -> {
-                        if (position % 6 == 0 || position in 60..65) {
+                        if (position % 6 == 0 || position in 66..71 || position in 0..5) {
                             holder.setText(R.id.left_tv, model.name)
                             holder.setVisible(R.id.right_tv, false)
                         } else {
@@ -417,7 +437,9 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             if (click_position != position) {//两个位置不相同 执行点击操作
                 if (position == 0) {
                     ty2_top_gv.numColumns = 6
+                    ty2_title.visibility = View.GONE
                 } else {
+                    ty2_title.visibility = View.VISIBLE
                     ty2_top_gv.numColumns = 2
                 }
                 click_position = position
@@ -473,16 +495,18 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                         for (type2 in now_lists.split(",")) {//根据逗号隔开获得当前选择的数据
                             var num = type2.toInt()
                             xz_list.add(right_all_list[type1_index][num])
-                            str_list.add("【" + left_list[type1_index] + "-" + right_all_list[type1_index][num].name + "】 @"
-                                    + right_all_list[type1_index][num].odds + "X" + tz_et.text.toString())
+                            str_list.add("【" + right_all_list[type1_index][num].groupname + "-"
+                                    + right_all_list[type1_index][num].name + "】 @"
+                                    + right_all_list[type1_index][num].odds?.toDoubleOrNull() + "X" + tz_et.text.toString())
                         }
-                        str_list.add("————————————————————")
-                        try {
-                            str_list.add("【合计】总注数：" + now_lists.split(",").size + "   总金额：" + (now_lists.split(",").size * (tz_et.text.toString()).toDouble()).toString())
-                        } catch (e: Exception) {
 
-                        }
                     }
+                }
+                str_list.add("――――――――――――")
+                try {
+                    str_list.add("【合计】总注数：" + xz_list.size + "   总金额：" + (xz_list.size * (tz_et.text.toString()).toDouble()).toString())
+                } catch (e: Exception) {
+
                 }
                 var dialog_list = arrayOfNulls<String>(str_list.size)
                 for (i in 0 until str_list.size) {
@@ -526,6 +550,8 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         lv.adapter = adapter
         lv.setOnItemClickListener { parent, view, position, id ->
             when (position) {
+                0 -> startActivity(Intent(this@PCDDActivity, GameActivity::class.java))
+
             //重庆
                 2 -> startActivity(Intent(this@PCDDActivity, JSGBActivity::class.java).putExtra("index", "1"))
             //北京赛车

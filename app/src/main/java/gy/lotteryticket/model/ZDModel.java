@@ -91,7 +91,7 @@ public class ZDModel {
         private String type;
         private String title;
         private String actionNo;
-        private String Groupname;
+        private String groupname;
         private String actionData;
         private String odds;
         private String money;
@@ -201,11 +201,11 @@ public class ZDModel {
         }
 
         public String getGroupname() {
-            return Groupname;
+            return groupname;
         }
 
-        public void setGroupname(String Groupname) {
-            this.Groupname = Groupname;
+        public void setGroupname(String groupname) {
+            this.groupname = groupname;
         }
 
         public String getActionData() {

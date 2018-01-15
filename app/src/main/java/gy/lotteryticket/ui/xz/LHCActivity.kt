@@ -30,6 +30,7 @@ import gy.lotteryticket.ui.capital.GZInfoActivity
 import gy.lotteryticket.ui.capital.JSZDListActivity
 import gy.lotteryticket.ui.capital.KJResultListActivity
 import gy.lotteryticket.ui.main.CapitalActivity
+import gy.lotteryticket.ui.main.GameActivity
 import gy.lotteryticket.ui.user.RecordActivity
 import gy.lotteryticket.ui.user.TodayActivity
 import kotlinx.android.synthetic.main.ac_type2.*
@@ -265,6 +266,9 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         dialog!!.dismiss()
     }
 
+    var refresh_new = false//刷新最新数据
+    var refresh_new_num = 0
+
     //和肖，自选不中
     var item_can_click = true//true:可以点击 false:不可以点击
     var can_run = true//执行循环操作
@@ -272,18 +276,26 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     var handler = Handler()
     var runnable: Runnable = object : Runnable {
         override fun run() {
+            if (refresh_new) {
+                if (refresh_new_num % 5 == 0) {//隔5秒请求一次
+                    control!!.get_zj_last(cz_id)//获得最新一期开奖信息
+                }
+                refresh_new_num++
+            }
             if (can_run) {
                 var time = Utils.getDatePoor(Utils.change_data(kjtime))
                 if (time == "00:00") {
                     can_run = false
                     next4_qi_tv.text = "开奖中"
-                    control!!.get_zj_last(cz_id)//获得最新一期开奖信息
+                    refresh_new_num = 0//开始循环获得中奖结果
+                    refresh_new = true
+//                    control!!.get_zj_last(cz_id)//获得最新一期开奖信息
                 } else if (time.split(":").size == 3) {//被截取成3份，未开盘
                     next4_qi_tv.text = "未开盘"
                     can_run = true
                     item_can_click = false//禁止点击
-                    fp_tv.visibility = View.VISIBLE
-                    bottom_ll.visibility = View.GONE
+                    fp_tv.visibility = View.GONE
+                    bottom_ll.visibility = View.VISIBLE
                 } else {
                     var x_time = time.split(":")[0].toInt() * 60 + time.split(":")[1].toInt()
                     var fp_time = x_time - data_ftime.toInt()//封盘秒数
@@ -420,7 +432,6 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                             try {
                                 var s = model.name.toInt()
                                 holder.setBG(R.id.left_tv, getResource(s))
-                                var ss = ""
                             } catch (e: Exception) {
                                 holder.setBGColor(R.id.left_tv, Color.TRANSPARENT)
                             }
@@ -534,14 +545,14 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                                     var now_zhu = right_all_list[type1_index][tab_position].dataContent[num]
                                     xz_list.add(now_zhu)
                                     str_list.add("【" + left_list[type1_index] + "-" + now_zhu.name + "】 @"
-                                            + now_zhu.odds + "X" + tz_et.text.toString())
+                                            + now_zhu.odds?.toDoubleOrNull() + "X" + tz_et.text.toString())
                                 }
                             }
 
                         }
                     }
                 }
-                str_list.add("————————————————————")
+                str_list.add("――――――――――――")
                 try {
                     str_list.add("【合计】总注数：" + xz_list.size + "   总金额：" + (xz_list.size * (tz_et.text.toString()).toDouble()).toString())
                 } catch (e: Exception) {
@@ -674,6 +685,7 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         lv.adapter = adapter
         lv.setOnItemClickListener { parent, view, position, id ->
             when (position) {
+                0 -> startActivity(Intent(this@LHCActivity, GameActivity::class.java))
             //重庆
                 2 -> startActivity(Intent(this@LHCActivity, JSGBActivity::class.java).putExtra("index", "1"))
             //北京赛车
