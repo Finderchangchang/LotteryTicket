@@ -2,15 +2,11 @@ package gy.lotteryticket.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.LinearLayout
+import android.util.Log
 import com.arialyy.frame.module.AbsModule
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import gd.mmanage.config.sp
-
-import net.tsz.afinal.view.TitleBar
-
 import gy.lotteryticket.R
 import gy.lotteryticket.base.BaseActivity
 import gy.lotteryticket.config.command
@@ -66,6 +62,8 @@ class UserActivity : BaseActivity<ActivityUserBinding>(), AbsModule.OnCallback {
         }
         getModule(MainModule::class.java, this).get_user_login(Utils.getCache(sp.login_name), Utils.getCache(sp.pwd), 2)//登录操作
         llay_data.setOnClickListener {
+            Log.e("TAG","yue = " + user?.coin)
+            Log.e("TAG","real_name = " + user?.nickname)
             startActivity(Intent(this, UserDataActivity::class.java)
                     .putExtra("yue", user?.coin)
                     .putExtra("real_name", user?.nickname))
@@ -80,5 +78,6 @@ class UserActivity : BaseActivity<ActivityUserBinding>(), AbsModule.OnCallback {
             startActivity(Intent(this, CapitalActivity::class.java).putExtra("position", ""))
             finish()
         }
+        my_user_banben.text="当前版本号："+Utils.version
     }
 }

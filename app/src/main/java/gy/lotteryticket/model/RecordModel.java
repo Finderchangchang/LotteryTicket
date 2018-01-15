@@ -17,7 +17,16 @@ public class RecordModel {
     private String totalCount;
     private String totalMoney;
     private String totalRebateMoney;
+    private String totalShuyingMoney;
     private List<RecordItemModel> data;
+
+    public String getTotalShuyingMoney() {
+        return totalShuyingMoney;
+    }
+
+    public void setTotalShuyingMoney(String totalShuyingMoney) {
+        this.totalShuyingMoney = totalShuyingMoney;
+    }
 
     public List<RecordItemModel> getData() {
         return data;

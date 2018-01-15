@@ -19,6 +19,9 @@ import gy.lotteryticket.model.CZModel
 import gy.lotteryticket.model.NormalRequest
 import gy.lotteryticket.model.ZDModel
 import kotlinx.android.synthetic.main.activity_kjresultlist.*
+import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * 开奖结果
@@ -70,7 +73,14 @@ class KJResultListActivity : BaseActivity<ActivityJszdlistBinding>(), AbsModule.
         adapter = object : CommonAdapter<CZModel>(this, array_list, R.layout.item_kj_result) {
             override fun convert(holder: CommonViewHolder, model: CZModel, position: Int) {
                 holder.setText(R.id.item_qh, model.number)
-                //holder.setText(R.id.item_time, model.time)
+                try {
+                    var mytime = getDateToString(model.time.toLong(), "yyyy-MM-dd HH:MM:SS")
+                    holder.setText(R.id.item_time, mytime.substring(5,16))
+                }catch(e: Exception)  {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
                 if (!TextUtils.isEmpty(model.data)) {
                     var list = model.data.split(",")
                     title_list.clear()
@@ -149,5 +159,11 @@ class KJResultListActivity : BaseActivity<ActivityJszdlistBinding>(), AbsModule.
                 }
             }
         }
+    }
+
+    fun getDateToString(milSecond: Long, pattern: String): String {
+        val date = Date(milSecond)
+        val format = SimpleDateFormat(pattern)
+        return format.format(date)
     }
 }
