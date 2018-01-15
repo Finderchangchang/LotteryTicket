@@ -1,6 +1,8 @@
 package gy.lotteryticket.ui.user;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -21,7 +23,6 @@ import java.util.List;
 import gy.lotteryticket.R;
 import gy.lotteryticket.base.BaseActivity;
 import gy.lotteryticket.control.CUserModule;
-import gy.lotteryticket.method.BankPopup;
 import gy.lotteryticket.method.LoadingDialog;
 import gy.lotteryticket.model.BankModel;
 import gy.lotteryticket.model.NormalRequest;
@@ -48,13 +49,15 @@ public class AddBankActivity extends BaseActivity implements AbsModule.OnCallbac
 
     private Dialog loadingDialog;
 
-    private BankPopup bankPopup;
+//    private BankPopup bankPopup;
 
     private String bankId = "0";
 
     private BankModel updateModel;
 
     private int type;
+
+    private AlertDialog bankDialog;
 
     @Override
     protected int setLayoutId() {
@@ -99,17 +102,18 @@ public class AddBankActivity extends BaseActivity implements AbsModule.OnCallbac
             @Override
             public void onClick(View v) {
                 if (data != null) {
-                    bankPopup = new BankPopup(AddBankActivity.this, data);
-                    bankPopup.show(llay_select);
-                    bankPopup.setOnClickListener(new BankPopup.OnClickListener() {
-                        @Override
-                        public void onClick(int position) {
-                            bankPopup.dismiss();
-                            bankId = data.get(position).getId();
-                            tv_bank.setText(data.get(position).getName());
-                        }
-                    });
-                }else {
+                    bankDialog.show();
+//                    bankPopup = new BankPopup(AddBankActivity.this, data);
+//                    bankPopup.show(llay_select);
+//                    bankPopup.setOnClickListener(new BankPopup.OnClickListener() {
+//                        @Override
+//                        public void onClick(int position) {
+//                            bankPopup.dismiss();
+//                            bankId = data.get(position).getId();
+//                            tv_bank.setText(data.get(position).getName());
+//                        }
+//                    });
+                } else {
                     loadingDialog.show();
                     cUserModule.getBankList(2);
                 }
@@ -126,6 +130,30 @@ public class AddBankActivity extends BaseActivity implements AbsModule.OnCallbac
             tv_name.setText("开户姓名：" + updateModel.getUsername());
             bankId = updateModel.getBankId();
         }
+    }
+
+    private void initDialog(final List<SelectBankModel> data) {
+        final List<String> banks = new ArrayList<>();
+        for (SelectBankModel selectBankModel : data) {
+            banks.add(selectBankModel.getName());
+        }
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setTitle("选择银行");
+        alertBuilder.setItems((String[]) banks.toArray(new String[banks.size()]), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+//                toast("选择了 ：" + banks.get(which));
+                bankId = data.get(which).getId();
+                tv_bank.setText(data.get(which).getName());
+                bankDialog.dismiss();
+            }
+        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                bankDialog.dismiss();
+            }
+        });
+        bankDialog = alertBuilder.create();
     }
 
     private void updateBank() {
@@ -173,6 +201,7 @@ public class AddBankActivity extends BaseActivity implements AbsModule.OnCallbac
             }.getType();
             List<SelectBankModel> data = new Gson().fromJson(res.getObj(), type);
             this.data.addAll(data);
+            initDialog(data);
         }
 
         if (result == CUserModule.UPDATEBANK) {
