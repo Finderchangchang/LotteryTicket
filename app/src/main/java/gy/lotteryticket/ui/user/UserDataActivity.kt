@@ -18,9 +18,9 @@ class UserDataActivity : BaseActivity<ActivityUserBinding>() {
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
         name_tv.text = Utils.getCache(sp.login_name)
-        yue_tv.text = intent.getStringExtra("yue")//余额
+        yue_tv.text = intent.getStringExtra(sp.coin)//余额
         id_name_tv.text = Utils.getCache(sp.login_name)
-        real_name_tv.text = intent.getStringExtra("real_name")//真实姓名
+        real_name_tv.text = intent.getStringExtra(sp.name)//真实姓名
     }
 
     override fun setLayoutId(): Int {

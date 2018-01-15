@@ -62,6 +62,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), AbsModule.OnCallback
                         Utils.putCache(sp.pan_id, user.panid)
                         Utils.putCache(sp.coin, user.coin)
                         Utils.putCache(sp.coinPassword,user.coinPassword)
+                        Utils.putCache(sp.name,user.name)
                     }
                     finish()
                 }else {

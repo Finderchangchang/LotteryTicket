@@ -26,5 +26,6 @@ object sp {
     var coin = "coin"//账户余额
     var http_key = "7f8ddadbe4e91911a58ed525b3510748"
     var http_random = "778811"
+    var name="Name"
 
 }

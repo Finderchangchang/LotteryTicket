@@ -113,6 +113,7 @@
                 android:layout_weight="1"
                 android:gravity="right"
                 android:padding="10dp"
+                android:textColor="@color/colorPrimary"
                 android:text="123456" />
 
         </LinearLayout>
