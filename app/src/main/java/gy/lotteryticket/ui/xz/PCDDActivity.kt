@@ -1,5 +1,6 @@
 package gy.lotteryticket.ui.xz
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -36,6 +37,9 @@ import gy.lotteryticket.ui.user.RecordActivity
 import gy.lotteryticket.ui.user.TodayActivity
 import kotlinx.android.synthetic.main.ac_type2.*
 import org.json.JSONArray
+import android.content.Context.INPUT_METHOD_SERVICE
+import android.view.inputmethod.InputMethodManager
+
 
 /**
  *PC蛋蛋(解决赛车的布局)
@@ -340,6 +344,8 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
         yue_tv.text = "￥" + Utils.getCache(sp.coin)
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(tz_et.getWindowToken(), 0); //强制隐藏键盘
         control = getModule(XZModule::class.java, this)
         adapter = object : CommonAdapter<PopModel>(this, pop_list, R.layout.item_pop) {
             override fun convert(holder: CommonViewHolder, model: PopModel, position: Int) {

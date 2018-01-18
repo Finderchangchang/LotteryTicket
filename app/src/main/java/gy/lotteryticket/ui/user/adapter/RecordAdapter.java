@@ -37,7 +37,7 @@ public class RecordAdapter extends BaseQuickAdapter<RecordItemModel, BaseViewHol
             @Override
             public void onClick(View v) {
                 if (item.getCount() != null && Integer.parseInt(item.getCount()) > 0) {
-                    RecordActivity.context.skip(JSZDListActivity.class, new Intent().putExtra("model", item));
+                    RecordActivity.context.skip(JSZDListActivity.class, new Intent().putExtra("model", item).putExtra("type",2));
                 }
             }
         });

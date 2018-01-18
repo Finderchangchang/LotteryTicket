@@ -1,5 +1,6 @@
 package gy.lotteryticket.ui.xz
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -18,6 +19,7 @@ import gy.lotteryticket.model.*
 import kotlinx.android.synthetic.main.ac_type2.*
 import android.os.Handler
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ListView
 import com.arialyy.frame.util.AndroidUtils
 import com.arialyy.frame.util.DensityUtils.dp2px
@@ -396,6 +398,8 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     var pop_list: ArrayList<PopModel> = ArrayList()
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(tz_et.getWindowToken(), 0); //强制隐藏键盘
         left_ll.setOnClickListener {
             load_left()
         }

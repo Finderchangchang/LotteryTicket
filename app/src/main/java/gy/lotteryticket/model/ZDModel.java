@@ -1,5 +1,6 @@
 package gy.lotteryticket.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * QQ群481606175
  */
 
-public class ZDModel {
+public class ZDModel implements Serializable {
 
     /**
      * totalCount : 1

@@ -193,6 +193,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="已选"
+                            android:textColor="@color/white"
                             android:textSize="12dp" />
 
                         <TextView
@@ -207,6 +208,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="注"
+                            android:textColor="@color/white"
                             android:textSize="12dp" />
                     </LinearLayout>
 
@@ -218,6 +220,10 @@
                         android:layout_marginLeft="5dp"
                         android:background="@drawable/edit_tm_bg"
                         android:hint="投注额"
+                        android:textSize="12sp"
+                        android:padding="5dp"
+                        android:textColorHint="@color/white"
+                        android:textColor="@color/white"
                         android:inputType="number" />
                 </LinearLayout>
 

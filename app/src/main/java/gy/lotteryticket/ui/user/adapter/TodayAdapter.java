@@ -29,7 +29,10 @@ public class TodayAdapter extends BaseQuickAdapter<TodayItemModel, BaseViewHolde
         helper.setText(R.id.tv_time, item.getActionTime());
 
         //明细
-        helper.setText(R.id.tv_detail, item.getGroupname() + "-" + item.getActionData() + "\n" + Double.parseDouble(item.getOdds()));
+        helper.setText(R.id.tv_detail1, item.getGroupname() );
+
+        helper.setText(R.id.tv_detail2,"-" + item.getActionData() );
+        helper.setText(R.id.tv_detail3, "@" + Double.parseDouble(item.getOdds()));
         if(item.getPanid().equals("1")){
             helper.setText(R.id.tv_detail_fan, "A盘");
         }else{
@@ -43,10 +46,12 @@ public class TodayAdapter extends BaseQuickAdapter<TodayItemModel, BaseViewHolde
         //输赢
         helper.setText(R.id.tv_win, Double.parseDouble(item.getKeying()) + "");
         helper.setText(R.id.tv_win_fan, "反水（" + item.getRebateMoney() + "）");
-        if (item.getState() == "1") {
+        if (item.getZjCount().equals("1")) {
             helper.setText(R.id.result_tv, "中奖");
+            helper.setTextColor(R.id.result_tv,mContext.getResources().getColor(R.color.green));
         } else {
             helper.setText(R.id.result_tv, "未中奖");
+            helper.setTextColor(R.id.result_tv,mContext.getResources().getColor(R.color.red));
         }
     }
 }

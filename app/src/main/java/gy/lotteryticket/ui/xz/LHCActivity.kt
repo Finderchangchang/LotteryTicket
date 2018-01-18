@@ -1,5 +1,6 @@
 package gy.lotteryticket.ui.xz
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.os.Handler
 import android.support.design.widget.TabLayout
 import android.text.TextUtils
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ListView
 import com.arialyy.frame.module.AbsModule
 import com.arialyy.frame.util.AndroidUtils
@@ -365,7 +367,10 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     var control: XZModule? = null
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
+
         yue_tv.text = "￥" + Utils.getCache(sp.coin)
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(tz_et.getWindowToken(), 0); //强制隐藏键盘
         control = getModule(XZModule::class.java, this)
         adapter = object : CommonAdapter<PopModel>(this, pop_list, R.layout.item_pop) {
             override fun convert(holder: CommonViewHolder, model: PopModel, position: Int) {

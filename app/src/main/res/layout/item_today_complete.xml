@@ -57,17 +57,36 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
-
             android:orientation="vertical"
             android:padding="5dp">
 
-            <TextView
-                android:id="@+id/tv_detail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="beijing"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/tv_detail1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="beijing"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_detail2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="beijing"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_detail3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="beijing"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
 
             <TextView
                 android:id="@+id/tv_detail_fan"
@@ -108,11 +127,13 @@
             android:gravity="center"
             android:orientation="vertical"
             android:padding="5dp">
+
             <TextView
                 android:id="@+id/result_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/red"/>
+                android:textColor="@color/red" />
+
             <TextView
                 android:id="@+id/tv_win"
                 android:layout_width="wrap_content"

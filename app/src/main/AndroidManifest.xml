@@ -42,7 +42,8 @@
         <activity android:name=".ui.user.RegisterActivity" />
         <activity android:name=".ui.user.MessageDetailActivity" />
         <activity android:name=".ui.capital.JSZDListActivity" />
-        <activity android:name=".ui.capital.GZInfoActivity"></activity>
+        <activity android:name=".ui.capital.GZInfoActivity" />
+        <activity android:name=".ui.capital.XZMXActivity"></activity>
     </application>
 
 </manifest>
