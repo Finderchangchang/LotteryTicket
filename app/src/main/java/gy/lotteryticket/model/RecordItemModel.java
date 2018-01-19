@@ -25,13 +25,13 @@ public class RecordItemModel implements Serializable{
     private String shuying;
     private String totalMoney;
     private String totalRebateMoney;
-    private List<RecordItemItemModel> data;
+    private List<ZDModel.DataBean> data;
 
-    public List<RecordItemItemModel> getData() {
+    public List<ZDModel.DataBean> getData() {
         return data;
     }
 
-    public void setData(List<RecordItemItemModel> data) {
+    public void setData(List<ZDModel.DataBean> data) {
         this.data = data;
     }
 

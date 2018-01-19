@@ -38,31 +38,6 @@ class JSZDListActivity : BaseActivity<ActivityJszdlistBinding>(), AbsModule.OnCa
 
         type = intent.getIntExtra("type", 0)
 
-        when (type) {
-            0 -> {
-                jszd_title.text = "可赢金额"
-                title_bar.center_str = "即时注单"
-                jszd_ll_1.visibility = View.VISIBLE
-                jszd_ll_2.visibility = View.GONE
-                control!!.get_dz_last("2")
-            }
-            1 -> {
-                jszd_title.text = "输赢金额"
-                title_bar.center_str = "今日输赢"
-                jszd_ll_1.visibility = View.GONE
-                jszd_ll_2.visibility = View.VISIBLE
-                control!!.get_dz_last("2")
-            }
-            2 -> {
-                jszd_title.text = "下注详情"
-                title_bar.center_str = "下注详情"
-                jszd_ll_1.visibility = View.GONE
-                jszd_ll_2.visibility = View.VISIBLE
-                var model: RecordItemModel = intent.getSerializableExtra("model") as RecordItemModel
-                list = model.data as ArrayList<ZDModel.DataBean>
-                adapter!!.refresh(list)
-            }
-        }
 
         adapter = object : CommonAdapter<ZDModel.DataBean>(this, list, R.layout.item_jszd) {
             override fun convert(holder: CommonViewHolder, model: ZDModel.DataBean, position: Int) {
@@ -71,9 +46,9 @@ class JSZDListActivity : BaseActivity<ActivityJszdlistBinding>(), AbsModule.OnCa
                 holder.setText(R.id.item_jszd_rq, model.actionTime)
 
 
-                holder.setText(R.id.item_jszd_xzmx1,  model.getGroupname() + "-" + model.getActionData())
-                holder.setText(R.id.item_jszd_xzmx2,  "@"+model.getOdds().toDoubleOrNull())
-                if (model.panid.equals("1")) {
+                holder.setText(R.id.item_jszd_xzmx1, model.getGroupname() + "-" + model.getActionData())
+                holder.setText(R.id.item_jszd_xzmx2, "@" + model.getOdds().toDoubleOrNull())
+                if (model.panid != null && model.panid.equals("1")) {
                     holder.setText(R.id.item_jszd_xzmx3, "A盘")
                 } else {
                     holder.setText(R.id.item_jszd_xzmx3, "B盘")
@@ -93,49 +68,83 @@ class JSZDListActivity : BaseActivity<ActivityJszdlistBinding>(), AbsModule.OnCa
 
                 if (model.zjCount.equals("0")) {
                     holder.setText(R.id.item_jszd_kyje, "0.00")
+                    if(type==3){
+                        holder.setTextColor(R.id.item_jszd_kyje,resources.getColor(R.color.green))
+                    }
                 } else {
                     holder.setText(R.id.item_jszd_kyje, model.money + model.keying)
-                }
-
-
-        }
-    }
-    jszd_lv.adapter = adapter
-}
-
-override fun setLayoutId(): Int {
-    return R.layout.activity_jszdlist;
-}
-
-override fun onSuccess(result: Int, success: Any?) {
-    when (result) {
-        command.xz + 5 -> {//加载配置数据
-            success as NormalRequest<ZDModel>
-            if (success.code == 0 && success.obj != null) {
-                list = (success.obj!!.data as ArrayList<ZDModel.DataBean>?)!!
-                adapter!!.refresh(list)
-                when (type) {
-                    0 -> {
-                        jszd_allmoney.text = success.obj!!.totalMoney.toString()
-                        jszd_symoney.text= success.obj!!.totalShuyingMoney.toString()
-                    }
-                    1 -> {
-
-                        jszd_xzmoney.text = success.obj!!.totalMoney.toString()
-                        jszd_fsmoney.text = success.obj!!.totalRebateMoney.toString()
-                        jszd_all2money.text = success.obj!!.totalShuyingMoney.toString()
+                    if(type==3){
+                        holder.setTextColor(R.id.item_jszd_kyje,resources.getColor(R.color.red))
                     }
                 }
-
             }
+
+
         }
-        command.xz + 7 -> {//撤销订单
-            success as NormalRequest<String>
-            if (success.code == 0) {
+        jszd_lv.adapter = adapter
+
+        when (type) {
+            0 -> {
+                jszd_title.text = "可赢金额"
+                title_bar.center_str = "即时注单"
+                jszd_ll_1.visibility = View.VISIBLE
+                jszd_ll_2.visibility = View.GONE
                 control!!.get_dz_last("2")
             }
-            toast(success.message)
+            1 -> {
+                jszd_title.text = "输赢金额"
+                title_bar.center_str = "今日输赢"
+                jszd_ll_1.visibility = View.GONE
+                jszd_ll_2.visibility = View.VISIBLE
+                control!!.get_dz_last("2")
+            }
+            2 -> {
+                jszd_title.text = "输赢"
+                title_bar.center_str = "下注详情"
+                jszd_ll_1.visibility = View.VISIBLE
+                jszd_ll_2.visibility = View.GONE
+                var model: RecordItemModel = intent.getSerializableExtra("model") as RecordItemModel
+                list = model.data as ArrayList<ZDModel.DataBean>
+                adapter!!.refresh(list)
+                jszd_allmoney.text = model.totalMoney.toString()
+                jszd_symoney.text = model.shuying.toString()
+            }
         }
     }
-}
+
+    override fun setLayoutId(): Int {
+        return R.layout.activity_jszdlist;
+    }
+
+    override fun onSuccess(result: Int, success: Any?) {
+        when (result) {
+            command.xz + 5 -> {//加载配置数据
+                success as NormalRequest<ZDModel>
+                if (success.code == 0 && success.obj != null) {
+                    list = (success.obj!!.data as ArrayList<ZDModel.DataBean>?)!!
+                    adapter!!.refresh(list)
+                    when (type) {
+                        0 -> {
+                            jszd_allmoney.text = success.obj!!.totalMoney.toString()
+                            jszd_symoney.text = success.obj!!.totalShuyingMoney.toString()
+                        }
+                        1 -> {
+
+                            jszd_xzmoney.text = success.obj!!.totalMoney.toString()
+                            jszd_fsmoney.text = success.obj!!.totalRebateMoney.toString()
+                            jszd_all2money.text = success.obj!!.totalShuyingMoney.toString()
+                        }
+                    }
+
+                }
+            }
+            command.xz + 7 -> {//撤销订单
+                success as NormalRequest<String>
+                if (success.code == 0) {
+                    control!!.get_dz_last("2")
+                }
+                toast(success.message)
+            }
+        }
+    }
 }

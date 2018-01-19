@@ -64,7 +64,7 @@ public class ZDModel implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * zjCount : 0
          * lotteryNo :

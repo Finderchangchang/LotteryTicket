@@ -60,7 +60,7 @@ class XZModule : BaseModule {
     fun get_xz(cz_id: String, qiHao: String, money: String, totalMoney: String, xzs: ArrayList<XZModel>) {
         var map = HashMap<String, String>()
         map.put("type", "1")
-        map.put("panid", "1")//盘ID-从缓存抓取
+        map.put("panid", Utils.getCache(sp.pan_id))//盘ID-从缓存抓取
         map.put("czid", cz_id)//彩种ID
         map.put("turnNum", qiHao)//投注期号
         map.put("utype", "0")//用户类型 从缓存抓取 登录接口返回的type
