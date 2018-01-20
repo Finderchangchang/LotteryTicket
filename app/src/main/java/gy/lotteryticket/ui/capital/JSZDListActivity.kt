@@ -65,21 +65,17 @@ class JSZDListActivity : BaseActivity<ActivityJszdlistBinding>(), AbsModule.OnCa
                     holder.setVisible(R.id.cx_btn, false)
                 }
                 //holder.setText(R.id.item_jszd_xzmx, model.getGroupname() + "-" + model.getActionData() + "\n" + model.getOdds().toDoubleOrNull())
-
-                if (model.zjCount.equals("0")) {
-                    holder.setText(R.id.item_jszd_kyje, "0.00")
-                    if(type==3){
-                        holder.setTextColor(R.id.item_jszd_kyje,resources.getColor(R.color.green))
+                if (type == 2) {
+                    if (model.zjCount.equals("0")) {
+                        holder.setText(R.id.item_jszd_kyje, "0.00")
+                    } else {
+                        holder.setText(R.id.item_jszd_kyje, (model.money.toDouble() + model.keying.toDouble()).toString())
+                        holder.setTextColor(R.id.item_jszd_kyje, R.color.red)
                     }
-                } else {
-                    holder.setText(R.id.item_jszd_kyje, model.money + model.keying)
-                    if(type==3){
-                        holder.setTextColor(R.id.item_jszd_kyje,resources.getColor(R.color.red))
-                    }
+                } else if (type == 0) {
+                    holder.setText(R.id.item_jszd_kyje, (model.money.toDouble() + model.keying.toDouble()).toString())
                 }
             }
-
-
         }
         jszd_lv.adapter = adapter
 
@@ -99,6 +95,7 @@ class JSZDListActivity : BaseActivity<ActivityJszdlistBinding>(), AbsModule.OnCa
                 control!!.get_dz_last("2")
             }
             2 -> {
+                jszd_qihao.text = "期号/日期"
                 jszd_title.text = "输赢"
                 title_bar.center_str = "下注详情"
                 jszd_ll_1.visibility = View.VISIBLE
@@ -107,7 +104,7 @@ class JSZDListActivity : BaseActivity<ActivityJszdlistBinding>(), AbsModule.OnCa
                 list = model.data as ArrayList<ZDModel.DataBean>
                 adapter!!.refresh(list)
                 jszd_allmoney.text = model.totalMoney.toString()
-                jszd_symoney.text = model.shuying.toString()
+                jszd_symoney.text = (model.shuying.toDouble() + model.totalMoney.toDouble()).toString()
             }
         }
     }

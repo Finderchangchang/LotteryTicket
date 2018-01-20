@@ -18,9 +18,13 @@ class UserDataActivity : BaseActivity<ActivityUserBinding>() {
     override fun init(savedInstanceState: Bundle?) {
         super.init(savedInstanceState)
         name_tv.text = Utils.getCache(sp.login_name)
-        yue_tv.text = intent.getStringExtra(sp.coin)//余额
+        yue_tv.text = Utils.getCache(sp.coin)//余额
         id_name_tv.text = Utils.getCache(sp.login_name)
-        real_name_tv.text = intent.getStringExtra(sp.name)//真实姓名
+        if(Utils.getCache(sp.name).equals("")) {
+            real_name_tv.text = "未设置"//真实姓名
+        }else{
+            real_name_tv.text = Utils.getCache(sp.name)//真实姓名
+        }
     }
 
     override fun setLayoutId(): Int {
