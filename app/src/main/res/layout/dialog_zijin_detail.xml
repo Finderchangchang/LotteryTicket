@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_color"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="查看详情" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="交易编号：" />
+
+            <TextView
+                android:id="@+id/zijin_bianhao"
+                android:layout_width="@dimen/dp_10"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="001" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="发起时间："/>
+            <TextView
+                android:layout_width="@dimen/dp_10"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="0000-00-00"
+                android:id="@+id/zijin_time"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="交易类型："/>
+            <TextView
+                android:layout_width="@dimen/dp_10"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="提现"
+                android:id="@+id/zijin_leixing"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="交易金额："/>
+            <TextView
+                android:layout_width="@dimen/dp_10"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="00.00"
+                android:id="@+id/zijin_jine"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="手续费用："/>
+            <TextView
+                android:layout_width="@dimen/dp_10"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="00.00"
+                android:id="@+id/zijin_feiyong"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="交易状态："/>
+            <TextView
+                android:layout_width="@dimen/dp_10"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="提现成功"
+                android:id="@+id/zijin_zhuangtai"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="提现银行："/>
+            <TextView
+                android:layout_width="@dimen/dp_10"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="中国建设银行"
+                android:id="@+id/zijin_yinhang"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="提款卡号："/>
+            <TextView
+                android:layout_width="@dimen/dp_10"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="123457"
+                android:id="@+id/zijin_kahao"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="交易编号："/>
+            <TextView
+                android:layout_width="@dimen/dp_10"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="001"
+                android:id="@+id/zijin_bianhao"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

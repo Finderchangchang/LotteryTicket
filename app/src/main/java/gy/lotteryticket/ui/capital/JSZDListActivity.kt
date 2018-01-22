@@ -68,6 +68,7 @@ class JSZDListActivity : BaseActivity<ActivityJszdlistBinding>(), AbsModule.OnCa
                 if (type == 2) {
                     if (model.zjCount.equals("0")) {
                         holder.setText(R.id.item_jszd_kyje, "0.00")
+                        holder.setTextColor(R.id.item_jszd_kyje, R.color.green)
                     } else {
                         holder.setText(R.id.item_jszd_kyje, (model.money.toDouble() + model.keying.toDouble()).toString())
                         holder.setTextColor(R.id.item_jszd_kyje, R.color.red)
