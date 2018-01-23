@@ -13,6 +13,7 @@ import gy.lotteryticket.control.UserModule
 import gy.lotteryticket.databinding.FragCapitalBinding
 import gy.lotteryticket.method.CommonAdapter
 import gy.lotteryticket.method.CommonViewHolder
+import gy.lotteryticket.method.ZiJinDialog
 import gy.lotteryticket.model.NormalRequest
 import gy.lotteryticket.model.ZDModel
 import gy.lotteryticket.ui.main.CapitalActivity
@@ -52,15 +53,20 @@ class DrawListFragment : BaseFragment<FragCapitalBinding>(), AbsModule.OnCallbac
             override fun convert(holder: CommonViewHolder, model: ZDModel.DataBean, position: Int) {
                 holder.setText(R.id.left_tv, model.actionTime)
                 holder.setText(R.id.center_tv, model.amount)
-                //0申请中，1，2，9成功，3失败
+                //0，3已到账，1申请中，2，4失败
                 when (model.state) {
-                    "0" -> holder.setText(R.id.right_tv, "申请中")
-                    "3" -> holder.setText(R.id.right_tv, "失败")
-                    else -> holder.setText(R.id.right_tv, "成功")
+                    "1" -> holder.setText(R.id.right_tv, "申请中")
+                    "2" -> holder.setText(R.id.right_tv, "失败")
+                    "4" -> holder.setText(R.id.right_tv, "失败")
+                    else -> holder.setText(R.id.right_tv, "提现成功")
                 }
             }
         }
         main_lv.adapter = left_adapter
+        main_lv.setOnItemClickListener{parent, view, position, id ->
+            var dialog= ZiJinDialog(context,list.get(position))
+            dialog.show()
+        }
         getModule(UserModule::class.java, this).get_zj_list("2", "10")
     }
 

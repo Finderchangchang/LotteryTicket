@@ -64,7 +64,7 @@ public class ZDModel implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean implements Serializable{
+    public static class DataBean implements Serializable {
         /**
          * zjCount : 0
          * lotteryNo :
@@ -104,6 +104,52 @@ public class ZDModel implements Serializable {
         private String info;//描述
         private String fdTime;//封单时间
         private String panid;//1显示A 2显示B
+
+        private String bankName;//提现银行
+        private String account;//卡号
+        private String flag;//
+        private String userAccount;//持卡人
+        private String username;//用户名
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getBankName() {
+            return bankName;
+        }
+
+        public void setBankName(String bankName) {
+            this.bankName = bankName;
+        }
+
+        public String getAccount() {
+            return account;
+        }
+
+        public void setAccount(String account) {
+            this.account = account;
+        }
+
+        public String getFlag() {
+            return flag;
+        }
+
+        public void setFlag(String flag) {
+            this.flag = flag;
+        }
+
+        public String getUserAccount() {
+            return userAccount;
+        }
+
+        public void setUserAccount(String userAccount) {
+            this.userAccount = userAccount;
+        }
 
         public String getPanid() {
             return panid;

@@ -148,76 +148,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="提现银行：" />
+                android:text="充值方式：" />
 
             <TextView
-                android:id="@+id/zijin_yinhang"
+                android:id="@+id/zijin_chongzhi"
                 android:layout_width="@dimen/dp_10"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="中国建设银行" />
+                android:text="系统充值" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="提款卡号：" />
 
-            <TextView
-                android:id="@+id/zijin_kahao"
-                android:layout_width="@dimen/dp_10"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="123457" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="持  卡  人：" />
-
-            <TextView
-                android:id="@+id/zijin_chikaren"
-                android:layout_width="@dimen/dp_10"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="123456" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="        信息：" />
-
-            <TextView
-                android:id="@+id/zijin_xinxi"
-                android:layout_width="@dimen/dp_10"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="123456" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
