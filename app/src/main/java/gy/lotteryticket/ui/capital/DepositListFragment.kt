@@ -13,6 +13,8 @@ import gy.lotteryticket.control.UserModule
 import gy.lotteryticket.databinding.FragCapitalBinding
 import gy.lotteryticket.method.CommonAdapter
 import gy.lotteryticket.method.CommonViewHolder
+import gy.lotteryticket.method.QuKuanDialog
+import gy.lotteryticket.method.ZiJinDialog
 import gy.lotteryticket.model.NormalRequest
 import gy.lotteryticket.model.ZDModel
 import gy.lotteryticket.ui.main.CapitalActivity
@@ -56,11 +58,15 @@ class DepositListFragment : BaseFragment<FragCapitalBinding>(), AbsModule.OnCall
                 when (model.state) {
                     "0" -> holder.setText(R.id.right_tv, "申请中")
                     "3" -> holder.setText(R.id.right_tv, "失败")
-                    else -> holder.setText(R.id.right_tv, "成功")
+                    else -> holder.setText(R.id.right_tv, "充值成功")
                 }
             }
         }
         main_lv.adapter = left_adapter
+        main_lv.setOnItemClickListener{parent, view, position, id ->
+            var dialog=QuKuanDialog(context,list.get(position));
+            dialog.show();
+        }
         getModule(UserModule::class.java, this).get_zj_list("1", "10")
     }
 
