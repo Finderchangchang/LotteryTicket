@@ -235,9 +235,9 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 if (success.obj != null && success.obj!!.size() > 0) {
                     var model = Gson().fromJson<KJResultModel>(success.obj!![0].toString(), KJResultModel::class.java)
                     can_run = true
-                    fp_tv.visibility = View.GONE
-                    bottom_ll.visibility = View.VISIBLE
-                    item_can_click = true
+                    //fp_tv.visibility = View.GONE
+                    //bottom_ll.visibility = View.VISIBLE
+                    //item_can_click = true
                     refresh_new_num = 0
 
                     top_qh = model.lastNum
@@ -300,10 +300,10 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                     control!!.get_zj_last(cz_id)//获得最新一期开奖信息
                 } else if (time.split(":").size == 3) {//被截取成3份，未开盘
                     next4_qi_tv.text = "未开盘"
-                    can_run = true
+                    can_run = false
                     item_can_click = false//禁止点击
-                    fp_tv.visibility = View.GONE
-                    bottom_ll.visibility = View.VISIBLE
+                    fp_tv.visibility = View.VISIBLE
+                    bottom_ll.visibility = View.GONE
                 } else {
                     var x_time = time.split(":")[0].toInt() * 60 + time.split(":")[1].toInt()
                     var fp_time = x_time - data_ftime.toInt()//封盘秒数
@@ -398,8 +398,7 @@ class LHCActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         cz_id = intent.getStringExtra("index")
 
         ty2_top_gv.setOnItemClickListener { _, _, position, _ ->
-            //if (item_can_click)
-            get_now_clicks(position)
+            if (item_can_click) get_now_clicks(position)
         }
         ty2_top_gv.numColumns = 6
         title_adapter = object : CommonAdapter<String>(this, title_list, R.layout.item_title) {

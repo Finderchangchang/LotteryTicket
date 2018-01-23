@@ -59,7 +59,7 @@ class JSZDListActivity : BaseActivity<ActivityJszdlistBinding>(), AbsModule.OnCa
                 if (type == 0) {
                     holder.setVisible(R.id.cx_btn, true)
                     holder.setOnClickListener(R.id.cx_btn) {
-                        control!!.get_cx(model.wjorderId, model.actionTime)
+                        control!!.get_cx(model.id, model.actionTime)
                     }
                 } else {
                     holder.setVisible(R.id.cx_btn, false)
