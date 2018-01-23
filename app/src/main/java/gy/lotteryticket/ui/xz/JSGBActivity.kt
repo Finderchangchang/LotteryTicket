@@ -65,6 +65,8 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             command.xz -> {//加载数据
                 success as NormalRequest<JsonArray>
                 if (success.obj != null && success.obj!!.size() > 0) {
+                    click_position = 0
+                    show_right_title(click_position)
                     var model = Gson().fromJson<PCDDModel>(success.obj!![0].toString(), PCDDModel::class.java)
                     var list = model.dataGroup
                     right_all_list = ArrayList()
@@ -322,8 +324,8 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     var handler = Handler()
     var runnable: Runnable = object : Runnable {
         override fun run() {
-            var now_q=now_qh.substring(now_qh.length-5,now_qh.length)
-            var top_q=top_qh.substring(top_qh.length-5,top_qh.length)
+            var now_q = now_qh.substring(now_qh.length - 5, now_qh.length)
+            var top_q = top_qh.substring(top_qh.length - 5, top_qh.length)
             if (now_q.toInt() - top_q.toInt() == 2) {
                 if (refresh_new_num % 15 == 0) {//隔15秒请求一次
                     control!!.get_zj_last(cz_id)//获得最新一期开奖信息
@@ -567,13 +569,7 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         left_lv.setOnItemClickListener { parent, view, position, id ->
             if (click_position != position) {//两个位置不相同 执行点击操作
                 click_position = position
-                if (click_position == 0 && cz_id == "1") {
-                    ty2_top_gv.numColumns = 6
-                    ty2_title.visibility = View.GONE
-                } else {
-                    ty2_title.visibility = View.VISIBLE
-                    ty2_top_gv.numColumns = 2
-                }
+                show_right_title(click_position)
                 if (cz_id == "10") {
                     when (click_position) {
                         0 -> ty2_title.text = "三军、大小"
@@ -667,6 +663,16 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         }
     }
 
+    fun show_right_title(position: Int) {
+        if (click_position == 0 && cz_id == "1") {
+            ty2_top_gv.numColumns = 6
+            ty2_title.visibility = View.GONE
+        } else {
+            ty2_title.visibility = View.VISIBLE
+            ty2_top_gv.numColumns = 2
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         control!!.get_tz(cz_id)
@@ -682,7 +688,8 @@ class JSGBActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     fun get_now_clicks(position: Int) {
         var clicks = item_click_list[click_position]
         var item = right_all_list[click_position]
-        if (item[position].odds != null || (cz_id == "1" && position in 0..5)) {
+        if (item[position].odds != null) {
+//        if (item[position].odds != null || (cz_id == "1" && position in 0..5)) {
             if (TextUtils.isEmpty(clicks)) clicks = "," + clicks//如果数据为空加一个逗号 好判断
             if (clicks.isNotEmpty() && clicks.substring(0, 1) != ",") {
                 clicks = "," + clicks

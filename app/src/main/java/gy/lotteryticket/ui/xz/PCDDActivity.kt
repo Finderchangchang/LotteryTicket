@@ -65,6 +65,8 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
             command.xz -> {//加载数据
                 success as NormalRequest<JsonArray>
                 if (success.obj != null && success.obj!!.size() > 0) {
+                    click_position = 0
+                    show_right_title(click_position)
                     var model = Gson().fromJson<PCDDModel>(success.obj!![0].toString(), PCDDModel::class.java)
                     var list = model.dataGroup
                     left_list = ArrayList()
@@ -264,8 +266,8 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
     var handler = Handler()
     var runnable: Runnable = object : Runnable {
         override fun run() {
-            var now_q=now_qh.substring(now_qh.length-5,now_qh.length)
-            var top_q=top_qh.substring(top_qh.length-5,top_qh.length)
+            var now_q = now_qh.substring(now_qh.length - 5, now_qh.length)
+            var top_q = top_qh.substring(top_qh.length - 5, top_qh.length)
             if (now_q.toInt() - top_q.toInt() == 2) {
                 if (refresh_new_num % 15 == 0) {//隔15秒请求一次
                     control!!.get_zj_last(cz_id)//获得最新一期开奖信息
@@ -444,14 +446,8 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
         left_lv.adapter = left_adapter
         left_lv.setOnItemClickListener { parent, view, position, id ->
             if (click_position != position) {//两个位置不相同 执行点击操作
-                if (position == 0) {
-                    ty2_top_gv.numColumns = 6
-                    ty2_title.visibility = View.GONE
-                } else {
-                    ty2_title.visibility = View.VISIBLE
-                    ty2_top_gv.numColumns = 2
-                }
                 click_position = position
+                show_right_title(click_position)
                 ty2_title.text = left_list[click_position]
                 left_adapter!!.refresh(left_list)
                 if (right_all_list.size > position) {
@@ -534,6 +530,16 @@ class PCDDActivity : BaseActivity<ActivityPcDdBinding>(), AbsModule.OnCallback {
                 builder.setPositiveButton("取消") { v, b -> }
                 builder.show()
             }
+        }
+    }
+
+    fun show_right_title(position: Int) {
+        if (position == 0) {
+            ty2_top_gv.numColumns = 6
+            ty2_title.visibility = View.GONE
+        } else {
+            ty2_title.visibility = View.VISIBLE
+            ty2_top_gv.numColumns = 2
         }
     }
 
