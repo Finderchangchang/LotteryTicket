@@ -89,12 +89,12 @@ class CJActivity : BaseActivity<ActivityGameBinding>(), AbsModule.OnCallback {
         super.init(savedInstanceState)
         title_bar.setLeftClick { finish() }
         index = intent.getIntExtra("index", 0)
-        if (index == 7) {
-            title_bar.center_str = "抽奖"
-        } else if (index == 5) {
-            title_bar.center_str = "支付宝支付"
-        } else {
-            title_bar.center_str = "微信支付"
+        when (index) {
+            2 -> title_bar.center_str = "在线客服"
+            3 -> title_bar.center_str = "聊天室"
+            7 -> title_bar.center_str = "抽奖"
+            5 -> title_bar.center_str = "支付宝支付"
+            else -> title_bar.center_str = "微信支付"
         }
         getModule(MainModule::class.java, this).get_jb_main(index)
     }

@@ -100,7 +100,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback, 
 
     //失败
     override fun onPermissionsDenied(requestCode: Int, list: List<String>) {
-        if (!EasyPermissions.hasPermissions(this@HomeActivity,  Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        if (!EasyPermissions.hasPermissions(this@HomeActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             EasyPermissions.requestPermissions(this@HomeActivity, "您需要允许以下权限",
                     2, Manifest.permission.READ_EXTERNAL_STORAGE);
 
@@ -169,8 +169,8 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback, 
         ll1.setOnClickListener { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, PCDDActivity::class.java).putExtra("index", "50")) }
         //幸运飞艇
         ll2.setOnClickListener { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, PCDDActivity::class.java).putExtra("index", "55")) }
-        ll4.setOnClickListener { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 0)) }//在线客服
-        ll5.setOnClickListener { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, WebActivity::class.java).putExtra("index", 1)) }//聊天室
+        ll4.setOnClickListener { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, CJActivity::class.java).putExtra("index", 2)) }//在线客服
+        ll5.setOnClickListener { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, CJActivity::class.java).putExtra("index", 3)) }//聊天室
         ll6.setOnClickListener { if (Utils.check_login(this)) startActivity(Intent(this@HomeActivity, CJActivity::class.java).putExtra("index", 7)) }//电脑版本
         init_title_imgs()
     }
@@ -189,12 +189,12 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(), AbsModule.OnCallback, 
     override fun onResume() {
         super.onResume()
         if (TextUtils.isEmpty(Utils.getCache(sp.user_id))) {
-            login_tv.setText("登录")
+            login_tv.text = "登录"
             //login_tv.visibility = View.VISIBLE
             user_ll.visibility = View.GONE
         } else {
             //login_tv.visibility = View.GONE
-            login_tv.setText("退出")
+            login_tv.text = "退出"
             user_ll.visibility = View.VISIBLE
             main_tv_username.text = Utils.getCache(sp.login_name)
         }
